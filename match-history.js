@@ -1,38 +1,49 @@
-const eventKey = "2024ksla"; // replace with event key
-const baseUrl = "https://www.thebluealliance.com/api/v3";
-const apiKey =
-  "zuz2hZHZJjx5u45ZwCHg6OpS9Jo5KlsuWCWCk4dDY4cDIdvHBXnAHipoSOPaELXi";
-const matchesEndpoint = `${baseUrl}/event/${eventKey}/matches/simple`;
+async function fetchPastMatches() {
+  const apiKey =
+    "zuz2hZHZJjx5u45ZwCHg6OpS9Jo5KlsuWCWCk4dDY4cDIdvHBXnAHipoSOPaELXi";
+  const teamKey = "frc3061";
+  const eventKey = "2023ilch";
 
-async function fetchMatches() {
+  const axios = require("axios");
+
+  const pastMatchesEndpoint = `https://www.thebluealliance.com/api/v3/team/${teamKey}/event/${eventKey}/matches/simple`;
+
   try {
-    const fetch = (await import("node-fetch")).default;
-    const response = await fetch(matchesEndpoint, {
+    const response = await axios.get(pastMatchesEndpoint, {
       headers: {
+        accept: "application/json",
         "X-TBA-Auth-Key": apiKey,
       },
     });
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
+    if (response.data === null || response.data.length === 0) {
+      throw new Error(
+        "No past matches available for the specified team and event."
+      );
     }
 
-    const matches = await response.json();
-    const upcomingMatches = matches.filter(
-      (match) => match.actual_time === null
-    );
+    const pastMatches = response.data;
 
-    console.log("Upcoming matches:");
-    upcomingMatches.forEach((match) => {
+    console.log("Past Matches:");
+    pastMatches.forEach((match) => {
+      console.log(`Match Number: ${match.match_number}`);
+      console.log(`Competition Level: ${match.comp_level}`);
       console.log(
-        `Match ${match.match_number}: ${match.alliances.blue.team_keys.join(
-          ", "
-        )} vs ${match.alliances.red.team_keys.join(", ")}`
+        `Alliance: ${match.alliances[
+          teamKey === match.alliances.red.team_keys[0] ? "red" : "blue"
+        ].team_keys.join(", ")}`
       );
+      console.log(
+        `Score: ${
+          match.score_breakdown ? match.score_breakdown[teamKey] : "N/A"
+        }`
+      );
+      console.log("---");
     });
   } catch (error) {
     console.error("Error:", error.message);
   }
 }
 
-fetchMatches();
+// Call the function to fetch past matches
+fetchPastMatches();
