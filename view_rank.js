@@ -1,6 +1,6 @@
 const axios = require("axios");
 
-const eventKey = "2023mose"; // replace with event key
+const eventKey = "2023ilrr"; // replace with event key
 const baseUrl = "https://www.thebluealliance.com/api/v3";
 const apiKey =
   "zuz2hZHZJjx5u45ZwCHg6OpS9Jo5KlsuWCWCk4dDY4cDIdvHBXnAHipoSOPaELXi";
