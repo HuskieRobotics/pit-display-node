@@ -1,10 +1,10 @@
 const axios = require("axios");
 
-const eventKey = "2023ilrr"; // replace with event key
+const eventKey = "2023arc"; // replace with event key
 const baseUrl = "https://www.thebluealliance.com/api/v3";
 const apiKey =
   "zuz2hZHZJjx5u45ZwCHg6OpS9Jo5KlsuWCWCk4dDY4cDIdvHBXnAHipoSOPaELXi";
-const teamNumber = 3061; // replace with your team number
+const teamNumber = 254; // replace with your team number
 
 const teamStatsEndpoint = `${baseUrl}/team/frc${teamNumber}/event/${eventKey}/status`;
 
@@ -17,8 +17,10 @@ async function fetchTeamStats() {
       },
     });
 
-    if (response.data === null) {
-      throw new Error("No data available for the team at the specified event.");
+    console.log("Response Data:", response.data); // Log the response data for debugging
+
+    if (!response.data || !response.data.qual || !response.data.qual.ranking) {
+      throw new Error("Invalid data structure in the response.");
     }
 
     const teamStats = response.data;
