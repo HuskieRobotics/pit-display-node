@@ -1,30 +1,44 @@
-const teamKey = "frc3061"; // replace with your team key
-const eventKey = "2023mose"; // replace with your event key
-const baseUrl = "https://www.thebluealliance.com/api/v3";
-const apiKey = "zuz2hZHZJjx5u45ZwCHg6OpS9Jo5KlsuWCWCk4dDY4cDIdvHBXnAHipoSOPaELXi";
-const teamStatusEndpoint = ${baseUrl}/team/${teamKey}/event/${eventKey}/status;
+const axios = require("axios");
 
-async function fetchTeamStatus() {
+const eventKey = "2023mose"; // replace with event key
+const baseUrl = "https://www.thebluealliance.com/api/v3";
+const apiKey =
+  "zuz2hZHZJjx5u45ZwCHg6OpS9Jo5KlsuWCWCk4dDY4cDIdvHBXnAHipoSOPaELXi";
+const teamNumber = 3061; // replace with your team number
+
+const teamStatsEndpoint = `${baseUrl}/team/frc${teamNumber}/event/${eventKey}/status`;
+
+async function fetchTeamStats() {
   try {
-    const fetch = (await import('node-fetch')).default;
-    const response = await fetch(teamStatusEndpoint, {
+    const response = await axios.get(teamStatsEndpoint, {
       headers: {
+        accept: "application/json",
         "X-TBA-Auth-Key": apiKey,
       },
     });
 
-    if (!response.ok) {
-      throw new Error(HTTP error! Status: ${response.status});
+    if (response.data === null) {
+      throw new Error("No data available for the team at the specified event.");
     }
 
-    const status = await response.json();
-    console.log(Team ${teamKey} status:);
-    console.log(Rank: ${status.qual.ranking.rank});
-    console.log(Record: ${status.qual.ranking.record.wins}-${status.qual.ranking.record.losses}-${status.qual.ranking.record.ties});
-    console.log(Average Score: ${status.qual.ranking.sort_orders[0]});
+    const teamStats = response.data;
+
+    console.log("Team Stats:");
+    console.log(`Team Rank: ${teamStats.qual.ranking.rank}`);
+    console.log(`Ranking Score: ${teamStats.qual.ranking.sort_orders[0]}`);
+    console.log(
+      `Average Match Score: ${teamStats.qual.ranking.sort_orders[1]}`
+    );
+    console.log(
+      `Average Charge Score: ${teamStats.qual.ranking.sort_orders[2]}`
+    );
+    console.log(`Average Auto Score: ${teamStats.qual.ranking.sort_orders[3]}`);
+    console.log(`Wins: ${teamStats.qual.ranking.record.wins}`);
+    console.log(`Losses: ${teamStats.qual.ranking.record.losses}`);
+    console.log(`Ties: ${teamStats.qual.ranking.record.ties}`);
   } catch (error) {
     console.error("Error:", error.message);
   }
 }
 
-fetchTeamStatus();
+fetchTeamStats();
