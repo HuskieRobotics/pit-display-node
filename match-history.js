@@ -38,12 +38,12 @@ async function fetchTeam3061PastMatches() {
     console.log(`Past Matches for Team 3061 at ${eventKey}:`);
     pastMatches.forEach((match) => {
       console.log(`Match Number: ${match.match_number}`);
-      console.log(`Competition Level: ${match.comp_level}`);
       console.log(
         `Alliance: ${match.alliances[
           teamKey === match.alliances.red.team_keys[0] ? "red" : "blue"
         ].team_keys.join(", ")}`
       );
+
       console.log(
         `Score: ${
           match.score_breakdown ? match.score_breakdown[teamKey] : "N/A"
