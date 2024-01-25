@@ -22,34 +22,34 @@ async function fetchTeam3061PastMatches() {
       );
     }
 
-    const pastMatches = response.data.filter(
-      (match) =>
+    const matchNumbers = [];
+    const pastMatches = [];
+
+    response.data.forEach((match) => {
+      if (
         match.alliances.red.team_keys.includes(teamKey) ||
         match.alliances.blue.team_keys.includes(teamKey)
-    );
+      ) {
+        matchNumbers.push(match.match_number);
+        pastMatches.push(match);
+      }
+    });
 
-    if (pastMatches.length === 0) {
+    if (matchNumbers.length === 0) {
       console.log(
-        `Team 3061 did not participate in any matches at ${eventKey}.`
+        `Team ${teamKey} did not participate in any matches at ${eventKey}.`
       );
       return;
     }
 
-    console.log(`Past Matches for Team 3061 at ${eventKey}:`);
+    console.log(`Past Matches for Team ${teamKey} at ${eventKey}:`);
+    console.log(`Match Numbers for Team ${teamKey} at ${eventKey}:`);
+    console.log(matchNumbers.join(", "));
+
     pastMatches.forEach((match) => {
       console.log(`Match Number: ${match.match_number}`);
-      console.log(
-        `Alliance: ${match.alliances[
-          teamKey === match.alliances.red.team_keys[0] ? "red" : "blue"
-        ].team_keys.join(", ")}`
-      );
-
-      console.log(
-        `Score: ${
-          match.score_breakdown ? match.score_breakdown[teamKey] : "N/A"
-        }`
-      );
-      console.log("---");
+      console.log(`Alliance: ${match.alliances.red.team_keys.join(", ")}`);
+      console.log(`Alliance: ${match.alliances.blue.team_keys.join(", ")}`);
     });
   } catch (error) {
     console.error("Error:", error.message);
