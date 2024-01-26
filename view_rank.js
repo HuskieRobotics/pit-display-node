@@ -42,5 +42,4 @@ async function fetchTeamStats() {
     console.error("Error:", error.message);
   }
 }
-
 fetchTeamStats();
