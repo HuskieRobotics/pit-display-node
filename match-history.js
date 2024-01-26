@@ -53,6 +53,15 @@ async function fetchTeam3061PastMatches() {
       );
       console.log(`Red Score: ${match.alliances.red.score}`);
       console.log(`Blue Score: ${match.alliances.blue.score}`);
+
+      if (match.alliances.blue.score === match.alliances.red.score) {
+        console.log("tie");
+      } else if (match.alliances.blue.score > match.alliances.red.score) {
+        console.log("blue is the winning team");
+      } else {
+        console.log("red is the winning team");
+      }
+      console.log(" \n");
     });
   } catch (error) {
     console.error("Error:", error.message);
