@@ -1,3 +1,9 @@
+const axios = require("axios");
+
+const baseUrl = "https://www.thebluealliance.com/api/v3"; // base url for endpoint
+const apiKey =
+  "zuz2hZHZJjx5u45ZwCHg6OpS9Jo5KlsuWCWCk4dDY4cDIdvHBXnAHipoSOPaELXi";
+
 class Match {
   constructor(matchKey, matchTime, matchType, matchNumber) {
     this.matchKey = matchKey;
@@ -23,20 +29,9 @@ class Match {
   }
 }
 
-const axios = require("axios");
-
-const eventKey = "2022ilpe"; // event key of event to query information from
-
-const baseUrl = "https://www.thebluealliance.com/api/v3"; // base url for endoint
-const apiKey =
-  "zuz2hZHZJjx5u45ZwCHg6OpS9Jo5KlsuWCWCk4dDY4cDIdvHBXnAHipoSOPaELXi";
-
-const teamNumber = 3061; // team number we want data from
-
-const teamMatchesEndpoint = `${baseUrl}/team/frc${teamNumber}/event/${eventKey}/matches`;
-
-async function fetchTeamMatches(targetDate, targetTime) {
+async function fetchTeamMatches(eventKey, teamNumber, targetDate, targetTime) {
   const matchList = [];
+  const teamMatchesEndpoint = `${baseUrl}/team/frc${teamNumber}/event/${eventKey}/matches`;
 
   try {
     const response = await axios.get(teamMatchesEndpoint, {
@@ -55,7 +50,6 @@ async function fetchTeamMatches(targetDate, targetTime) {
     // Convert targetDate and targetTime to a Date object
     const targetDateTimeObj = new Date(`${targetDate}T${targetTime}`);
 
-    console.log("Future Matches:");
     matches.forEach((match) => {
       const matchDate = new Date(match.time * 1000);
       if (matchDate >= targetDateTimeObj) {
@@ -72,12 +66,11 @@ async function fetchTeamMatches(targetDate, targetTime) {
     console.error("Error:", error.message);
   }
 
-  return matchList;
+  // Sort the matches by time and return the sorted list
+  return matchList.sort((a, b) => a.getMatchTime() - b.getMatchTime());
 }
 
-fetchTeamMatches("2022-03-17", "09:00:00").then((matchList) => {
-  matchList.sort((a, b) => a.getMatchTime() - b.getMatchTime());
-
+function printMatchDetails(matchList) {
   matchList.forEach((match) => {
     console.log(`Match Key: ${match.getMatchKey()}`);
     console.log(`Scheduled Time: ${match.getMatchTime()}`);
@@ -85,4 +78,8 @@ fetchTeamMatches("2022-03-17", "09:00:00").then((matchList) => {
     console.log(`Match Number: ${match.getMatchNumber()}`);
     console.log(`-------------------------`);
   });
-});
+}
+
+fetchTeamMatches("2022ilpe", 3061, "2022-03-17", "09:00:00").then(
+  printMatchDetails
+);
