@@ -8,10 +8,10 @@ async function fetchTeam3061PastMatches() {
 
   const pastMatchesEndpoint = `https://www.thebluealliance.com/api/v3/team/${teamKey}/event/${eventKey}/matches/simple`;
 
-  const winLoss3061 = false; //blue wins = true, red wins = false
-  const blueWins = false;
-  const redWins = false;
   try {
+    let winLoss3061 = false; // blue wins = true, red wins = false
+    let blueWins = false;
+    let redWins = false;
     const response = await axios.get(pastMatchesEndpoint, {
       headers: {
         accept: "application/json",
@@ -57,44 +57,44 @@ async function fetchTeam3061PastMatches() {
       console.log(`Red Score: ${match.alliances.red.score}`);
       console.log(`Blue Score: ${match.alliances.blue.score}`);
 
-      if (match.alliances.red.team_keys.includes(teamKey) ){ //team 3061 red or blue team
+      if (match.alliances.red.team_keys.includes(teamKey)) {
+        // team 3061 red or blue team
         console.log("team 3061 is on red team");
         if (match.alliances.blue.score === match.alliances.red.score) {
-        console.log("tie");
-      } else if (match.alliances.blue.score > match.alliances.red.score) {
-        console.log("blue is the winning team");
-        blueWins = true;
-        
-      } else {
-        console.log("red is the winning team");
-        redWins = true; 
+          console.log("tie");
+        } else if (match.alliances.blue.score > match.alliances.red.score) {
+          console.log("blue is the winning team");
+          blueWins = true;
+        } else {
+          console.log("red is the winning team");
+          redWins = true;
+        }
+        if (match.alliances.blue.team_keys.includes(teamKey)) {
+          // team 3061 red or blue team
+          console.log("team 3061 is on blue team");
+          if (match.alliances.blue.score === match.alliances.red.score) {
+            console.log("tie");
+          } else if (match.alliances.blue.score > match.alliances.red.score) {
+            console.log("blue is the winning team");
+            blueWins = true;
+          } else {
+            console.log("red is the winning team");
+            redWins = true;
+          }
+
+          // if winning team and team that 3061 is on then display win status else display lose status
+          if (
+            blueWins === true &&
+            match.alliances.blue.team_keys.includes(teamKey)
+          ) {
+            winLoss3061 = true;
+          } else {
+            console.log("error");
+            // display win/loss as loss
+          }
+        }
       }
-      if (match.alliances.blue.team_keys.includes(teamKey) ){ //team 3061 red or blue team
-        console.log("team 3061 is on blue team");
-        if (match.alliances.blue.score === match.alliances.red.score) {
-        console.log("tie");
-      } else if (match.alliances.blue.score > match.alliances.red.score) {
-        console.log("blue is the winning team");
-        blueWins = true;
-        
-      } else {
-        console.log("red is the winning team");
-        redWins = true; 
-      }
 
-      //if winning team and team that 3061 is on then display win status else display lose status
-      if(blueWins === true && match.alliances.blue.team_keys.includes(teamKey)) {
-        winLoss = true;
-
-      }else{
-        console.log("error");
-        //display win/loss as loss
-      }
-
-    }
-    }
-
-     
       console.log(" \n");
     });
   } catch (error) {
