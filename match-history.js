@@ -69,29 +69,29 @@ async function fetchTeam3061PastMatches() {
           console.log("red is the winning team");
           redWins = true;
         }
-        if (match.alliances.blue.team_keys.includes(teamKey)) {
-          // team 3061 red or blue team
-          console.log("team 3061 is on blue team");
-          if (match.alliances.blue.score === match.alliances.red.score) {
-            console.log("tie");
-          } else if (match.alliances.blue.score > match.alliances.red.score) {
-            console.log("blue is the winning team");
-            blueWins = true;
-          } else {
-            console.log("red is the winning team");
-            redWins = true;
-          }
+      }
+      if (match.alliances.blue.team_keys.includes(teamKey)) {
+        // team 3061 red or blue team
+        console.log("team 3061 is on blue team");
+        if (match.alliances.blue.score === match.alliances.red.score) {
+          console.log("tie");
+        } else if (match.alliances.blue.score > match.alliances.red.score) {
+          console.log("blue is the winning team");
+          blueWins = true;
+        } else {
+          console.log("red is the winning team");
+          redWins = true;
+        }
 
-          // if winning team and team that 3061 is on then display win status else display lose status
-          if (
-            blueWins === true &&
-            match.alliances.blue.team_keys.includes(teamKey)
-          ) {
-            winLoss3061 = true;
-          } else {
-            console.log("error");
-            // display win/loss as loss
-          }
+        // if winning team and team that 3061 is on then display win status else display lose status
+        if (
+          blueWins === true &&
+          match.alliances.blue.team_keys.includes(teamKey)
+        ) {
+          winLoss3061 = true;
+        } else {
+          console.log("error");
+          // display win/loss as loss
         }
       }
 
@@ -101,5 +101,4 @@ async function fetchTeam3061PastMatches() {
     console.error("Error:", error.message);
   }
 }
-
 fetchTeam3061PastMatches();
