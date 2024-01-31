@@ -13,10 +13,6 @@ const app = express();
 const dotenv = require("dotenv");
 dotenv.config({ path: ".env" });
 
-// connect to the database
-const connectDB = require("./server/database/connection");
-connectDB();
-
 // import the express-session module, which is used to manage sessions
 const session = require("express-session");
 app.use(
