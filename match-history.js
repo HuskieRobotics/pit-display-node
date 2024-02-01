@@ -16,9 +16,9 @@ async function fetchTeam3061PastMatches() {
       },
     });
 
-    if (response.data === null || response.data.length === 0) {
+    if (!response.data || response.data.length === 0) {
       throw new Error(
-        "No past matches available for Team 3061 at the specified event."
+        `No past matches available for Team ${teamKey} at the specified event.`
       );
     }
 
@@ -26,10 +26,11 @@ async function fetchTeam3061PastMatches() {
     const pastMatches = [];
 
     response.data.forEach((match) => {
-      if (
+      const isTeamInMatch =
         match.alliances.red.team_keys.includes(teamKey) ||
-        match.alliances.blue.team_keys.includes(teamKey)
-      ) {
+        match.alliances.blue.team_keys.includes(teamKey);
+
+      if (isTeamInMatch) {
         matchNumbers.push(match.match_number);
         pastMatches.push(match);
       }
@@ -42,7 +43,6 @@ async function fetchTeam3061PastMatches() {
       return;
     }
 
-    // Sort match numbers from least to greatest
     matchNumbers.sort((a, b) => a - b);
 
     console.log(`Past Matches for Team ${teamKey} at ${eventKey}:`);
@@ -50,61 +50,35 @@ async function fetchTeam3061PastMatches() {
     console.log(matchNumbers.join(", "));
 
     pastMatches.forEach((match) => {
-      // Reset win flags for each match
-      let blueWins = false;
-      let redWins = false;
-      let win3061 = false;
-
       console.log(`Match Number: ${match.match_number}`);
-      console.log(`Red Alliance: ${match.alliances.red.team_keys.join(", ")} `);
+      console.log(`Red Alliance: ${match.alliances.red.team_keys.join(", ")}`);
       console.log(
         `Blue Alliance: ${match.alliances.blue.team_keys.join(", ")}`
       );
       console.log(`Red Score: ${match.alliances.red.score}`);
       console.log(`Blue Score: ${match.alliances.blue.score}`);
 
-      if (match.alliances.red.team_keys.includes(teamKey)) {
-        console.log("team 3061 is on red team");
-        if (match.alliances.blue.score === match.alliances.red.score) {
-          console.log("tie");
-        } else if (match.alliances.blue.score > match.alliances.red.score) {
-          console.log("blue is the winning team");
-          blueWins = true;
-        } else {
-          console.log("red is the winning team");
-          redWins = true;
-        }
-      }
+      const isTeamOnRed = match.alliances.red.team_keys.includes(teamKey);
+      const isTeamOnWinningAlliance = match.winning_alliance.includes(teamKey);
 
-      if (match.alliances.blue.team_keys.includes(teamKey)) {
-        console.log("team 3061 is on blue team");
-        if (match.alliances.blue.score === match.alliances.red.score) {
-          console.log("tie");
-        } else if (match.alliances.blue.score > match.alliances.red.score) {
-          console.log("blue is the winning team");
-          blueWins = true;
-        } else {
-          console.log("red is the winning team");
-          redWins = true;
-        }
-      }
+      console.log(`Team 3061 is on ${isTeamOnRed ? "red" : "blue"} team`);
 
-      if (
-        (blueWins === true &&
-          match.alliances.blue.team_keys.includes(teamKey)) ||
-        (redWins === true && match.alliances.red.team_keys.includes(teamKey))
-      ) {
-        // eslint-disable-next-line no-unused-vars
-        win3061 = true;
-        if (win3061 === true) {
-          console.log("win3061 === true");
-        }
-        console.log("team 3061 is on winning team");
+      if (match.alliances.blue.score === match.alliances.red.score) {
+        console.log("Tie");
+      } else if (match.alliances.blue.score > match.alliances.red.score) {
+        console.log("Blue is the winning team");
       } else {
-        console.log("team 3061 is on losing team");
+        console.log("Red is the winning team");
       }
 
-      console.log(" \n");
+      if (isTeamOnWinningAlliance) {
+        console.log("Team 3061 is on the winning team");
+      } else {
+        console.log("Team 3061 is on the losing team");
+      }
+
+      console.log(`Competition Level: ${match.comp_level}`);
+      console.log("\n");
     });
   } catch (error) {
     console.error("Error:", error.message);
