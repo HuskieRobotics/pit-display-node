@@ -9,9 +9,6 @@ async function fetchTeam3061PastMatches() {
   const pastMatchesEndpoint = `https://www.thebluealliance.com/api/v3/team/${teamKey}/event/${eventKey}/matches/simple`;
 
   try {
-    let winLoss3061 = false; // blue wins = true, red wins = false
-    let blueWins = false;
-    let redWins = false;
     const response = await axios.get(pastMatchesEndpoint, {
       headers: {
         accept: "application/json",
@@ -45,10 +42,19 @@ async function fetchTeam3061PastMatches() {
       return;
     }
 
+    // Sort match numbers from least to greatest
+    matchNumbers.sort((a, b) => a - b);
+
     console.log(`Past Matches for Team ${teamKey} at ${eventKey}:`);
     console.log(`Match Numbers for Team ${teamKey} at ${eventKey}:`);
     console.log(matchNumbers.join(", "));
+
     pastMatches.forEach((match) => {
+      // Reset win flags for each match
+      let blueWins = false;
+      let redWins = false;
+      let win3061 = false;
+
       console.log(`Match Number: ${match.match_number}`);
       console.log(`Red Alliance: ${match.alliances.red.team_keys.join(", ")} `);
       console.log(
@@ -58,7 +64,6 @@ async function fetchTeam3061PastMatches() {
       console.log(`Blue Score: ${match.alliances.blue.score}`);
 
       if (match.alliances.red.team_keys.includes(teamKey)) {
-        // team 3061 red or blue team
         console.log("team 3061 is on red team");
         if (match.alliances.blue.score === match.alliances.red.score) {
           console.log("tie");
@@ -70,8 +75,8 @@ async function fetchTeam3061PastMatches() {
           redWins = true;
         }
       }
+
       if (match.alliances.blue.team_keys.includes(teamKey)) {
-        // team 3061 red or blue team
         console.log("team 3061 is on blue team");
         if (match.alliances.blue.score === match.alliances.red.score) {
           console.log("tie");
@@ -82,17 +87,21 @@ async function fetchTeam3061PastMatches() {
           console.log("red is the winning team");
           redWins = true;
         }
+      }
 
-        // if winning team and team that 3061 is on then display win status else display lose status
-        if (
-          blueWins === true &&
-          match.alliances.blue.team_keys.includes(teamKey)
-        ) {
-          winLoss3061 = true;
-        } else {
-          console.log("error");
-          // display win/loss as loss
+      if (
+        (blueWins === true &&
+          match.alliances.blue.team_keys.includes(teamKey)) ||
+        (redWins === true && match.alliances.red.team_keys.includes(teamKey))
+      ) {
+        // eslint-disable-next-line no-unused-vars
+        win3061 = true;
+        if (win3061 === true) {
+          console.log("win3061 === true");
         }
+        console.log("team 3061 is on winning team");
+      } else {
+        console.log("team 3061 is on losing team");
       }
 
       console.log(" \n");
@@ -101,4 +110,5 @@ async function fetchTeam3061PastMatches() {
     console.error("Error:", error.message);
   }
 }
+
 fetchTeam3061PastMatches();
