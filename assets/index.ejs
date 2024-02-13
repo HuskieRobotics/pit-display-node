@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Robotics Pit Display</title>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+  </head>
+  <body>
+    <div class="rankbox">
+      <p title="This is the team's current rank" id="p1">
+        Team Rank: <%= teamStats.qual.ranking.rank %>
+      </p>
+      <p title="This is the team's RS" id="p2">
+        Ranking Score: <%= teamStats.qual.ranking.sort_orders[0] %> RS
+      </p>
+      <p title="This is the team's win-loss" id="p3">
+        Wins-Losses: <%= teamStats.qual.ranking.record.wins %>W-<%=
+        teamStats.qual.ranking.record.losses %>L
+      </p>
+      <p title="This is the team's points gained from match" id="p4">
+        Average Match Score: <%= teamStats.qual.ranking.sort_orders[1] %> Match
+      </p>
+      <p title="This is the team's points gained from autos" id="p5">
+        Average Auto Score: <%= teamStats.qual.ranking.sort_orders[3] %> Auto
+      </p>
+      <p title="This is the teams points gained from charge" id="p6">
+        Average Charge Score: <%= teamStats.qual.ranking.sort_orders[2] %>
+      </p>
+      <p title="This is the Teams RP" id="p7">
+        Ranking Points: <%= teamStats.qual.ranking.record.ties %> RP
+      </p>
+    </div>
+
+    <div class="twitchstream">
+      <iframe
+        src="https://www.youtube.com/embed/sBPAlijR4mw"
+        height="480"
+        width="860"
+        frameborder="0"
+        scrolling="no"
+        allowfullscreen="true"
+      >
+      </iframe>
+    </div>
+
+    <div class="pastmatches">
+      <h2>Past Matches</h2>
+      <ul>
+        <% for (let i = 1; i <= 5; i++) { %>
+        <li>Match <%= i %></li>
+        <% } %>
+      </ul>
+    </div>
+
+    <div class="buttons">
+      <button class="page1">Page 1</button>
+      <button class="page2">Page 2</button>
+    </div>
+  </body>
+</html>
