@@ -1,0 +1,32 @@
+<%- include('include/_header') %> <% if (myVar) { %>
+<h1>myVar is here!</h1>
+<% } else { %>
+<h1>no myVar</h1>
+<% } %>
+
+<main>
+  <h1>Create Habits of Mind Journal Entry</h1>
+  <div>
+    <label>Date <input type="date" class="date" /></label>
+    <fieldset>
+      <legend>Habit Of Mind:</legend>
+
+      <% for(let habit of habits) { %>
+      <label
+        ><input
+          type="radio"
+          class="habits"
+          name="habits"
+          value=" <%= habit %>"
+        />
+        <%= habit %>
+      </label>
+      <% } %>
+    </fieldset>
+    <label>Journal Entry <textarea class="content"></textarea></label>
+    <input type="submit" class="submit" value="Submit" />
+  </div>
+</main>
+
+<script src="/display-information.js"></script>
+<%- include('include/_footer') %>
