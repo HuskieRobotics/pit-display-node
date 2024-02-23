@@ -1,5 +1,7 @@
 const axios = require("axios");
-// requires axios to function
+const ejs = require("ejs");
+const fs = require("fs");
+
 async function fetchTeam3061PastMatches() {
   const apiKey =
     "zuz2hZHZJjx5u45ZwCHg6OpS9Jo5KlsuWCWCk4dDY4cDIdvHBXnAHipoSOPaELXi";
@@ -22,17 +24,27 @@ async function fetchTeam3061PastMatches() {
       );
     }
 
-    const matchNumbers = [];
-    const pastMatches = [];
+    const pastMatches = response.data;
 
-    response.data.forEach((match) => {
+    // Render EJS template
+    const renderedHtml = await ejs.renderFile("display-information.ejs", {
+      pastMatches,
+    });
+
+    // Write rendered HTML to a file or send it as a response
+    fs.writeFileSync("display-information.html", renderedHtml);
+
+    const matchNumbers = [];
+    const filteredPastMatches = [];
+
+    pastMatches.forEach((match) => {
       const isTeamInMatch =
         match.alliances.red.team_keys.includes(teamKey) ||
         match.alliances.blue.team_keys.includes(teamKey);
 
       if (isTeamInMatch) {
         matchNumbers.push(match.match_number);
-        pastMatches.push(match);
+        filteredPastMatches.push(match);
       }
     });
 
@@ -49,7 +61,7 @@ async function fetchTeam3061PastMatches() {
     console.log(`Match Numbers for Team ${teamKey} at ${eventKey}:`);
     console.log(matchNumbers.join(", "));
 
-    pastMatches.forEach((match) => {
+    filteredPastMatches.forEach((match) => {
       console.log(`Match Number: ${match.match_number}`);
       console.log(`Red Alliance: ${match.alliances.red.team_keys.join(", ")}`);
       console.log(

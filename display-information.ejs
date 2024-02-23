@@ -1,32 +1,25 @@
-<%- include('include/_header') %> <% if (myVar) { %>
-<h1>myVar is here!</h1>
-<% } else { %>
-<h1>no myVar</h1>
-<% } %>
-
-<main>
-  <h1>Create Habits of Mind Journal Entry</h1>
-  <div>
-    <label>Date <input type="date" class="date" /></label>
-    <fieldset>
-      <legend>Habit Of Mind:</legend>
-
-      <% for(let habit of habits) { %>
-      <label
-        ><input
-          type="radio"
-          class="habits"
-          name="habits"
-          value=" <%= habit %>"
-        />
-        <%= habit %>
-      </label>
-      <% } %>
-    </fieldset>
-    <label>Journal Entry <textarea class="content"></textarea></label>
-    <input type="submit" class="submit" value="Submit" />
-  </div>
-</main>
-
-<script src="/display-information.js"></script>
-<%- include('include/_footer') %>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Display Data</title>
+  </head>
+  <body>
+    <h1>Past Matches</h1>
+    <ul>
+      <% pastMatches.forEach(match => { %>
+      <li>
+        Match Number: <%= match.match_number %><br />
+        Red Alliance: <%= match.alliances.red.team_keys.join(", ") %><br />
+        Blue Alliance: <%= match.alliances.blue.team_keys.join(", ") %><br />
+        Red Score: <%= match.alliances.red.score %><br />
+        Blue Score: <%= match.alliances.blue.score %><br />
+        Team 3061 is on: <%= match.alliances.red.team_keys.includes("frc3061") ?
+        "Red" : "Blue" %> team<br />
+        <%= match.isTeamOnWinningAlliance %>
+      </li>
+      <% }); %>
+    </ul>
+  </body>
+</html>
