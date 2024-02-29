@@ -6,8 +6,8 @@ var points_from_match = "141.20 Match";
 var point_from_autos = "32.80 Auto";
 var points_from_charge = "33.40";
 var RP = "35 RP";
-var upcoming_matches = ["a", "aa", "aaa", "aaaa"];
-var past_matches = ["r", "o", "b", "o", "t", "i", "c", "s"];
+var upcoming_matches = ["t", "e", "s", "t"];
+var past_matches = ["t", "e", "s", "t", "i", "n", "g"];
 
 document.getElementById("past_matches").textContent = "Past Matches";
 var list = document.getElementById("list_past_matches");

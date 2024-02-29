@@ -3,19 +3,15 @@
   <head>
     <title>Robotics Pit Display</title>
     <link rel="stylesheet" type="text/css" href="style.css" />
-    <link
-      rel="icon"
-      href="assets_robotics_pit\download.jpg"
-      type="image/x-icon"
-    />
   </head>
   <body>
     <div class="navigation">
       <!-- Add your navigation links or buttons here -->
-      <a href="#page1.html">page1</a>
-      <a href="#page2.html">page2</a>
+      <a href="page1.html">page1</a>
+      <a href="page2.html">page2</a>
     </div>
-    <div class="container">
+
+    <div class="content-container">
       <div class="rankbox">
         <p title="This is the team's current rank" id="current_rank"></p>
         <p title="This is the team's RS" id="RS">2.90 R</p>
@@ -46,15 +42,16 @@
         >
         </iframe>
       </div>
-    </div>
-    <div class="pastmatches">
-      <h2 id="past_matches"></h2>
-      <ul id="list_past_matches"></ul>
-    </div>
 
-    <div class="upcomingmatches">
-      <h2 id="upcoming_matches"></h2>
-      <ul id="list_upcoming_matches"></ul>
+      <div class="pastmatches">
+        <h2 id="past_matches"></h2>
+        <ul id="list_past_matches"></ul>
+      </div>
+
+      <div class="upcomingmatches">
+        <h2 id="upcoming_matches"></h2>
+        <ul id="list_upcoming_matches"></ul>
+      </div>
     </div>
     <script src="page_one.js"></script>
   </body>
