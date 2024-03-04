@@ -33,8 +33,19 @@ body {
   border: 2px solid white; /* Adjust thickness as needed */
 }
 
+.pastmatches {
+  height: 50vh;
+  overflow: auto;
+}
+
+.upcomingmatches {
+  height: 30vh;
+  overflow: auto;
+}
+
 .rankbox {
   overflow: auto; /* Add scrollbars when content overflows */
+  height: 50vh;
 }
 
 .twitchstream {
