@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Live Data</title>
+  </head>
+  <body>
+    <h1>Live Data</h1>
+
+    <!-- Display live data -->
+    <div>
+      <h2>Live Data</h2>
+      <p>Message: <%= liveData.message %></p>
+      <p>Timestamp: <%= liveData.timestamp %></p>
+    </div>
+
+    <!-- Display past matches data -->
+    <div>
+      <h2>Past Matches</h2>
+      <% pastMatches.forEach(function(match) { %>
+      <p>Match Number: <%= match.match_number %></p>
+      <p>Red Alliance: <%= match.alliances.red.team_keys.join(", ") %></p>
+      <p>Blue Alliance: <%= match.alliances.blue.team_keys.join(", ") %></p>
+      <p>Red Score: <%= match.alliances.red.score %></p>
+      <p>Blue Score: <%= match.alliances.blue.score %></p>
+      <!-- Add more fields as needed -->
+      <hr />
+      <!-- Optional: Add a horizontal line between matches -->
+      <% }); %>
+    </div>
+  </body>
+</html>

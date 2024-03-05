@@ -1,6 +1,4 @@
 const axios = require("axios");
-const ejs = require("ejs");
-const fs = require("fs");
 
 async function fetchTeam3061PastMatches() {
   const apiKey =
@@ -26,75 +24,11 @@ async function fetchTeam3061PastMatches() {
 
     const pastMatches = response.data;
 
-    // Render EJS template
-    const renderedHtml = await ejs.renderFile("display-information.ejs", {
-      pastMatches,
-    });
-
-    // Write rendered HTML to a file or send it as a response
-    fs.writeFileSync("display-information.html", renderedHtml);
-
-    const matchNumbers = [];
-    const filteredPastMatches = [];
-
-    pastMatches.forEach((match) => {
-      const isTeamInMatch =
-        match.alliances.red.team_keys.includes(teamKey) ||
-        match.alliances.blue.team_keys.includes(teamKey);
-
-      if (isTeamInMatch) {
-        matchNumbers.push(match.match_number);
-        filteredPastMatches.push(match);
-      }
-    });
-
-    if (matchNumbers.length === 0) {
-      console.log(
-        `Team ${teamKey} did not participate in any matches at ${eventKey}.`
-      );
-      return;
-    }
-
-    matchNumbers.sort((a, b) => a - b);
-
-    console.log(`Past Matches for Team ${teamKey} at ${eventKey}:`);
-    console.log(`Match Numbers for Team ${teamKey} at ${eventKey}:`);
-    console.log(matchNumbers.join(", "));
-
-    filteredPastMatches.forEach((match) => {
-      console.log(`Match Number: ${match.match_number}`);
-      console.log(`Red Alliance: ${match.alliances.red.team_keys.join(", ")}`);
-      console.log(
-        `Blue Alliance: ${match.alliances.blue.team_keys.join(", ")}`
-      );
-      console.log(`Red Score: ${match.alliances.red.score}`);
-      console.log(`Blue Score: ${match.alliances.blue.score}`);
-
-      const isTeamOnRed = match.alliances.red.team_keys.includes(teamKey);
-      const isTeamOnWinningAlliance = match.winning_alliance.includes(teamKey);
-
-      console.log(`Team 3061 is on ${isTeamOnRed ? "red" : "blue"} team`);
-
-      if (match.alliances.blue.score === match.alliances.red.score) {
-        console.log("Tie");
-      } else if (match.alliances.blue.score > match.alliances.red.score) {
-        console.log("Blue is the winning team");
-      } else {
-        console.log("Red is the winning team");
-      }
-
-      if (isTeamOnWinningAlliance) {
-        console.log("Team 3061 is on the winning team");
-      } else {
-        console.log("Team 3061 is on the losing team");
-      }
-
-      console.log(`Competition Level: ${match.comp_level}`);
-      console.log("\n");
-    });
+    return pastMatches;
   } catch (error) {
     console.error("Error:", error.message);
+    return [];
   }
 }
 
-fetchTeam3061PastMatches();
+module.exports = { fetchTeam3061PastMatches };

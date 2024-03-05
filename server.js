@@ -1,7 +1,13 @@
 const express = require("express");
+const ejs = require("ejs"); // Importing ejs module
 const fs = require("fs");
+const { fetchTeam3061PastMatches } = require("./match-history");
+
 const app = express();
 const port = 3000;
+
+// Set the view engine to EJS
+app.set("view engine", "ejs");
 
 // Function to generate live data
 function generateLiveData() {
@@ -13,42 +19,21 @@ function generateLiveData() {
   return liveData;
 }
 
-// Function to generate HTML with live data
-function generateHTMLWithData(data) {
-  // Generate HTML content dynamically with live data
-  const htmlContent = `
-        <!DOCTYPE html>
-        <html lang="en">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Live Data</title>
-        </head>
-        <body>
-            <h1>Live Data</h1>
-            <p>${JSON.stringify(data)}</p>
-        </body>
-        </html>
-    `;
-  return htmlContent;
-}
+// Route to render the EJS template with live data and past matches data
+app.get("/", async (req, res) => {
+  try {
+    // Generate live data
+    const liveData = generateLiveData();
 
-// Serve JSON with live data
-app.get("/", (req, res) => {
-  // Generate live data
-  const liveData = generateLiveData();
+    // Fetch past matches data
+    const pastMatches = await fetchTeam3061PastMatches();
 
-  // Generate HTML with live data
-  const htmlContent = generateHTMLWithData(liveData);
-
-  // Write HTML content to a temporary file
-  fs.writeFileSync("display-information.html", htmlContent);
-
-  // Send the HTML file as the response
-  res.sendFile("display-information.html", { root: __dirname });
-
-  // Delete HTML file after sending
-  fs.unlinkSync("display-information.html");
+    // Render the EJS template and pass the live data and past matches data
+    res.render("live-data", { liveData, pastMatches });
+  } catch (error) {
+    console.error("Error:", error.message);
+    res.status(500).send("Internal Server Error");
+  }
 });
 
 // Start server
