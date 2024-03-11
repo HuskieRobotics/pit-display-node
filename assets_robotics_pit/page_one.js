@@ -38,13 +38,22 @@ async function fetchTeamStats() {
       "current_rank"
     ).textContent = `Team Rank: ${teamStats.qual.ranking.rank}`;
 
-    document.getElementById("RS").textContent =
-      `Ranking Score: ${teamStats.qual.ranking.sort_orders[0]}` +
-      `Losses: ${teamStats.qual.ranking.record.losses}`;
-
     document.getElementById(
-      "WL"
-    ).textContent = `Wins: ${teamStats.qual.ranking.record.wins}`;
+      "RS"
+    ).textContent = `Ranking Score: ${teamStats.qual.ranking.sort_orders[0]}`;
+
+    document.getElementById("WL").textContent =
+      `Wins: ${teamStats.qual.ranking.record.wins}` +
+      `  -  Losses: ${teamStats.qual.ranking.record.losses}`;
+    document.getElementById(
+      "points_from_match"
+    ).textContent = `Average Match Score: ${teamStats.qual.ranking.sort_orders[1]}`;
+    document.getElementById(
+      "points_from_charge"
+    ).textContent = `Average Charge Score: ${teamStats.qual.ranking.sort_orders[2]}`;
+    document.getElementById(
+      "points_from_auto"
+    ).textContent = `Average Auto Score: ${teamStats.qual.ranking.sort_orders[3]}`;
   } catch (error) {
     // Log any errors that occur during the request
     console.error("Error:", error.message);
