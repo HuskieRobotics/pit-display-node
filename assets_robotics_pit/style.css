@@ -48,7 +48,13 @@ body {
   height: 50vh;
 }
 
-.twitchstream {
+#current_rank {
+}
+
+#RS {
+}
+
+#WL # .twitchstream {
   height: 25vh;
 }
 
