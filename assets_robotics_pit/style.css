@@ -14,7 +14,6 @@ body {
   width: calc(100vw / 50);
 }
 
-
 .rankbox,
 .pastmatches,
 .twitchstream,
@@ -27,7 +26,7 @@ body {
   border-radius: 10px;
   font-family: "Arial Rounded MT Bold", sans-serif;
   border: 2px solid white; /* Adjust thickness as needed */
-  width: calc(82.7vw / 2);
+  width: calc(75vw / 2);
   height: 44vh;
 }
 
@@ -41,13 +40,10 @@ body {
 }
 
 .pastmatches {
-
   overflow: auto;
 }
 
 .upcomingmatches {
-
-
   overflow: auto;
 }
 
@@ -90,7 +86,6 @@ body {
   height: 95%;
   width: 100%;
   align-self: center;
-
 }
 
 .button {
