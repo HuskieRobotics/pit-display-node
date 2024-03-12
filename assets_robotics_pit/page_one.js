@@ -62,3 +62,4 @@ async function fetchTeamStats() {
 
 // Call the fetchTeamStats function to initiate the data retrieval process
 fetchTeamStats();
+
