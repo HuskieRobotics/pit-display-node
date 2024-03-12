@@ -1,35 +1,65 @@
-// This is the data that will be displayed on the pit display
-var current_rank = "Rank 34";
-var RS = "2.90 R";
-var WL = "5W-7L";
-var points_from_match = "141.20 Match";
-var point_from_autos = "32.80 Auto";
-var points_from_charge = "33.40";
-var RP = "35 RP";
-var upcoming_matches = ["t", "e", "s", "t"];
-var past_matches = ["t", "e", "s", "t", "i", "n", "g"];
+// Set the event key for the desired robotics event
+const eventKey = "2023arc"; // replace with event key
 
-document.getElementById("past_matches").textContent = "Past Matches";
-var list = document.getElementById("list_past_matches");
-for (var i = 0; i < past_matches.length; i++) {
-  var pi = document.createElement("pi");
-  pi.textContent = past_matches[i];
-  list.appendChild(pi);
+// Set the base URL for The Blue Alliance API
+const baseUrl = "https://www.thebluealliance.com/api/v3";
+
+// Set the API key for accessing The Blue Alliance API
+const apiKey =
+  "zuz2hZHZJjx5u45ZwCHg6OpS9Jo5KlsuWCWCk4dDY4cDIdvHBXnAHipoSOPaELXi";
+
+// Set the team number for the desired robotics team
+const teamNumber = 254; // replace with your team number
+
+// Construct the endpoint URL for fetching team statistics
+const teamStatsEndpoint = `${baseUrl}/team/frc${teamNumber}/event/${eventKey}/status`;
+
+// Define an asynchronous function to fetch team statistics
+async function fetchTeamStats() {
+  try {
+    // Send a GET request to the team statistics endpoint
+    const response = await axios.get(teamStatsEndpoint, {
+      headers: {
+        accept: "application/json",
+        "X-TBA-Auth-Key": apiKey,
+      },
+    });
+
+    // Check if the response data has the expected structure
+    if (!response.data || !response.data.qual || !response.data.qual.ranking) {
+      throw new Error("Invalid data structure in the response.");
+    }
+
+    // Extract the team statistics from the response data
+    const teamStats = response.data;
+
+    // Display the current rank
+    document.getElementById(
+      "current_rank"
+    ).textContent = `Team Rank: ${teamStats.qual.ranking.rank}`;
+
+    document.getElementById(
+      "RS"
+    ).textContent = `Ranking Score: ${teamStats.qual.ranking.sort_orders[0]}`;
+
+    document.getElementById("WL").textContent =
+      `Wins: ${teamStats.qual.ranking.record.wins}` +
+      `  -  Losses: ${teamStats.qual.ranking.record.losses}`;
+    document.getElementById(
+      "points_from_match"
+    ).textContent = `Average Match Score: ${teamStats.qual.ranking.sort_orders[1]}`;
+    document.getElementById(
+      "points_from_charge"
+    ).textContent = `Average Charge Score: ${teamStats.qual.ranking.sort_orders[2]}`;
+    document.getElementById(
+      "points_from_auto"
+    ).textContent = `Average Auto Score: ${teamStats.qual.ranking.sort_orders[3]}`;
+  } catch (error) {
+    // Log any errors that occur during the request
+    console.error("Error:", error.message);
+  }
 }
 
-document.getElementById("upcoming_matches").textContent = "Upcoming Matches";
-var list = document.getElementById("list_upcoming_matches");
-for (var i = 0; i < upcoming_matches.length; i++) {
-  var pi = document.createElement("pi");
-  pi.textContent = upcoming_matches[i];
-  list.appendChild(pi);
-}
+// Call the fetchTeamStats function to initiate the data retrieval process
+fetchTeamStats();
 
-// Interact with HTML elements to display the data from the variables using JS
-document.getElementById("current_rank").innerHTML = current_rank;
-document.getElementById("RS").innerHTML = RS;
-document.getElementById("WL").innerHTML = WL;
-document.getElementById("points_from_match").innerHTML = points_from_match;
-document.getElementById("point_from_autos").innerHTML = point_from_autos;
-document.getElementById("points_from_charge").innerHTML = points_from_charge;
-document.getElementById("RP").innerHTML = RP;

@@ -11,12 +11,9 @@ body {
   display: flex;
   flex-direction: column;
   padding: 20px;
+  width: calc(100vw / 50);
 }
 
-.container {
-  float: left;
-  margin-left: 100px;
-}
 
 .rankbox,
 .pastmatches,
@@ -28,34 +25,72 @@ body {
   text-align: left;
   color: #ffffff;
   border-radius: 10px;
-  display: flex;
   font-family: "Arial Rounded MT Bold", sans-serif;
   border: 2px solid white; /* Adjust thickness as needed */
+  width: calc(82.7vw / 2);
+  height: 44vh;
+}
+
+.container {
+  float: left;
+  margin-left: 100px;
+}
+.container_2 {
+  float: right;
+  margin-right: 100px;
 }
 
 .pastmatches {
-  height: 50vh;
+
   overflow: auto;
 }
 
 .upcomingmatches {
-  height: 30vh;
+
+
   overflow: auto;
 }
 
 .rankbox {
   overflow: auto; /* Add scrollbars when content overflows */
-  height: 50vh;
 }
 
-.twitchstream {
-  height: 25vh;
+.rankbox p {
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+}
+
+#current_rank {
+  font-size: 30px;
+  font-weight: bold;
+  text-align: center;
+}
+
+#RS {
+}
+
+#WL {
+}
+
+#points_from_match {
+}
+
+#points_from_autos {
+}
+
+#points_from_charge {
+}
+
+#RP {
 }
 
 .twitchstream iframe {
-  width: 100%;
-  height: 100%;
   border-radius: 10px;
+  height: 95%;
+  width: 100%;
+  align-self: center;
+
 }
 
 .button {
