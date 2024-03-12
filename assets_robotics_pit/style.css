@@ -11,7 +11,7 @@ body {
   display: flex;
   flex-direction: column;
   padding: 20px;
-  width: calc(100vw / 50); <!-- 12% of the viewport width -->
+  width: calc(100vw / 50);
 }
 
 .rankbox,
@@ -26,18 +26,21 @@ body {
   border-radius: 10px;
   font-family: "Arial Rounded MT Bold", sans-serif;
   border: 2px solid white; /* Adjust thickness as needed */
-  width: calc(88vw / 2);
-  height: 45vh;
+  width: calc(82.7vw / 2);
+  height: 44vh;
 }
 
 .container {
   float: left;
   margin-left: 100px;
 }
+.container_2 {
+  float: right;
+  margin-right: 100px;
+}
 
 .pastmatches {
   overflow: auto;
-
 }
 
 .upcomingmatches {
@@ -77,8 +80,6 @@ body {
 
 #RP {
 }
-
-
 
 .twitchstream iframe {
   border-radius: 10px;

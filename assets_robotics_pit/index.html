@@ -12,10 +12,7 @@
   <body>
     <div class="navigation">
       <!-- Add your navigation links or buttons here -->
-      <button
-        class="button"
-        onclick="location.href='/assets_robotics_pit/index.html';"
-      >
+      <button class="button">
         <img
           src="Calendar.png"
           alt="Calendar Image"
@@ -23,10 +20,7 @@
         />
       </button>
 
-      <button
-        class="button"
-        onclick="location.href='/assets_robotics_pit/index2.html';"
-      >
+      <button class="button">
         <img
           src="Gear.png"
           alt="Calendar Image"
@@ -45,6 +39,13 @@
         <p id="RP"></p>
       </div>
 
+      <div class="pastmatches">
+        <h2 id="past_matches">Past Matches</h2>
+        <ul id="list_past_matches"></ul>
+      </div>
+    </div>
+
+    <div class="container_2">
       <div class="twitchstream">
         <iframe
           src="https://www.youtube.com/embed/sBPAlijR4mw"
@@ -56,15 +57,13 @@
         >
         </iframe>
       </div>
+
+      <div class="upcomingmatches">
+        <h2 id="upcoming_matches">Upcoming Matches</h2>
+        <ul id="list_upcoming_matches"></ul>
+      </div>
     </div>
-    <div class="pastmatches">
-      <h2 id="past_matches">Past Matches</h2>
-      <ul id="list_past_matches"></ul>
-    </div>
-    <div class="upcomingmatches">
-      <h2 id="upcoming_matches">Upcoming Matches</h2>
-      <ul id="list_upcoming_matches"></ul>
-    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="page_one.js"></script>
   </body>
