@@ -126,3 +126,51 @@ fetchTeamStats();
 fetchTeamMatches("2022ilpe", 3061, "2022-03-17", "09:00:00").then(
   printMatchDetails
 );
+
+async function fetchAndDisplayPastMatches() {
+  const apiKey =
+    "zuz2hZHZJjx5u45ZwCHg6OpS9Jo5KlsuWCWCk4dDY4cDIdvHBXnAHipoSOPaELXi"; // Replace with your API key
+  const teamKey = "frc3061";
+  const eventKey = "2023ilch";
+
+  const pastMatchesEndpoint = `https://www.thebluealliance.com/api/v3/team/${teamKey}/event/${eventKey}/matches/simple`;
+
+  try {
+    const response = await axios.get(pastMatchesEndpoint, {
+      headers: {
+        accept: "application/json",
+        "X-TBA-Auth-Key": apiKey,
+      },
+    });
+
+    const listPastMatches = document.getElementById("list_past_matches");
+
+    if (!response.data || response.data.length === 0) {
+      listPastMatches.innerHTML = `<li>No past matches available for Team ${teamKey} at the specified event.</li>`;
+      return;
+    }
+
+    response.data.forEach((match) => {
+      const listItem = document.createElement("li");
+
+      listItem.innerHTML = `
+          <strong>Match Number:</strong> ${match.match_number} <br>
+          <strong>Red Alliance:</strong> ${match.alliances.red.team_keys.join(
+            ", "
+          )} <br>
+          <strong>Blue Alliance:</strong> ${match.alliances.blue.team_keys.join(
+            ", "
+          )} <br>
+          <strong>Red Score:</strong> ${match.alliances.red.score} <br>
+          <strong>Blue Score:</strong> ${match.alliances.blue.score} <br>
+          <strong>Competition Level:</strong> ${match.comp_level} <br>
+          <hr>
+        `;
+
+      listPastMatches.appendChild(listItem);
+    });
+  } catch (error) {
+    console.error("Error:", error.message);
+  }
+}
+fetchAndDisplayPastMatches();
