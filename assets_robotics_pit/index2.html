@@ -2,7 +2,7 @@
 <html>
   <head>
     <title>Robotics Pit Display</title>
-    <link rel="stylesheet" type="text/css" href="style.css" />
+    <link rel="stylesheet" type="text/css" href="NOstyle.css" />
     <link
       rel="icon"
       href="assets_robotics_pit\download.jpg"
@@ -12,25 +12,131 @@
   <body>
     <div class="navigation">
       <!-- Add your navigation links or buttons here -->
-      <button class="button">
+      <a href="index.html">
+        <button class="button">
+          <img
+            src="Calendar.png"
+            alt="Calendar Image"
+            style="width: 50px; height: 50px"
+          />
+        </button>
+      </a>
 
-        <img
-          src="Calendar.png"
-          alt="Calendar Image"
-          style="width: 50px; height: 50px"
-        />
-      </button>
+      <a href="index2.html">
+        <button
+          class="button"
+          onclick="location.href='/assets_robotics_pit/index2.html';"
+        >
+          <img
+            src="Gear.png"
+            alt="Calendar Image"
+            style="width: 50px; height: 50px"
+          />
+        </button>
+      </a>
+    </div>
 
-      <button
-        class="button"
-        onclick="location.href='/assets_robotics_pit/index2.html';"
+    <div class="checklist">
+      <input type="checkbox" id="Bumpers + Covers Off, Pins In" name="Bumpers +
+      Covers Off, Pins In"" />
+      <label for="Bumplers + Covers Off, Pins In"
+        >Bumplers + Covers Off, Pins In</label
       >
-        <img
-          src="Gear.png"
-          alt="Calendar Image"
-          style="width: 50px; height: 50px"
+
+      <div class="Mech">
+        <h2 class="Mechanical">Mechanical</h2>
+
+        <input
+          type="checkbox"
+          id="swerve inspection"
+          name="swerve inspection"
         />
-      </button>
+        <label for="swerve inspection">Swerve Inspection</label>
+
+        <input
+          type="checkbox"
+          id="turret wiggle + inspect"
+          name="turret wiggle + inspect"
+        />
+        <label for="turret wiggle + inspect">Turret Wiggle + Inspect</label>
+
+        <input
+          type="checkbox"
+          id="arm wiggle + inspect"
+          name="arm wiggle + inspect"
+        />
+        <label for="arm wiggle + inspect">Arm Wiggle + Inspect</label>
+
+        <input
+          type="checkbox"
+          id="leadscrew inspect"
+          name="leadscrew inspect"
+        />
+        <label for="leadscrew inspect">Leadscrew Inspect</label>
+
+        <input type="checkbox" id="walk the arm" name="walk the arm" />
+        <label for="walk the arm">Walk the Arm</label>
+
+        <input type="checkbox" id="death screw" name="death screw" />
+        <label for="death screw">Death Screw</label>
+
+        <input type="checkbox" id="drag chain" name="drag chain" />
+        <label for="drag chain">Drag Chain</label>
+
+        <input type="checkbox" id="intake wiggle" name="intake wiggle" />
+        <label for="intake wiggle">Intake Wiggle</label>
+      </div>
+      <div class="Electrical">
+        <h2 class="Electrical">Electrical</h2>
+        <input type="checkbox" id="limelight check" name="limelight check" />
+        <label for="limelight check">Limelight Check</label>
+
+        <input type="checkbox" id="status lights" name="status lights" />
+        <label for="status lights">Status Lights</label>
+
+        <input
+          type="checkbox"
+          id="battery connection"
+          name="battery connection"
+        />
+        <label for="battery connection">Battery Connection</label>
+
+        <input
+          type="checkbox"
+          id="turret encoder + underside connections"
+          name="turret encoder + underside connections"
+        />
+        <label for="turret encoder + underside connections"
+          >Turret Encoder + Underside Connections</label
+        >
+
+        <input type="checkbox" id="arm encoder" name="arm encoder" />
+        <label for="arm encoder">Arm Encoder</label>
+
+        <input
+          type="checkbox"
+          id="roborio + ethernet connections"
+          name="roborio + ethernet connections"
+        />
+        <label for="roborio + ethernet connections"
+          >RoboRIO + Ethernet Connections</label
+        >
+      </div>
+      <div class="After Checks">
+        <h2 class="After Checks">After Checks</h2>
+        <input
+          type="checkbox"
+          id="bumpers + covers on"
+          name="bumpers + covers on"
+        />
+        <label for="bumpers + covers on">Bumpers + Covers On</label>
+
+        <input type="checkbox" id="robot on" name="robot on" />
+        <label for="robot on">Robot On</label>
+
+        <input type="checkbox" id="systems check" name="systems check" />
+        <label for="systems check">Systems Check</label>
+      </div>
     </div>
 
     <script src="page_one.js"></script>
