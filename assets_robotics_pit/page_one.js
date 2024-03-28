@@ -1,9 +1,9 @@
 // Your JavaScript code goes here
-const eventKey = "2023arc";
+const eventKey = "2024ilch";
 const baseUrl = "https://www.thebluealliance.com/api/v3";
 const apiKey =
   "zuz2hZHZJjx5u45ZwCHg6OpS9Jo5KlsuWCWCk4dDY4cDIdvHBXnAHipoSOPaELXi";
-const teamNumber = 254;
+const teamNumber = 3061;
 
 class Match {
   constructor(matchKey, matchTime, matchType, matchNumber) {
@@ -123,7 +123,7 @@ function printMatchDetails(matchList) {
 }
 
 fetchTeamStats();
-fetchTeamMatches("2022ilpe", 3061, "2022-03-17", "09:00:00").then(
+fetchTeamMatches("2024ilch", 3061, "2024-03-28", "08:00:00").then(
   printMatchDetails
 );
 
@@ -131,7 +131,7 @@ async function fetchAndDisplayPastMatches() {
   const apiKey =
     "zuz2hZHZJjx5u45ZwCHg6OpS9Jo5KlsuWCWCk4dDY4cDIdvHBXnAHipoSOPaELXi"; // Replace with your API key
   const teamKey = "frc3061";
-  const eventKey = "2023ilch";
+  const eventKey = "2024ilch";
 
   const pastMatchesEndpoint = `https://www.thebluealliance.com/api/v3/team/${teamKey}/event/${eventKey}/matches/simple`;
 
