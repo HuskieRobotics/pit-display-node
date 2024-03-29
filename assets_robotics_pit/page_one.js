@@ -166,7 +166,11 @@ async function fetchAndDisplayPastMatches() {
       return;
     }
 
-    response.data.forEach((match) => {
+    const matches = response.data
+      .filter((match) => match.actual_time !== null)
+      .sort((a, b) => b.actual_time - a.actual_time);
+
+    matches.forEach((match) => {
       // Check if the team participated in the match
       const participated =
         match.alliances.red.team_keys.includes(`frc${teamNumber}`) ||
