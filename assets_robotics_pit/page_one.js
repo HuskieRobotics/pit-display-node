@@ -1,4 +1,3 @@
-// Your JavaScript code goes here
 const eventKey = "2024ilch";
 const baseUrl = "https://www.thebluealliance.com/api/v3";
 const apiKey =
@@ -30,42 +29,48 @@ class Match {
   }
 }
 
-async function fetchTeamMatches(eventKey, teamNumber, targetDate, targetTime) {
+async function fetchAllUpcomingMatches() {
   const matchList = [];
-  const teamMatchesEndpoint = `${baseUrl}/team/frc${teamNumber}/event/${eventKey}/matches`;
+  const allMatchesEndpoint = `${baseUrl}/event/${eventKey}/matches/simple`;
 
   try {
-    const response = await axios.get(teamMatchesEndpoint, {
+    const response = await axios.get(allMatchesEndpoint, {
       headers: {
         accept: "application/json",
         "X-TBA-Auth-Key": apiKey,
       },
     });
 
-    if (response.data === null) {
-      throw new Error("No data available for the team at the specified event.");
+    if (!response.data || response.data.length === 0) {
+      throw new Error("No upcoming matches available for the specified event.");
     }
 
     const matches = response.data;
-    const targetDateTimeObj = new Date(`${targetDate}T${targetTime}`);
 
-    matches.forEach((match) => {
-      const matchDate = new Date(match.time * 1000);
-      if (matchDate >= targetDateTimeObj) {
-        const matchObj = new Match(
-          match.key,
-          matchDate,
-          match.comp_level,
-          match.match_number
-        );
-        matchList.push(matchObj);
-      }
+    // Filter and sort matches by time
+    const now = Date.now();
+    const upcomingMatches = matches
+      .filter((match) => new Date(match.time * 1000) >= now)
+      .sort((a, b) => a.time - b.time);
+
+    // Select only the next four matches
+    const nextFourMatches = upcomingMatches.slice(0, 4);
+
+    // Convert matches to Match objects
+    nextFourMatches.forEach((match) => {
+      const matchObj = new Match(
+        match.key,
+        new Date(match.time * 1000),
+        match.comp_level,
+        match.match_number
+      );
+      matchList.push(matchObj);
     });
   } catch (error) {
     console.error("Error:", error.message);
   }
 
-  return matchList.sort((a, b) => a.getMatchTime() - b.getMatchTime());
+  return matchList;
 }
 
 async function fetchTeamStats() {
@@ -96,12 +101,27 @@ async function fetchTeamStats() {
     document.getElementById(
       "points_from_match"
     ).textContent = `Average Match Score: ${teamStats.qual.ranking.sort_orders[1]}`;
+
+    // Calculate average coopertition score
+    const coopertitionScores = teamStats.qual.ranking.sort_orders.slice(4); // Exclude RS, WL, Match, and Auto scores
+    const averageCoopertitionScore =
+      coopertitionScores.reduce((acc, score) => acc + score, 0) /
+      coopertitionScores.length;
     document.getElementById(
-      "points_from_charge"
-    ).textContent = `Average Charge Score: ${teamStats.qual.ranking.sort_orders[2]}`;
+      "points_from_coopertition"
+    ).textContent = `Average Coopertition Score: ${averageCoopertitionScore}`;
+
+    // Calculate average auto score
+    const averageAutoScore = teamStats.qual.ranking.sort_orders[3];
     document.getElementById(
       "points_from_auto"
-    ).textContent = `Average Auto Score: ${teamStats.qual.ranking.sort_orders[3]}`;
+    ).textContent = `Average Auto Score: ${averageAutoScore}`;
+
+    // Calculate average stage score
+    const averageStageScore = teamStats.qual.ranking.sort_orders[2];
+    document.getElementById(
+      "points_from_stage"
+    ).textContent = `Average Stage Score: ${averageStageScore}`;
   } catch (error) {
     console.error("Error:", error.message);
   }
@@ -112,28 +132,23 @@ function printMatchDetails(matchList) {
   matchList.forEach((match) => {
     const matchDetails = document.createElement("div");
     matchDetails.innerHTML = `
-          <h3>Match Key: ${match.getMatchKey()}</h3>
-          <p>Scheduled Time: ${match.getMatchTime()}</p>
-          <p>Match Type: ${match.getMatchType()}</p>
-          <p>Match Number: ${match.getMatchNumber()}</p>
-          <hr>
-        `;
+     <h3>Match Key: ${match.getMatchKey()}</h3>
+     <p>Scheduled Time: ${match.getMatchTime()}</p>
+     <p>Match Type: ${match.getMatchType()}</p>
+     <p>Match Number: ${match.getMatchNumber()}</p>
+     <hr>
+   `;
     upcomingMatchesDiv.appendChild(matchDetails);
   });
 }
 
-fetchTeamStats();
-fetchTeamMatches("2024ilch", 3061, "2024-03-28", "08:00:00").then(
-  printMatchDetails
-);
+async function fetchAndDisplayUpcomingMatches() {
+  const matchList = await fetchAllUpcomingMatches();
+  printMatchDetails(matchList);
+}
 
 async function fetchAndDisplayPastMatches() {
-  const apiKey =
-    "zuz2hZHZJjx5u45ZwCHg6OpS9Jo5KlsuWCWCk4dDY4cDIdvHBXnAHipoSOPaELXi"; // Replace with your API key
-  const teamKey = "frc3061";
-  const eventKey = "2024ilch";
-
-  const pastMatchesEndpoint = `https://www.thebluealliance.com/api/v3/team/${teamKey}/event/${eventKey}/matches/simple`;
+  const pastMatchesEndpoint = `${baseUrl}/team/frc${teamNumber}/event/${eventKey}/matches/simple`;
 
   try {
     const response = await axios.get(pastMatchesEndpoint, {
@@ -143,34 +158,77 @@ async function fetchAndDisplayPastMatches() {
       },
     });
 
-    const listPastMatches = document.getElementById("list_past_matches");
+    const pastMatchesDiv = document.querySelector(".pastmatches");
+    pastMatchesDiv.innerHTML = ""; // Clear previous content
 
     if (!response.data || response.data.length === 0) {
-      listPastMatches.innerHTML = `<li>No past matches available for Team ${teamKey} at the specified event.</li>`;
+      pastMatchesDiv.innerHTML = `<p>No past matches available for Team ${teamNumber} at the specified event.</p>`;
       return;
     }
 
     response.data.forEach((match) => {
-      const listItem = document.createElement("li");
-
-      listItem.innerHTML = `
-          <strong>Match Number:</strong> ${match.match_number} <br>
-          <strong>Red Alliance:</strong> ${match.alliances.red.team_keys.join(
-            ", "
-          )} <br>
-          <strong>Blue Alliance:</strong> ${match.alliances.blue.team_keys.join(
-            ", "
-          )} <br>
-          <strong>Red Score:</strong> ${match.alliances.red.score} <br>
-          <strong>Blue Score:</strong> ${match.alliances.blue.score} <br>
-          <strong>Competition Level:</strong> ${match.comp_level} <br>
-          <hr>
-        `;
-
-      listPastMatches.appendChild(listItem);
+      // Check if the team participated in the match
+      const participated =
+        match.alliances.red.team_keys.includes(`frc${teamNumber}`) ||
+        match.alliances.blue.team_keys.includes(`frc${teamNumber}`);
+      if (participated) {
+        // Determine if it's a win or loss for team 3061
+        const teamColor = getMatchColor(match);
+        const matchDetails = document.createElement("div");
+        matchDetails.innerHTML = `
+         <h3 style="color: ${teamColor}">Match Number: ${
+          match.match_number
+        }</h3>
+         <p style="color: ${teamColor}">Red Alliance: ${underlineTeam(
+          match.alliances.red.team_keys
+        )}</p>
+         <p style="color: ${teamColor}">Blue Alliance: ${underlineTeam(
+          match.alliances.blue.team_keys
+        )}</p>
+         <p style="color: ${teamColor}">Red Score: ${
+          match.alliances.red.score
+        }</p>
+         <p style="color: ${teamColor}">Blue Score: ${
+          match.alliances.blue.score
+        }</p>
+         <p style="color: ${teamColor}">Competition Level: ${
+          match.comp_level
+        }</p>
+         <hr>
+       `;
+        pastMatchesDiv.appendChild(matchDetails);
+      }
     });
   } catch (error) {
     console.error("Error:", error.message);
   }
 }
+
+function underlineTeam(teamKeys) {
+  return teamKeys
+    .map((teamKey) => {
+      return teamKey.includes(`${teamNumber}`)
+        ? `<u>${teamKey.substring(3)}</u>`
+        : teamKey.substring(3);
+    })
+    .join(", ");
+}
+
+function getMatchColor(match) {
+  const isRedAlliance = match.alliances.red.team_keys.includes(
+    `frc${teamNumber}`
+  );
+  const isWin =
+    (isRedAlliance && match.winning_alliance === "red") ||
+    (!isRedAlliance && match.winning_alliance === "blue");
+  return isWin ? "green" : "red";
+}
+
+fetchAndDisplayUpcomingMatches();
 fetchAndDisplayPastMatches();
+fetchTeamStats();
+
+// Reload the page every five minutes
+setInterval(() => {
+  location.reload();
+}, 5 * 60 * 1000); // 5 minutes in milliseconds

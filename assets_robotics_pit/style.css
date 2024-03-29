@@ -120,3 +120,8 @@ body {
 .Mech label {
   display: inline-block;
 }
+
+/* Underline 3061 in past matches */
+.pastmatches u {
+  text-decoration: underline;
+}
