@@ -89,6 +89,7 @@ async function fetchTeamStats() {
     }
 
     const teamStats = response.data;
+
     document.getElementById(
       "current_rank"
     ).textContent = `Team Rank: ${teamStats.qual.ranking.rank}`;
@@ -100,16 +101,13 @@ async function fetchTeamStats() {
     ).textContent = `Wins: ${teamStats.qual.ranking.record.wins} - Losses: ${teamStats.qual.ranking.record.losses}`;
     document.getElementById(
       "points_from_match"
-    ).textContent = `Average Match Score: ${teamStats.qual.ranking.sort_orders[1]}`;
+    ).textContent = `Average Match Score: ${teamStats.qual.ranking.sort_orders[2]}`;
 
     // Calculate average coopertition score
-    const coopertitionScores = teamStats.qual.ranking.sort_orders.slice(4); // Exclude RS, WL, Match, and Auto scores
-    const averageCoopertitionScore =
-      coopertitionScores.reduce((acc, score) => acc + score, 0) /
-      coopertitionScores.length;
+    const coopertitionScore = teamStats.qual.ranking.sort_orders[1];
     document.getElementById(
       "points_from_coopertition"
-    ).textContent = `Average Coopertition Score: ${averageCoopertitionScore}`;
+    ).textContent = `Average Coopertition Score: ${coopertitionScore}`;
 
     // Calculate average auto score
     const averageAutoScore = teamStats.qual.ranking.sort_orders[3];
@@ -118,7 +116,7 @@ async function fetchTeamStats() {
     ).textContent = `Average Auto Score: ${averageAutoScore}`;
 
     // Calculate average stage score
-    const averageStageScore = teamStats.qual.ranking.sort_orders[2];
+    const averageStageScore = teamStats.qual.ranking.sort_orders[4];
     document.getElementById(
       "points_from_stage"
     ).textContent = `Average Stage Score: ${averageStageScore}`;
