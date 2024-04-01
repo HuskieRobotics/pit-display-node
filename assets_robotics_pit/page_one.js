@@ -230,7 +230,57 @@ fetchAndDisplayUpcomingMatches();
 fetchAndDisplayPastMatches();
 fetchTeamStats();
 
+<<<<<<< Updated upstream
 // Reload the page every five minutes
 setInterval(() => {
   location.reload();
 }, 5 * 60 * 1000); // 5 minutes in milliseconds
+=======
+async function fetchPastMatches() {
+  try {
+    // Send a GET request to the team statistics endpoint
+    const response = await axios.get(teamStatsEndpoint, {
+      headers: {
+        accept: "application/json",
+        "X-TBA-Auth-Key": apiKey,
+      },
+    });
+
+    // Check if the response data has the expected structure
+    if (!response.data || !response.data.qual || !response.data.qual.ranking) {
+      throw new Error("Invalid data structure in the response.");
+    }
+
+    // Extract the team statistics from the response data
+    const teamStats = response.data;
+
+    // Display the current rank
+    document.getElementById(
+      "current_rank"
+    ).textContent = `Team Rank: ${teamStats.qual.ranking.rank}`;
+
+    document.getElementById(
+      "RS"
+    ).textContent = `Ranking Score: ${teamStats.qual.ranking.sort_orders[0]}`;
+
+    document.getElementById("WL").textContent =
+      `Wins: ${teamStats.qual.ranking.record.wins}` +
+      `  -  Losses: ${teamStats.qual.ranking.record.losses}`;
+    document.getElementById(
+      "points_from_match"
+    ).textContent = `Average Match Score: ${teamStats.qual.ranking.sort_orders[1]}`;
+    document.getElementById(
+      "points_from_charge"
+    ).textContent = `Average Charge Score: ${teamStats.qual.ranking.sort_orders[2]}`;
+    document.getElementById(
+      "points_from_auto"
+    ).textContent = `Average Auto Score: ${teamStats.qual.ranking.sort_orders[3]}`;
+  } catch (error) {
+    // Log any errors that occur during the request
+    console.error("Error:", error.message);
+  }
+}
+
+// Call the fetchTeamStats function to initiate the data retrieval process
+fetchTeamStats();
+>>>>>>> Stashed changes
