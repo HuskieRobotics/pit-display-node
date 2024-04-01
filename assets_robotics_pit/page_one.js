@@ -230,12 +230,10 @@ fetchAndDisplayUpcomingMatches();
 fetchAndDisplayPastMatches();
 fetchTeamStats();
 
-<<<<<<< Updated upstream
 // Reload the page every five minutes
 setInterval(() => {
   location.reload();
 }, 5 * 60 * 1000); // 5 minutes in milliseconds
-=======
 async function fetchPastMatches() {
   try {
     // Send a GET request to the team statistics endpoint
@@ -283,4 +281,3 @@ async function fetchPastMatches() {
 
 // Call the fetchTeamStats function to initiate the data retrieval process
 fetchTeamStats();
->>>>>>> Stashed changes
