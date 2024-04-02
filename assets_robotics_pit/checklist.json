@@ -1,0 +1,24 @@
+{
+  "Checklist": {
+    "General": ["Bumplers + Covers Off, Pins In"],
+    "Mechanical": [
+      "Swerve Inspection",
+      "Turret Wiggle + Inspect",
+      "Arm Wiggle + Inspect",
+      "Leadscrew Inspect",
+      "Walk the Arm",
+      "Death Screw",
+      "Drag Chain",
+      "Intake Wiggle"
+    ],
+    "Electrical": [
+      "Limelight Check",
+      "Status Lights",
+      "Battery Connection",
+      "Turret Encoder + Underside Connections",
+      "Arm Encoder",
+      "RoboRIO + Ethernet Connections"
+    ],
+    "After Checks": ["Bumpers + Covers On", "Robot On", "Systems Check"]
+  }
+}
