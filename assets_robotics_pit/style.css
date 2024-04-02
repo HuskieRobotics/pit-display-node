@@ -115,7 +115,7 @@ body {
   font-family: "Arial Rounded MT Bold", sans-serif;
   border: 2px solid white; /* Adjust thickness as needed */
   width: calc(35vw / 2);
-  height: 90vh;
+  height: 85vh;
   float: left;
   margin-left: 100px;
 }
@@ -127,4 +127,90 @@ body {
 /* Underline 3061 in past matches */
 .pastmatches u {
   text-decoration: underline;
+}
+.test {
+  background-color: #24252a;
+  padding: 20px;
+  margin: 10px;
+  text-align: left;
+  color: #ffffff;
+  border-radius: 10px;
+  font-family: "Arial Rounded MT Bold", sans-serif;
+  border: 2px solid white; /* Adjust thickness as needed */
+  width: calc(35vw / 2);
+  height: 85vh;
+  float: left;
+}
+
+.data {
+  padding: 0px;
+  margin: 10px;
+  text-align: left;
+  color: #ffffff;
+  border-radius: 0px;
+  font-family: "Arial Rounded MT Bold", sans-serif;
+  width: calc(80vw / 2);
+  height: 85vh;
+  float: left;
+}
+
+.temp {
+  background-color: #24252a;
+  margin: 10px;
+  text-align: left;
+  color: #ffffff;
+  border-radius: 10px;
+  font-family: "Arial Rounded MT Bold", sans-serif;
+  border: 2px solid white; /* Adjust thickness as needed */
+  width: calc(75vw / 2);
+  height: 20vh;
+  float: left;
+}
+.bar {
+  background-color: #24252a;
+  margin: 10px;
+  text-align: left;
+  color: #ffffff;
+  border-radius: 10px;
+  font-family: "Arial Rounded MT Bold", sans-serif;
+  border: 2px solid white; /* Adjust thickness as needed */
+  width: calc(75vw / 2);
+  height: 20vh;
+  float: left;
+}
+.runtime {
+  background-color: #24252a;
+  margin: 10px;
+  text-align: left;
+  color: #ffffff;
+  border-radius: 10px;
+  font-family: "Arial Rounded MT Bold", sans-serif;
+  border: 2px solid white; /* Adjust thickness as needed */
+  width: calc(35vw / 2);
+  height: 20vh;
+  float: left;
+}
+.voltage {
+  background-color: #24252a;
+  margin: 10px;
+  text-align: left;
+  color: #ffffff;
+  border-radius: 10px;
+  font-family: "Arial Rounded MT Bold", sans-serif;
+  border: 2px solid white; /* Adjust thickness as needed */
+  width: calc(35vw / 2);
+  height: 20vh;
+  float: left;
+}
+.can {
+  background-color: #24252a;
+  margin: 10px;
+  text-align: left;
+  color: #ffffff;
+  border-radius: 10px;
+  font-family: "Arial Rounded MT Bold", sans-serif;
+  border: 2px solid white; /* Adjust thickness as needed */
+  width: calc(75vw / 2);
+  height: 20vh;
+  float: left;
 }
