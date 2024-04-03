@@ -135,7 +135,7 @@ body {
   font-family: "Arial Rounded MT Bold", sans-serif;
   border: 2px solid white; /* Adjust thickness as needed */
   width: calc(35vw / 2);
-  height: 90vh;
+  height: 85vh;
   float: left;
   margin-left: 100px;
 }
