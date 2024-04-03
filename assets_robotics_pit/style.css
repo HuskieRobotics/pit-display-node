@@ -45,26 +45,6 @@ body {
 
 .pastmatches {
   overflow: auto;
-  scrollbar-width: thin; /* Set the width of the scrollbar */
-  scrollbar-color: rgba(255, 255, 255, 0.3) rgba(0, 0, 0, 0.1); /* Set the color of the scrollbar */
-}
-
-/* Webkit browsers */
-.pastmatches::-webkit-scrollbar {
-  width: 8px; /* Width of the scrollbar */
-}
-
-.pastmatches::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 0, 0, 0.3); /* Color of the scrollbar thumb */
-  border-radius: 4px; /* Border radius of the scrollbar thumb */
-}
-
-.pastmatches::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(0, 0, 0, 0.5); /* Hover color of the scrollbar thumb */
-}
-
-.pastmatches::-webkit-scrollbar-track {
-  background-color: rgba(0, 0, 0, 0.1); /* Color of the scrollbar track */
 }
 
 .upcomingmatches {
@@ -140,7 +120,15 @@ body {
   margin-left: 100px;
 }
 
-.robottest {
+.Mech label {
+  display: inline-block;
+}
+
+/* Underline 3061 in past matches */
+.pastmatches u {
+  text-decoration: underline;
+}
+.test {
   background-color: #24252a;
   padding: 20px;
   margin: 10px;
@@ -150,64 +138,79 @@ body {
   font-family: "Arial Rounded MT Bold", sans-serif;
   border: 2px solid white; /* Adjust thickness as needed */
   width: calc(35vw / 2);
-  height: 90vh;
-  float: right;
-  margin-right: 100px;
+  height: 85vh;
+  float: left;
 }
 
-.Mech label {
-  display: inline-block;
-}
-
-/* Underline 3061 in past matches */
-.pastmatches u {
-  text-decoration: underline;
-}
-
-.middlecontainer {
-  background-color: #062ffc;
-  padding: 20px;
+.data {
+  padding: 0px;
+  margin: 10px;
+  text-align: left;
   color: #ffffff;
+  border-radius: 0px;
   font-family: "Arial Rounded MT Bold", sans-serif;
   width: calc(80vw / 2);
-  height: 90vh;
-  float: right;
-  margin-right: 100px;
+  height: 85vh;
+  float: left;
 }
 
 .temp {
   background-color: #24252a;
-  padding: 20px;
-  height: 20vh;
-  border: 2px solid white;
+  margin: 10px;
+  text-align: left;
+  color: #ffffff;
   border-radius: 10px;
+  font-family: "Arial Rounded MT Bold", sans-serif;
+  border: 2px solid white; /* Adjust thickness as needed */
+  width: calc(75vw / 2);
+  height: 20vh;
+  float: left;
 }
-
-.canutil {
+.bar {
   background-color: #24252a;
-  padding: 20px;
-  height: 20vh;
-  border: 2px solid white;
+  margin: 10px;
+  text-align: left;
+  color: #ffffff;
   border-radius: 10px;
+  font-family: "Arial Rounded MT Bold", sans-serif;
+  border: 2px solid white; /* Adjust thickness as needed */
+  width: calc(75vw / 2);
+  height: 20vh;
+  float: left;
 }
-.coderuntime {
+.runtime {
   background-color: #24252a;
-  padding: 20px;
-  height: 20vh;
-  border: 2px solid white;
+  margin: 10px;
+  text-align: left;
+  color: #ffffff;
   border-radius: 10px;
+  font-family: "Arial Rounded MT Bold", sans-serif;
+  border: 2px solid white; /* Adjust thickness as needed */
+  width: calc(35vw / 2);
+  height: 20vh;
+  float: left;
 }
-.inputvoltage {
+.voltage {
   background-color: #24252a;
-  padding: 20px;
-  height: 20vh;
-  border: 2px solid white;
+  margin: 10px;
+  text-align: left;
+  color: #ffffff;
   border-radius: 10px;
+  font-family: "Arial Rounded MT Bold", sans-serif;
+  border: 2px solid white; /* Adjust thickness as needed */
+  width: calc(35vw / 2);
+  height: 20vh;
+  float: left;
 }
-.barchart {
+.can {
   background-color: #24252a;
-  padding: 20px;
-  height: 20vh;
-  border: 2px solid white;
+  margin: 10px;
+  text-align: left;
+  color: #ffffff;
   border-radius: 10px;
+  font-family: "Arial Rounded MT Bold", sans-serif;
+  border: 2px solid white; /* Adjust thickness as needed */
+  width: calc(75vw / 2);
+  height: 20vh;
+  float: left;
 }
