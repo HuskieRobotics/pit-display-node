@@ -45,6 +45,26 @@ body {
 
 .pastmatches {
   overflow: auto;
+  scrollbar-width: thin; /* Set the width of the scrollbar */
+  scrollbar-color: rgba(255, 255, 255, 0.3) rgba(0, 0, 0, 0.1); /* Set the color of the scrollbar */
+}
+
+/* Webkit browsers */
+.pastmatches::-webkit-scrollbar {
+  width: 8px; /* Width of the scrollbar */
+}
+
+.pastmatches::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.3); /* Color of the scrollbar thumb */
+  border-radius: 4px; /* Border radius of the scrollbar thumb */
+}
+
+.pastmatches::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.5); /* Hover color of the scrollbar thumb */
+}
+
+.pastmatches::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0.1); /* Color of the scrollbar track */
 }
 
 .upcomingmatches {
@@ -120,6 +140,21 @@ body {
   margin-left: 100px;
 }
 
+.robottest {
+  background-color: #24252a;
+  padding: 20px;
+  margin: 10px;
+  text-align: left;
+  color: #ffffff;
+  border-radius: 10px;
+  font-family: "Arial Rounded MT Bold", sans-serif;
+  border: 2px solid white; /* Adjust thickness as needed */
+  width: calc(35vw / 2);
+  height: 90vh;
+  float: right;
+  margin-right: 100px;
+}
+
 .Mech label {
   display: inline-block;
 }
@@ -127,4 +162,52 @@ body {
 /* Underline 3061 in past matches */
 .pastmatches u {
   text-decoration: underline;
+}
+
+.middlecontainer {
+  background-color: #062ffc;
+  padding: 20px;
+  color: #ffffff;
+  font-family: "Arial Rounded MT Bold", sans-serif;
+  width: calc(80vw / 2);
+  height: 90vh;
+  float: right;
+  margin-right: 100px;
+}
+
+.temp {
+  background-color: #24252a;
+  padding: 20px;
+  height: 20vh;
+  border: 2px solid white;
+  border-radius: 10px;
+}
+
+.canutil {
+  background-color: #24252a;
+  padding: 20px;
+  height: 20vh;
+  border: 2px solid white;
+  border-radius: 10px;
+}
+.coderuntime {
+  background-color: #24252a;
+  padding: 20px;
+  height: 20vh;
+  border: 2px solid white;
+  border-radius: 10px;
+}
+.inputvoltage {
+  background-color: #24252a;
+  padding: 20px;
+  height: 20vh;
+  border: 2px solid white;
+  border-radius: 10px;
+}
+.barchart {
+  background-color: #24252a;
+  padding: 20px;
+  height: 20vh;
+  border: 2px solid white;
+  border-radius: 10px;
 }
