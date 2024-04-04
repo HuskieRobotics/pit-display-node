@@ -177,25 +177,28 @@ async function fetchAndDisplayPastMatches() {
         // Determine if it's a win or loss for team 3061
         const teamColor = getMatchColor(match);
         const matchDetails = document.createElement("div");
+
+        const redRankingPoints = match.score_breakdown
+          ? match.score_breakdown.red?.rp
+          : "N/A";
+        const blueRankingPoints = match.score_breakdown
+          ? match.score_breakdown.blue?.rp
+          : "N/A";
+
         matchDetails.innerHTML = `
          <h3 style="color: ${teamColor}">Match Number: ${
           match.match_number
         }</h3>
          <p style="color: ${teamColor}">Red Alliance: ${underlineTeam(
           match.alliances.red.team_keys
-        )}</p>
+        )} - ${
+          match.alliances.red.score
+        } - Ranking Points: ${redRankingPoints}</p>
          <p style="color: ${teamColor}">Blue Alliance: ${underlineTeam(
           match.alliances.blue.team_keys
-        )}</p>
-         <p style="color: ${teamColor}">Red Score: ${
-          match.alliances.red.score
-        }</p>
-         <p style="color: ${teamColor}">Blue Score: ${
+        )} - ${
           match.alliances.blue.score
-        }</p>
-         <p style="color: ${teamColor}">Competition Level: ${
-          match.comp_level
-        }</p>
+        } - Ranking Points: ${blueRankingPoints}</p>
          <hr>
        `;
         pastMatchesDiv.appendChild(matchDetails);
@@ -234,50 +237,3 @@ fetchTeamStats();
 setInterval(() => {
   location.reload();
 }, 5 * 60 * 1000); // 5 minutes in milliseconds
-async function fetchPastMatches() {
-  try {
-    // Send a GET request to the team statistics endpoint
-    const response = await axios.get(teamStatsEndpoint, {
-      headers: {
-        accept: "application/json",
-        "X-TBA-Auth-Key": apiKey,
-      },
-    });
-
-    // Check if the response data has the expected structure
-    if (!response.data || !response.data.qual || !response.data.qual.ranking) {
-      throw new Error("Invalid data structure in the response.");
-    }
-
-    // Extract the team statistics from the response data
-    const teamStats = response.data;
-
-    // Display the current rank
-    document.getElementById(
-      "current_rank"
-    ).textContent = `Team Rank: ${teamStats.qual.ranking.rank}`;
-
-    document.getElementById(
-      "RS"
-    ).textContent = `Ranking Score: ${teamStats.qual.ranking.sort_orders[0]}`;
-
-    document.getElementById("WL").textContent =
-      `Wins: ${teamStats.qual.ranking.record.wins}` +
-      `  -  Losses: ${teamStats.qual.ranking.record.losses}`;
-    document.getElementById(
-      "points_from_match"
-    ).textContent = `Average Match Score: ${teamStats.qual.ranking.sort_orders[1]}`;
-    document.getElementById(
-      "points_from_charge"
-    ).textContent = `Average Charge Score: ${teamStats.qual.ranking.sort_orders[2]}`;
-    document.getElementById(
-      "points_from_auto"
-    ).textContent = `Average Auto Score: ${teamStats.qual.ranking.sort_orders[3]}`;
-  } catch (error) {
-    // Log any errors that occur during the request
-    console.error("Error:", error.message);
-  }
-}
-
-// Call the fetchTeamStats function to initiate the data retrieval process
-fetchTeamStats();
