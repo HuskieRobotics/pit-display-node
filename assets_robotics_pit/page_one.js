@@ -177,25 +177,28 @@ async function fetchAndDisplayPastMatches() {
         // Determine if it's a win or loss for team 3061
         const teamColor = getMatchColor(match);
         const matchDetails = document.createElement("div");
+
+        const redRankingPoints = match.score_breakdown
+          ? match.score_breakdown.red?.rp
+          : "N/A";
+        const blueRankingPoints = match.score_breakdown
+          ? match.score_breakdown.blue?.rp
+          : "N/A";
+
         matchDetails.innerHTML = `
          <h3 style="color: ${teamColor}">Match Number: ${
           match.match_number
         }</h3>
          <p style="color: ${teamColor}">Red Alliance: ${underlineTeam(
           match.alliances.red.team_keys
-        )}</p>
+        )} - ${
+          match.alliances.red.score
+        } - Ranking Points: ${redRankingPoints}</p>
          <p style="color: ${teamColor}">Blue Alliance: ${underlineTeam(
           match.alliances.blue.team_keys
-        )}</p>
-         <p style="color: ${teamColor}">Red Score: ${
-          match.alliances.red.score
-        }</p>
-         <p style="color: ${teamColor}">Blue Score: ${
+        )} - ${
           match.alliances.blue.score
-        }</p>
-         <p style="color: ${teamColor}">Competition Level: ${
-          match.comp_level
-        }</p>
+        } - Ranking Points: ${blueRankingPoints}</p>
          <hr>
        `;
         pastMatchesDiv.appendChild(matchDetails);
