@@ -1,4 +1,4 @@
-const eventKey = "2024ilch";
+const eventKey = "2024ksla";
 const baseUrl = "https://www.thebluealliance.com/api/v3";
 const apiKey =
   "zuz2hZHZJjx5u45ZwCHg6OpS9Jo5KlsuWCWCk4dDY4cDIdvHBXnAHipoSOPaELXi";
@@ -185,10 +185,19 @@ async function fetchAndDisplayPastMatches() {
           ? match.score_breakdown.blue?.rp
           : "N/A";
 
-        matchDetails.innerHTML = `
-         <h3 style="color: ${teamColor}">Match Number: ${
-          match.match_number
-        }</h3>
+        if (match.comp_level === "f") {
+          matchDetails.innerHTML = `
+         <h3 style="color: ${teamColor}">Finals Match: ${match.match_number}</h3>`;
+        } else if (match.comp_level === "sf") {
+          matchDetails.innerHTML = `
+         <h3 style="color: ${teamColor}">Semifinals Set: ${
+            match.set_number + " Match: " + match.match_number
+          }</h3>`;
+        } else {
+          matchDetails.innerHTML = `
+         <h3 style="color: ${teamColor}">Match: ${match.match_number}</h3>`;
+        }
+        matchDetails.innerHTML += `
          <p style="color: ${teamColor}">Red Alliance: ${underlineTeam(
           match.alliances.red.team_keys
         )} - ${
