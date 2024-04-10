@@ -23,12 +23,9 @@ body {
   margin: 10px;
   text-align: left;
   color: #ffffff;
-<<<<<<< Updated upstream
-=======
   border-radius: 10px;
   font-family: "Arial Rounded MT Bold", sans-serif;
   border: 2px solid white; /* Adjust thickness as needed */
->>>>>>> Stashed changes
   width: calc(75vw / 2);
   height: 44vh;
   font-family: "Source Code Pro", monospace;
