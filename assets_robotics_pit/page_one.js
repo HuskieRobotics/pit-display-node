@@ -1,4 +1,4 @@
-const eventKey = "2024ksla";
+const eventKey = "2024joh";
 const baseUrl = "https://www.thebluealliance.com/api/v3";
 const apiKey =
   "zuz2hZHZJjx5u45ZwCHg6OpS9Jo5KlsuWCWCk4dDY4cDIdvHBXnAHipoSOPaELXi";
