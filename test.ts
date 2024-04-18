@@ -1,12 +1,12 @@
 import { WPILibWebSocket, NetworkTables } from 'wpilib-ws';
 
 // Define the IP address and port of your robot
-const robotAddress: string = '10.0.0.2';
+const robotAddress: string = '8080';
 const robotPort: number = 3300;
 
 // Create a new instance of WPILibWebSocket
 const wpilibWS = new WPILibWebSocket({
-  teamNumber: 1234, // Replace with your team number
+  teamNumber: 3061, // Replace with your team number
   address: robotAddress,
   port: robotPort,
 });

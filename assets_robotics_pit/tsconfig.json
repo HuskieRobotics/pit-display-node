@@ -1,0 +1,10 @@
+{
+    "compilerOptions": {
+      // Your compiler options...
+    },
+    "include": [
+      "src",
+      "node_modules/wpilib-ws" // Add this line
+    ]
+  }
+  
