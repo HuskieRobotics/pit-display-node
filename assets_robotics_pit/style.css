@@ -115,7 +115,7 @@ body {
   font-family: "Arial Rounded MT Bold", sans-serif;
   border: 2px solid white; /* Adjust thickness as needed */
   width: calc(35vw / 2);
-  height: 90vh;
+  height: 85vh;
   float: left;
   margin-left: 100px;
 }
@@ -127,4 +127,154 @@ body {
 /* Underline 3061 in past matches */
 .pastmatches u {
   text-decoration: underline;
+}
+.test {
+  background-color: #24252a;
+  padding: 20px;
+  margin: 10px;
+  text-align: left;
+  color: #ffffff;
+  border-radius: 10px;
+  font-family: "Arial Rounded MT Bold", sans-serif;
+  border: 2px solid white; /* Adjust thickness as needed */
+  width: calc(35vw / 2);
+  height: 85vh;
+  float: left;
+}
+
+.data {
+  padding: 0px;
+  margin: 10px;
+  text-align: left;
+  color: #ffffff;
+  border-radius: 0px;
+  font-family: "Arial Rounded MT Bold", sans-serif;
+  width: calc(80vw / 2);
+  height: 85vh;
+  float: left;
+}
+
+.temp {
+  background-color: #24252a;
+  margin: 10px;
+  text-align: left;
+  color: #ffffff;
+  border-radius: 10px;
+  font-family: "Arial Rounded MT Bold", sans-serif;
+  border: 2px solid white; /* Adjust thickness as needed */
+  width: calc(75vw / 2);
+  height: 20vh;
+  float: left;
+}
+
+.temp1,
+.temp2,
+.temp3 {
+  margin: 10px;
+  text-align: left;
+  color: #ffffff;
+  font-family: "Arial Rounded MT Bold", sans-serif;
+  width: calc(22vw / 2);
+  height: 20vh;
+  float: left;
+}
+
+.bar {
+  background-color: #24252a;
+  margin: 10px;
+  text-align: left;
+  color: #ffffff;
+  border-radius: 10px;
+  font-family: "Arial Rounded MT Bold", sans-serif;
+  border: 2px solid white; /* Adjust thickness as needed */
+  width: calc(75vw / 2);
+  height: 20vh;
+  float: left;
+}
+.runtime {
+  background-color: #24252a;
+  margin: 10px;
+  text-align: left;
+  color: #ffffff;
+  border-radius: 10px;
+  font-family: "Arial Rounded MT Bold", sans-serif;
+  border: 2px solid white; /* Adjust thickness as needed */
+  width: calc(35vw / 2);
+  height: 20vh;
+  float: left;
+}
+.voltage {
+  background-color: #24252a;
+  margin: 10px;
+  text-align: left;
+  color: #ffffff;
+  border-radius: 10px;
+  font-family: "Arial Rounded MT Bold", sans-serif;
+  border: 2px solid white; /* Adjust thickness as needed */
+  width: calc(35vw / 2);
+  height: 20vh;
+  float: left;
+}
+.can {
+  background-color: #24252a;
+  margin: 10px;
+  text-align: left;
+  color: #ffffff;
+  border-radius: 10px;
+  font-family: "Arial Rounded MT Bold", sans-serif;
+  border: 2px solid white; /* Adjust thickness as needed */
+  width: calc(75vw / 2);
+  height: 20vh;
+  float: left;
+}
+
+.SwerveCheck,
+.ArmCheck,
+.TurretCheck,
+.JawCheck,
+.IntakeCheck,
+.ManhattenCheck {
+  background-color: #24252a;
+  text-align: center;
+  color: #5f5757;
+  border-radius: 10px;
+  font-family: "Arial Rounded MT Bold", sans-serif;
+  border: 2px solid white; /* Adjust thickness as needed */
+  width: calc(30vw / 2);
+  height: 10vh;
+  float: center;
+  padding: 20px;
+}
+
+.SwerveCheckButton,
+.ArmCheckButton,
+.TurretCheckButton,
+.JawCheckButton,
+.IntakeCheckButton,
+.ManhattenCheckButton {
+  background-color: #24252a;
+  text-align: center;
+  color: #ffffff;
+  border-radius: 10px;
+  font-family: "Arial Rounded MT Bold", sans-serif;
+  border: 2px solid white; /* Adjust thickness as needed */
+  width: calc(15vw / 2);
+  height: 2vh;
+  float: center;
+}
+
+.SwerveCheckButton:hover,
+.ArmCheckButton:hover,
+.TurretCheckButton:hover,
+.JawCheckButton:hover,
+.IntakeCheckButton:hover,
+.ManhattenCheckButton:hover {
+  background-color: rgb(198, 104, 16); /* Change the color when hovered over */
+  cursor: pointer; /* Change cursor to select when hovered over */
+}
+
+.checkpar {
+  color: #ffffff;
+  font-family: "Arial Rounded MT Bold", sans-serif;
+  font-size: 12px;
 }
