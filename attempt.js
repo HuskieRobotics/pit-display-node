@@ -1,7 +1,4 @@
-const ntcoreClient = require("ntcore-ts-client");
-const NetworkTables = ntcoreClient.NetworkTables;
-const NetworkTablesTypeInfos = ntcoreClient.NetworkTablesTypeInfos;
-
+const nt4Client = require("ntcore-ts-client");
 const ntcore = nt4Client.NetworkTables.getInstanceByURI("localhost");
 const exampleTopic = ntcore.createTopic(
   "/AdvantageKit/Drivetrain/BL/DriveTempCelsius",

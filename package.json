@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "ntcore-ts-client": "^0.2.2"
+    "ntcore-ts-client": "^0.2.2",
+    "tslib": "^2.6.2"
   }
 }
