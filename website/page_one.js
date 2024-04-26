@@ -145,10 +145,13 @@ async function fetchAndDisplayUpcomingMatches() {
   printMatchDetails(matchList);
 }
 
+// Function to fetch and display past matches for a team at an event
 async function fetchAndDisplayPastMatches() {
+  // Define the endpoint URL for fetching past matches
   const pastMatchesEndpoint = `${baseUrl}/team/frc${teamNumber}/event/${eventKey}/matches/simple`;
 
   try {
+    // Fetch past matches data from the API
     const response = await axios.get(pastMatchesEndpoint, {
       headers: {
         accept: "application/json",
@@ -156,57 +159,131 @@ async function fetchAndDisplayPastMatches() {
       },
     });
 
-    const pastMatchesDiv = document.querySelector(".pastmatches");
-    pastMatchesDiv.innerHTML = ""; // Clear previous content
+    // Get the container for past matches and clear its previous content
+    const pastMatchesContainer = document.querySelector(".pastmatches");
+    pastMatchesContainer.innerHTML = "";
 
+    // Check if there are any matches
     if (!response.data || response.data.length === 0) {
-      pastMatchesDiv.innerHTML = `<p>No past matches available for Team ${teamNumber} at the specified event.</p>`;
+      pastMatchesContainer.innerHTML = `<p>No past matches available for Team ${teamNumber} at the specified event.</p>`;
       return;
     }
 
-    const matches = response.data
-      .filter((match) => match.actual_time !== null)
-      .sort((a, b) => b.actual_time - a.actual_time);
-
-    matches.forEach((match) => {
-      // Check if the team participated in the match
-      const participated =
-        match.alliances.red.team_keys.includes(`frc${teamNumber}`) ||
-        match.alliances.blue.team_keys.includes(`frc${teamNumber}`);
-      if (participated) {
-        // Determine if it's a win or loss for team 3061
-        const teamColor = getMatchColor(match);
-        const matchDetails = document.createElement("div");
-
-        const redRankingPoints = match.score_breakdown
-          ? match.score_breakdown.red?.rp
-          : "N/A";
-        const blueRankingPoints = match.score_breakdown
-          ? match.score_breakdown.blue?.rp
-          : "N/A";
-
-        matchDetails.innerHTML = `
-         <h3 style="color: ${teamColor}">Match Number: ${
-          match.match_number
-        }</h3>
-         <p style="color: ${teamColor}">Red Alliance: ${underlineTeam(
-          match.alliances.red.team_keys
-        )} - ${
-          match.alliances.red.score
-        } - Ranking Points: ${redRankingPoints}</p>
-         <p style="color: ${teamColor}">Blue Alliance: ${underlineTeam(
-          match.alliances.blue.team_keys
-        )} - ${
-          match.alliances.blue.score
-        } - Ranking Points: ${blueRankingPoints}</p>
-         <hr>
-       `;
-        pastMatchesDiv.appendChild(matchDetails);
-      }
-    });
+    // Process and display each past match
+    processAndDisplayMatches(response.data, pastMatchesContainer);
   } catch (error) {
-    console.error("Error:", error.message);
+    console.error("Error fetching past matches:", error.message);
   }
+}
+
+// Function to process and display matches
+function processAndDisplayMatches(matches, container) {
+  // Filter out matches with an actual time and sort them by most recent
+  const validMatches = matches
+    .filter((match) => match.actual_time !== null)
+    .sort((a, b) => b.actual_time - a.actual_time);
+
+  // Process each valid match
+  validMatches.forEach((match) => {
+    // Check if the team participated in the match
+    const isParticipated = teamParticipatedInMatch(match, teamNumber);
+
+    if (isParticipated) {
+      // Create a container for each match and display details
+      const matchContainer = createMatchContainer(match, teamNumber);
+      container.appendChild(matchContainer);
+    }
+  });
+}
+
+// Function to check if a team participated in a match
+function teamParticipatedInMatch(match, teamNumber) {
+  return (
+    match.alliances.red.team_keys.includes(`frc${teamNumber}`) ||
+    match.alliances.blue.team_keys.includes(`frc${teamNumber}`)
+  );
+}
+
+// Function to create a container for a match and display details
+function createMatchContainer(match, teamNumber) {
+  // Determine the color for the match based on win/loss
+  const teamColor = determineMatchColor(match, teamNumber);
+
+  // Create a div element for the match container
+  const matchContainer = document.createElement("div");
+  matchContainer.style.margin = "10px 0";
+  matchContainer.style.padding = "10px";
+  matchContainer.style.border = "none";
+  matchContainer.style.borderRadius = "10px";
+  matchContainer.style.backgroundColor = "#1a1a1a";
+
+  // Access ranking points for red and blue alliances
+  const redRankingPoints = match.score_breakdown?.red?.rp ?? 0;
+  const blueRankingPoints = match.score_breakdown?.blue?.rp ?? 0;
+
+  // Determine the colors for red and blue alliance texts
+  const redAllianceTextColor = getAllianceTextColor("red");
+  const blueAllianceTextColor = getAllianceTextColor("blue");
+
+  // Create inner HTML content for the match details
+  matchContainer.innerHTML = `
+        <h3 style="color: ${teamColor}">Match Number: ${match.match_number}</h3>
+        <p style="color: ${redAllianceTextColor}">Red Alliance: ${formatTeamKeys(
+    match.alliances.red.team_keys
+  )} - ${
+    match.alliances.red.score
+  } points - Ranking Points: <span style="color: ${getRankingPointColor(
+    match,
+    teamColor
+  )}">${redRankingPoints}</span></p>
+        <p style="color: ${blueAllianceTextColor}">Blue Alliance: ${formatTeamKeys(
+    match.alliances.blue.team_keys
+  )} - ${
+    match.alliances.blue.score
+  } points - Ranking Points: <span style="color: ${getRankingPointColor(
+    match,
+    teamColor
+  )}">${blueRankingPoints}</span></p>
+    `;
+
+  return matchContainer;
+}
+
+// Function to determine match color based on win/loss for the team
+function determineMatchColor(match, teamNumber) {
+  const isRedAlliance = match.alliances.red.team_keys.includes(
+    `frc${teamNumber}`
+  );
+  const isWin =
+    (isRedAlliance && match.winning_alliance === "red") ||
+    (!isRedAlliance && match.winning_alliance === "blue");
+
+  return isWin ? "green" : "red";
+}
+
+// Function to format team keys, underlining the specified team
+function formatTeamKeys(teamKeys) {
+  return teamKeys
+    .map((teamKey) => {
+      const teamId = teamKey.substring(3);
+      return teamId === teamNumber.toString() ? `<u>${teamId}</u>` : teamId;
+    })
+    .join(", ");
+}
+
+// Function to get the color of ranking points text based on match result
+function getRankingPointColor(match, teamColor) {
+  return teamColor === "green" ? "green" : "#ffffff"; // Green if won, white otherwise
+}
+
+// Function to determine the text color for red and blue alliances
+function getAllianceTextColor(alliance) {
+  if (alliance === "red") {
+    return "#FF8A8A"; // Light red for red alliance
+  } else if (alliance === "blue") {
+    return "#ADD8E6"; // Light blue for blue alliance
+  }
+  return "#ffffff"; // Default white color if unknown
 }
 
 function underlineTeam(teamKeys) {
