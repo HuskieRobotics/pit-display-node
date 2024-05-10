@@ -24,9 +24,8 @@ The Robotics team needs an easy and reliable way to access important data. By ha
 
 ## Screenshots
 
-![Picture](\\sd203.org\dfs-root$\HS\NNHS\Students\YJi\My Pictures\Screenshots\Screenshot 2024-04-18 102228.png)
-
-![Picture](\\sd203.org\dfs-root$\HS\NNHS\Students\YJi\My Pictures\Screenshots\Screenshot 2024-05-10 095217.png)
+![Picture](readmeimages/img1.png)
+![Picture](readmeimages/img2.png)
 
 ## Platform Requirements
 
