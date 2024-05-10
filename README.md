@@ -24,6 +24,10 @@ The Robotics team needs an easy and reliable way to access important data. By ha
 
 ## Screenshots
 
+![Picture](\\sd203.org\dfs-root$\HS\NNHS\Students\YJi\My Pictures\Screenshots\Screenshot 2024-04-18 102228.png)
+
+![Picture](\\sd203.org\dfs-root$\HS\NNHS\Students\YJi\My Pictures\Screenshots\Screenshot 2024-05-10 095217.png)
+
 ## Platform Requirements
 
 The operating systems that work with our project currently are Windows and Mac. We did not run it on Linux yet, so feel free to try. No external services are needed to use the project. As of current, here are the processing requirements:
@@ -35,9 +39,35 @@ The operating systems that work with our project currently are Windows and Mac. 
 
 ## Data Schema Organization
 
+In the website folder there is a JSON file titled “website.json”. The checklist on the second page displays whatever is in this json file.
+
+To edit this JSON file, follow these steps:
+
+- Open the JSON file using a text editor like vscode
+- Locate the section you want to edit or add a new section if needed.
+- To edit an existing item, find the specific task within the corresponding array and modify the text as needed.
+- To add a new task, locate the array for the section where you want to add the task, and simply add a new string inside the array with the task description.
+- Save the file once you've made your changes.
+
+Your changes will now show up next time you load the website.
+
+This project currently does not use any other data schemas.
+
 ## Technologies/Framework Used
 
+Built with:
+
+- JS: used to connect to the APIs and logic out which information we need placed and where in the html code.
+- HTML: used to format the data and display it on the page.
+- CSS: used to style the data to make our website more visually appealing and easy to read.
+
 ## How to Install and Run the Project:
+
+In the VSCode terminal, run these commands:
+
+- npm install node ← build scalable network applications
+- npm install axios ← used to connect to Blue Alliance
+- ritwickdey.LiveServer ← a VSCode extension that runs the project on web browser
 
 ### Instructions:
 
