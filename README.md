@@ -24,9 +24,8 @@ The Robotics team needs an easy and reliable way to access important data. By ha
 
 ## Screenshots
 
-![Picture](\\sd203.org\dfs-root$\HS\NNHS\Students\YJi\My Pictures\Screenshots\Screenshot 2024-04-18 102228.png)
-
-![Picture](\\sd203.org\dfs-root$\HS\NNHS\Students\YJi\My Pictures\Screenshots\Screenshot 2024-05-10 095217.png)
+![Picture](readmeimages/img1.png)
+![Picture](readmeimages/img2.png)
 
 ## Platform Requirements
 
@@ -60,14 +59,31 @@ Built with:
 - JS: used to connect to the APIs and logic out which information we need placed and where in the html code.
 - HTML: used to format the data and display it on the page.
 - CSS: used to style the data to make our website more visually appealing and easy to read.
+- @msgpack/msgpack: ^3.0.0-beta2
+- axios: ^1.6.7
+- dotenv: ^16.3.1
+- ejs: ^3.1.9
+- express: ^4.18.2
+- express-session: ^1.17.3
+- google-auth-library: ^9.4.1
+- isomorphic-ws: ^5.0.0
+- mongoose: ^7.4.0
+- morgan: ^1.10.0
+- nodemon: ^3.0.2
+- ntcore-ts-client: ^0.2.2
+- tslib: ^2.6.2
+- uuid: ^9.0.1
+- zod: ^3.23.4
 
 ## How to Install and Run the Project:
 
 In the VSCode terminal, run these commands:
 
-- npm install node ← build scalable network applications
-- npm install axios ← used to connect to Blue Alliance
 - ritwickdey.LiveServer ← a VSCode extension that runs the project on web browser
+
+- npm install node axios @msgpack/msgpack@3.0.0-beta2 dotenv@16.3.1 ejs@3.1.9 express@4.18.2 express-session@1.17.3 google-auth-library@9.4.1 isomorphic-ws@5.0.0 mongoose@7.4.0 morgan@1.10.0 nodemon@3.0.2 ntcore-ts-client@0.2.2 tslib@2.6.2 uuid@9.0.1 zod@3.23.4
+
+- open the website folder and right click on index.html and click open with live server
 
 ### Instructions:
 
