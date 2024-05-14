@@ -26,12 +26,22 @@ body {
   border-radius: 10px;
   font-family: "Arial Rounded MT Bold", sans-serif;
   border: 2px solid white; /* Adjust thickness as needed */
-  width: calc(75vw / 2);
+  width: calc(60vw / 2);
   height: 44vh;
   font-family: "Source Code Pro", monospace;
   font-optical-sizing: auto;
   font-weight: 400; /* Replace with the desired font weight */
   font-style: normal;
+}
+
+.twitchstream {
+  width: calc(104vw / 2);
+  height: 64vh;
+}
+
+.upcomingmatches {
+  width: calc(104vw / 2);
+  height: 24vh;
 }
 
 .container {
