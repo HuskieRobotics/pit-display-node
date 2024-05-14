@@ -28,6 +28,14 @@ The Robotics team needs an easy and reliable way to access important data. By ha
 
 ![Picture](\\sd203.org\dfs-root$\HS\NNHS\Students\YJi\My Pictures\Screenshots\Screenshot 2024-05-10 095217.png)
 
+## Next Year Goals (2025)
+
+- Connect to Network Tables and retrieve information on degrees of rotation on robotics part, etc. (based on the pit display overview doc (request from Mr. Schmit)).
+- Make graphs on the second page functional.
+- Make system checks on the second page functional.
+- Make a settings tab or web page to change the match key, team number, and twitch channel.
+- Any other additions requested by the robotics team.
+
 ## Platform Requirements
 
 The operating systems that work with our project currently are Windows and Mac. We did not run it on Linux yet, so feel free to try. No external services are needed to use the project. As of current, here are the processing requirements:
