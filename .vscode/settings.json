@@ -12,6 +12,5 @@
 
   // Language-Specific
   "javascript.updateImportsOnFileMove.enabled": "always",
-  "cSpell.words": ["Coopertition", "gcschmit", "Huskie", "resave"],
-  "liveServer.settings.port": 5501
+  "cSpell.words": ["Coopertition", "gcschmit", "Huskie", "resave"]
 }

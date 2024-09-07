@@ -15,12 +15,12 @@
   </head>
   <body>
     <section>
-    <navigation>
+      <navigation>
         <!-- Add your navigation links or buttons here -->
         <a href="index.html">
           <button class="button">
             <img
-              src="Calendar.png"
+              src="calendar.png"
               alt="Match Info"
               style="width: 50px; height: 50px"
             />
@@ -44,21 +44,50 @@
           <button class="button" onclick = "location.href = 'info.html'">
             
             <img
-              src="info-button.png"
+              src="info.png"
               alt="App Info"
               style="width: 50px; height: 50px"
             />
           </button>
         </a>
       </navigation>
-    <container>
-      <div class="rankbox">
-        <p>2024: ported to Node.js by <a href="seaweedsoftwarewebsite.html">Seaweed Software</a></p>
-        <p>initial code from <a href="https://github.com/3015RangerRobotics">Ranger Robotics</a></p>
-        <p><a href="https://www.flaticon.com/free-icons/report" title="report icons">Report icons created by Freepik - Flaticon</a></p>
-        <p><a href="https://www.flaticon.com/free-icons/info" title="info icons">Info icons created by Freepik - Flaticon</a></p>
+      <stats>
+        <div class="rankbox">
+          <p id="current_rank"></p>
+          <p id="RS"></p>
+          <p id="WL"></p>
+          <p id="points_from_match"></p>
+          <p id="point_from_autos"></p>
+          <p id="points_from_coopertition"></p>
+          <p id="points_from_auto"></p>
+          <p id="points_from_stage"></p>
         </div>
-    </container>
+
+        <div class="upcomingmatches">
+          <h2 id="upcoming_matches">Upcoming Matches</h2>
+          <ul id="list_upcoming_matches"></ul>
+        </div>
+
+        <div class="pastmatches">
+          <h2 id="past_matches">Past Matches</h2>
+          <ul id="list_past_matches"></ul>
+        </div>
+      </stats>
+
+      <stream>
+        <div class="twitchstream">
+          <iframe src="https://www.youtube.com/embed/JBQ_yzD_Gmc?si=6AYvAhFdUt34f1Ya"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen>
+          </iframe>
+        </div>
+      </stream>
     </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <script src="page_one.js"></script>
   </body>
 </html>

@@ -14,7 +14,7 @@ const dotenv = require("dotenv");
 dotenv.config({ path: ".env" });
 
 // load assets
-app.use(express.static("website"));
+app.use(express.static("assets"));
 
 // start the server on port 8080
 app.listen(8080, () => {
