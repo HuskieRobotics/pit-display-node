@@ -1,4 +1,4 @@
-const eventKey = "2024ilch";
+const eventKey = "2024joh"; // 2024ilch
 const baseUrl = "https://www.thebluealliance.com/api/v3";
 const apiKey =
   "zuz2hZHZJjx5u45ZwCHg6OpS9Jo5KlsuWCWCk4dDY4cDIdvHBXnAHipoSOPaELXi";
@@ -92,7 +92,7 @@ async function fetchAndDisplayUpcomingMatches() {
 
 // Fetch and display past matches
 async function fetchAndDisplayPastMatches() {
-  const endpoint = `${baseUrl}/team/frc${teamNumber}/event/${eventKey}/matches/simple`;
+  const endpoint = `${baseUrl}/team/frc${teamNumber}/event/${eventKey}/matches`;
 
   try {
     const response = await axios.get(endpoint, {
@@ -159,23 +159,17 @@ function createMatchContainer(match) {
     matchNumberColor = "#FFC1C1"; // Light red if we lost
   }
 
-  const redRankingPoints = match.score_breakdown
-    ? match.score_breakdown.red?.rp
-    : "N/A";
-  const blueRankingPoints = match.score_breakdown
-    ? match.score_breakdown.blue?.rp
-    : "N/A";
-
+  const isQualifier = match.comp_level === "qm";
   if (match.comp_level === "f") {
-    matchDetails.innerHTML = `
+    matchContainer.innerHTML = `
          <p style="color: ${matchNumberColor}">Finals Match: ${match.match_number}:`;
   } else if (match.comp_level === "sf") {
-    matchDetails.innerHTML = `
+    matchContainer.innerHTML = `
          <p style="color: ${matchNumberColor}">Semifinals Set: ${
       match.set_number + " Match: " + match.match_number
     }:`;
   } else {
-    matchDetails.innerHTML = `
+    matchContainer.innerHTML = `
          <p style="color: ${matchNumberColor}">Match: ${match.match_number}:`;
   }
 
@@ -184,10 +178,16 @@ function createMatchContainer(match) {
   const blueAlliance = formatTeamKeys(alliances.blue.team_keys);
   const redScore = alliances.red.score;
   const blueScore = alliances.blue.score;
+  const redRankingPoints = isQualifier
+    ? `/${match.score_breakdown.red.rp})`
+    : ")";
+  const blueRankingPoints = isQualifier
+    ? `/${match.score_breakdown.blue.rp})`
+    : ")";
 
   matchContainer.innerHTML += `
-        <span style="color: #FF8A8A;">${redAlliance}</span> - ${redScore}p - RP: ${redRankingPoints} | 
-        <span style="color: #ADD8E6;">${blueAlliance}</span> - ${blueScore}p -  RP: ${blueRankingPoints}
+        <span style="color: #FF8A8A;">${redAlliance}</span> (${redScore}${redRankingPoints} | 
+        <span style="color: #ADD8E6;">${blueAlliance}</span> (${blueScore}${blueRankingPoints}
         </p>
     `;
 
