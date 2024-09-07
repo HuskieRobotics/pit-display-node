@@ -46,7 +46,7 @@ async function fetchAllUpcomingMatches() {
     const matches = response.data || [];
     const now = Date.now();
     const upcomingMatches = matches
-      .filter((match) => match.time * 1000 >= now)
+      .filter((match) => new Date(match.time * 1000) >= now)
       .sort((a, b) => a.time - b.time)
       .slice(0, 4);
 
@@ -102,17 +102,23 @@ async function fetchAndDisplayPastMatches() {
       },
     });
 
-    const pastMatches = response.data || [];
     const pastMatchesContainer = document.querySelector(".pastmatches");
     pastMatchesContainer.innerHTML = "";
 
+    if (!response.data || response.data.length === 0) {
+      pastMatchesDiv.innerHTML = `<p>No past matches available for Team ${teamNumber} at the specified event.</p>`;
+      return;
+    }
+
+    const pastMatches = response.data
+      .filter((match) => match.actual_time !== null)
+      .sort((a, b) => b.actual_time - a.actual_time);
+
     pastMatches.forEach((match) => {
-      if (match.actual_time) {
-        const isTeamInMatch = teamParticipatedInMatch(match, teamNumber);
-        if (isTeamInMatch) {
-          const matchContainer = createMatchContainer(match);
-          pastMatchesContainer.appendChild(matchContainer);
-        }
+      const isTeamInMatch = teamParticipatedInMatch(match, teamNumber);
+      if (isTeamInMatch) {
+        const matchContainer = createMatchContainer(match);
+        pastMatchesContainer.appendChild(matchContainer);
       }
     });
   } catch (error) {
@@ -153,16 +159,35 @@ function createMatchContainer(match) {
     matchNumberColor = "#FFC1C1"; // Light red if we lost
   }
 
+  const redRankingPoints = match.score_breakdown
+    ? match.score_breakdown.red?.rp
+    : "N/A";
+  const blueRankingPoints = match.score_breakdown
+    ? match.score_breakdown.blue?.rp
+    : "N/A";
+
+  if (match.comp_level === "f") {
+    matchDetails.innerHTML = `
+         <p style="color: ${matchNumberColor}">Finals Match: ${match.match_number}:`;
+  } else if (match.comp_level === "sf") {
+    matchDetails.innerHTML = `
+         <p style="color: ${matchNumberColor}">Semifinals Set: ${
+      match.set_number + " Match: " + match.match_number
+    }:`;
+  } else {
+    matchDetails.innerHTML = `
+         <p style="color: ${matchNumberColor}">Match: ${match.match_number}:`;
+  }
+
   // Format team keys and display match details
   const redAlliance = formatTeamKeys(alliances.red.team_keys);
   const blueAlliance = formatTeamKeys(alliances.blue.team_keys);
   const redScore = alliances.red.score;
   const blueScore = alliances.blue.score;
 
-  matchContainer.innerHTML = `
-        <p style="color: ${matchNumberColor}">Match ${matchNumber}: 
-        <span style="color: #FF8A8A;">${redAlliance}</span> - ${redScore}p | 
-        <span style="color: #ADD8E6;">${blueAlliance}</span> - ${blueScore}p
+  matchContainer.innerHTML += `
+        <span style="color: #FF8A8A;">${redAlliance}</span> - ${redScore}p - RP: ${redRankingPoints} | 
+        <span style="color: #ADD8E6;">${blueAlliance}</span> - ${blueScore}p -  RP: ${blueRankingPoints}
         </p>
     `;
 
@@ -231,4 +256,3 @@ fetchTeamStats();
 setInterval(() => {
   location.reload();
 }, 5 * 60 * 1000); // 5 minutes in milliseconds
-
