@@ -68,20 +68,25 @@ async function fetchAllUpcomingMatches() {
 
 // Display upcoming matches
 function displayMatchDetails(matchList) {
-  const upcomingMatchesDiv = document.querySelector(".upcomingmatches");
-  upcomingMatchesDiv.innerHTML = "";
+  const upcomingMatchesList = document.querySelector("#list_upcoming_matches");
 
-  matchList.forEach((match) => {
-    const matchDetails = document.createElement("div");
-    matchDetails.innerHTML = `
+  if (!matchList || matchList.length === 0) {
+    upcomingMatchesList.innerHTML = `<p>No upcoming matches for Team ${teamNumber}.</p>`;
+  } else {
+    upcomingMatchesList.innerHTML = "";
+
+    matchList.forEach((match) => {
+      const matchDetails = document.createElement("div");
+      matchDetails.innerHTML = `
             <h3>Match Key: ${match.getMatchKey()}</h3>
             <p>Time: ${match.getMatchTime()}</p>
             <p>Type: ${match.getMatchType()}</p>
             <p>Number: ${match.getMatchNumber()}</p>
             <hr>
         `;
-    upcomingMatchesDiv.appendChild(matchDetails);
-  });
+      upcomingMatchesList.appendChild(matchDetails);
+    });
+  }
 }
 
 // Fetch and display upcoming matches
@@ -102,11 +107,11 @@ async function fetchAndDisplayPastMatches() {
       },
     });
 
-    const pastMatchesContainer = document.querySelector(".pastmatches");
-    pastMatchesContainer.innerHTML = "";
+    const pastMatchesList = document.querySelector("#list_past_matches");
+    pastMatchesList.innerHTML = "";
 
     if (!response.data || response.data.length === 0) {
-      pastMatchesDiv.innerHTML = `<p>No past matches available for Team ${teamNumber} at the specified event.</p>`;
+      pastMatchesList.innerHTML = `<p>No past matches available for Team ${teamNumber} at the specified event.</p>`;
       return;
     }
 
@@ -118,7 +123,7 @@ async function fetchAndDisplayPastMatches() {
       const isTeamInMatch = teamParticipatedInMatch(match, teamNumber);
       if (isTeamInMatch) {
         const matchContainer = createMatchContainer(match);
-        pastMatchesContainer.appendChild(matchContainer);
+        pastMatchesList.appendChild(matchContainer);
       }
     });
   } catch (error) {
@@ -137,9 +142,7 @@ function teamParticipatedInMatch(match, teamNumber) {
 // Create match container and display past matches in a single line
 // Create match container and display past matches in a single line
 function createMatchContainer(match) {
-  const matchContainer = document.createElement("div");
-  matchContainer.style.margin = "10px 0";
-  matchContainer.style.padding = "10px";
+  const matchContainer = document.createElement("li");
   matchContainer.style.border = "none";
   matchContainer.style.backgroundColor = "#1a1a1a";
 
@@ -159,18 +162,19 @@ function createMatchContainer(match) {
     matchNumberColor = "#FFC1C1"; // Light red if we lost
   }
 
+  let matchLabel;
   const isQualifier = match.comp_level === "qm";
   if (match.comp_level === "f") {
-    matchContainer.innerHTML = `
-         <p style="color: ${matchNumberColor}">Finals Match: ${match.match_number}:`;
+    matchLabel = `
+         <p style="color: ${matchNumberColor}">Finals Match: ${matchNumber}:`;
   } else if (match.comp_level === "sf") {
-    matchContainer.innerHTML = `
+    matchLabel = `
          <p style="color: ${matchNumberColor}">Semifinals Set: ${
-      match.set_number + " Match: " + match.match_number
+      match.set_number + " Match: " + matchNumber
     }:`;
   } else {
-    matchContainer.innerHTML = `
-         <p style="color: ${matchNumberColor}">Match: ${match.match_number}:`;
+    matchLabel = `
+         <p style="color: ${matchNumberColor}">Match: ${matchNumber}:`;
   }
 
   // Format team keys and display match details
@@ -185,7 +189,7 @@ function createMatchContainer(match) {
     ? `/${match.score_breakdown.blue.rp})`
     : ")";
 
-  matchContainer.innerHTML += `
+  matchContainer.innerHTML = `${matchLabel}</br>
         <span style="color: #FF8A8A;">${redAlliance}</span> (${redScore}${redRankingPoints} | 
         <span style="color: #ADD8E6;">${blueAlliance}</span> (${blueScore}${blueRankingPoints}
         </p>
