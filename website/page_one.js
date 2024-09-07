@@ -226,22 +226,22 @@ async function fetchTeamStats() {
     ).textContent = `Rank: ${teamStats.rank}`;
     document.getElementById(
       "RS"
-    ).textContent = `Ranking Score: ${teamStats.sort_orders[0]}`;
+    ).textContent = `Avg. Ranking Score: ${teamStats.sort_orders[0]}`;
     document.getElementById(
       "WL"
     ).textContent = `Wins: ${teamStats.record.wins} - Losses: ${teamStats.record.losses}`;
     document.getElementById(
       "points_from_match"
-    ).textContent = `Match Score: ${teamStats.sort_orders[2]}`;
+    ).textContent = `Avg. Match Score: ${teamStats.sort_orders[2]}`;
     document.getElementById(
       "points_from_coopertition"
-    ).textContent = `Coopertition Score: ${teamStats.sort_orders[1]}`;
+    ).textContent = `Avg. Coopertition Score: ${teamStats.sort_orders[1]}`;
     document.getElementById(
       "points_from_auto"
-    ).textContent = `Auto Score: ${teamStats.sort_orders[3]}`;
+    ).textContent = `Avg. Auto Score: ${teamStats.sort_orders[3]}`;
     document.getElementById(
       "points_from_stage"
-    ).textContent = `Stage Score: ${teamStats.sort_orders[4]}`;
+    ).textContent = `Avg. Stage Score: ${teamStats.sort_orders[4]}`;
   } catch (error) {
     console.error("Error fetching team statistics:", error.message);
   }
