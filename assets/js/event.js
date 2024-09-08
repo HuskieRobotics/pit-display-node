@@ -1,5 +1,6 @@
 const eventKey = "2024joh"; // 2024ilch
 const baseUrl = "https://www.thebluealliance.com/api/v3";
+// FIXME: revoke this key which is exposed in the client side and public GitHub
 const apiKey =
   "zuz2hZHZJjx5u45ZwCHg6OpS9Jo5KlsuWCWCk4dDY4cDIdvHBXnAHipoSOPaELXi";
 const teamNumber = 3061;
@@ -256,6 +257,7 @@ fetchAndDisplayUpcomingMatches();
 fetchAndDisplayPastMatches();
 fetchTeamStats();
 
+// FIXME: replace with periodic fetch request that updates the match info panes; don't reload since that will interrupt the stream
 // Reload the page every five minutes
 setInterval(() => {
   location.reload();
