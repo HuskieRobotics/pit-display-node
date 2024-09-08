@@ -2,45 +2,37 @@
 <html>
   <head>
     <title>Robotics Pit Display</title>
-    <link rel="stylesheet" type="text/css" href="style.css" />
-    <link
-      rel="icon"
-      href="assets_robotics_pit\download.jpg"
-      type="image/x-icon"
-    />
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+    <link rel="icon" href="/img/huskieRoboticsLogo.png" type="image/x-icon" />
   </head>
   <body>
     <section>
       <navigation>
         <!-- Add your navigation links or buttons here -->
-        <a href="index.html">
+        <a href="/">
           <button class="button">
             <img
-              src="calendar.png"
+              src="/img/calendar.png"
               alt="Match Info"
               style="width: 50px; height: 50px"
             />
           </button>
         </a>
 
-        <a href="index2.html">
-          <button
-            class="button"
-            onclick="location.href='/assets_robotics_pit/index2.html';"
-          >
+        <a href="/robot">
+          <button class="button">
             <img
-              src="statistics.png"
+              src="/img/statistics.png"
               alt="Robot Stats"
               style="width: 50px; height: 50px"
             />
           </button>
         </a>
 
-        <a href="info.html"></a>
-          <button class="button" onclick = "location.href = 'info.html'">
-            
+        <a href="/info">
+          <button class="button">
             <img
-              src="info.png"
+              src="/img/info.png"
               alt="App Info"
               style="width: 50px; height: 50px"
             />
@@ -48,83 +40,83 @@
         </a>
       </navigation>
 
-    <div class="checklist"></div>
+      <div class="checklist"></div>
 
-    <div class="data">
-      <div class="temp">
-        <div class="temp1">
-          <p>FL Drive : 0°C</p>
-          <p>FL Rotation : 0°C</p>
-          <p>FR Drive : 0°C</p>
-          <p>FR Rotation : 0°C</p>
-          <p>BL Drive : 0°C</p>
+      <div class="data">
+        <div class="temp">
+          <div class="temp1">
+            <p>FL Drive : 0°C</p>
+            <p>FL Rotation : 0°C</p>
+            <p>FR Drive : 0°C</p>
+            <p>FR Rotation : 0°C</p>
+            <p>BL Drive : 0°C</p>
+          </div>
+
+          <div class="temp2">
+            <p>BL Rotation : 0°C</p>
+            <p>BR Drive : 0°C</p>
+            <p>BR Rotation : 0°C</p>
+            <p>Arm Joint : 0°C</p>
+            <p>Arm Extension : 0°C</p>
+          </div>
+
+          <div class="temp3">
+            <p>Turret : 0°C</p>
+            <p>Jaw : 0°C</p>
+            <p>Intake : 0°C</p>
+          </div>
+        </div>
+        <div class="bar"></div>
+        <div class="runtime"></div>
+        <div class="voltage"></div>
+        <div class="can"></div>
+      </div>
+
+      <div class="test">
+        <div class="SwerveCheck">
+          <button class="SwerveCheckButton">Swerve Check</button>
+          <p class="checkpar">check 1 ✅</p>
+          <p class="checkpar">check 2 ✅</p>
+          <p class="checkpar">check 3 ❌</p>
         </div>
 
-        <div class="temp2">
-          <p>BL Rotation : 0°C</p>
-          <p>BR Drive : 0°C</p>
-          <p>BR Rotation : 0°C</p>
-          <p>Arm Joint : 0°C</p>
-          <p>Arm Extension : 0°C</p>
+        <div class="ArmCheck">
+          <button class="ArmCheckButton">Arm Check</button>
+          <p class="checkpar">check 1 ✅</p>
+          <p class="checkpar">check 2 ❌</p>
+          <p class="checkpar">check 3 ✅</p>
         </div>
 
-        <div class="temp3">
-          <p>Turret : 0°C</p>
-          <p>Jaw : 0°C</p>
-          <p>Intake : 0°C</p>
+        <div class="TurretCheck">
+          <button class="TurretCheckButton">Turret Check</button>
+          <p class="checkpar">check 1 ✅</p>
+          <p class="checkpar">check 2 ✅</p>
+          <p class="checkpar">check 3 ✅</p>
+        </div>
+
+        <div class="JawCheck">
+          <button class="JawCheckButton">Jaw Check</button>
+          <p class="checkpar">check 1 ❌</p>
+          <p class="checkpar">check 2 ✅</p>
+          <p class="checkpar">check 3 ❌</p>
+        </div>
+
+        <div class="IntakeCheck">
+          <button class="IntakeCheckButton">Intake Check</button>
+          <p class="checkpar">check 1 ⌛</p>
+          <p class="checkpar">check 2 ⌛</p>
+          <p class="checkpar">check 3 ⌛</p>
+        </div>
+
+        <div class="ManhattenCheck">
+          <button class="ManhattenCheckButton">Manhatten Check</button>
+          <p class="checkpar">check 1 ✅</p>
+          <p class="checkpar">check 2 ✅</p>
+          <p class="checkpar">check 3 ✅</p>
         </div>
       </div>
-      <div class="bar"></div>
-      <div class="runtime"></div>
-      <div class="voltage"></div>
-      <div class="can"></div>
-    </div>
+    </section>
 
-    <div class="test">
-      <div class="SwerveCheck">
-        <button class="SwerveCheckButton">Swerve Check</button>
-        <p class="checkpar">check 1 ✅</p>
-        <p class="checkpar">check 2 ✅</p>
-        <p class="checkpar">check 3 ❌</p>
-      </div>
-
-      <div class="ArmCheck">
-        <button class="ArmCheckButton">Arm Check</button>
-        <p class="checkpar">check 1 ✅</p>
-        <p class="checkpar">check 2 ❌</p>
-        <p class="checkpar">check 3 ✅</p>
-      </div>
-
-      <div class="TurretCheck">
-        <button class="TurretCheckButton">Turret Check</button>
-        <p class="checkpar">check 1 ✅</p>
-        <p class="checkpar">check 2 ✅</p>
-        <p class="checkpar">check 3 ✅</p>
-      </div>
-
-      <div class="JawCheck">
-        <button class="JawCheckButton">Jaw Check</button>
-        <p class="checkpar">check 1 ❌</p>
-        <p class="checkpar">check 2 ✅</p>
-        <p class="checkpar">check 3 ❌</p>
-      </div>
-
-      <div class="IntakeCheck">
-        <button class="IntakeCheckButton">Intake Check</button>
-        <p class="checkpar">check 1 ⌛</p>
-        <p class="checkpar">check 2 ⌛</p>
-        <p class="checkpar">check 3 ⌛</p>
-      </div>
-
-      <div class="ManhattenCheck">
-        <button class="ManhattenCheckButton">Manhatten Check</button>
-        <p class="checkpar">check 1 ✅</p>
-        <p class="checkpar">check 2 ✅</p>
-        <p class="checkpar">check 3 ✅</p>
-      </div>
-    </div>
-  </section>
-
-    <script src="page_two.js"></script>
+    <script src="/js/robot.js"></script>
   </body>
 </html>

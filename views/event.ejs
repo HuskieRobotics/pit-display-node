@@ -2,12 +2,8 @@
 <html>
   <head>
     <title>Robotics Pit Display</title>
-    <link rel="stylesheet" type="text/css" href="style.css" />
-    <link
-      rel="icon"
-      href="assets_robotics_pit\download.jpg"
-      type="image/x-icon"
-    />
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+    <link rel="icon" href="/img/huskieRoboticsLogo.png" type="image/x-icon" />
     <link
       href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap"
       rel="stylesheet"
@@ -17,34 +13,30 @@
     <section>
       <navigation>
         <!-- Add your navigation links or buttons here -->
-        <a href="index.html">
+        <a href="/">
           <button class="button">
             <img
-              src="calendar.png"
+              src="/img/calendar.png"
               alt="Match Info"
               style="width: 50px; height: 50px"
             />
           </button>
         </a>
 
-        <a href="index2.html">
-          <button
-            class="button"
-            onclick="location.href='/assets_robotics_pit/index2.html';"
-          >
+        <a href="/robot">
+          <button class="button">
             <img
-              src="statistics.png"
+              src="/img/statistics.png"
               alt="Robot Stats"
               style="width: 50px; height: 50px"
             />
           </button>
         </a>
 
-        <a href="info.html"></a>
-          <button class="button" onclick = "location.href = 'info.html'">
-            
+        <a href="/info">
+          <button class="button">
             <img
-              src="info.png"
+              src="/img/info.png"
               alt="App Info"
               style="width: 50px; height: 50px"
             />
@@ -76,11 +68,13 @@
 
       <stream>
         <div class="twitchstream">
-          <iframe src="https://www.youtube.com/embed/JBQ_yzD_Gmc?si=6AYvAhFdUt34f1Ya"
+          <iframe
+            src="https://www.youtube.com/embed/JBQ_yzD_Gmc?si=6AYvAhFdUt34f1Ya"
             frameborder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             referrerpolicy="strict-origin-when-cross-origin"
-            allowfullscreen>
+            allowfullscreen
+          >
           </iframe>
         </div>
       </stream>
@@ -88,6 +82,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
-    <script src="page_one.js"></script>
+    <script src="/js/event.js"></script>
   </body>
 </html>

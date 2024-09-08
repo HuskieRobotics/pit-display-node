@@ -7,10 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon server.js"
   },
-  "keywords": [
-    "crud",
-    "mongodb"
-  ],
+  "keywords": [],
   "author": {
     "name": "gcschmit",
     "members": [
@@ -34,16 +31,14 @@
     "dotenv": "^16.3.1",
     "ejs": "^3.1.9",
     "express": "^4.18.2",
-    "express-session": "^1.17.3",
-    "google-auth-library": "^9.4.1",
     "isomorphic-ws": "^5.0.0",
-    "mongoose": "^7.4.0",
     "morgan": "^1.10.0",
     "node": "^20.13.1",
     "nodemon": "^3.0.2",
     "ntcore-ts-client": "^0.2.2",
     "tslib": "^2.6.2",
     "uuid": "^9.0.1",
-    "zod": "^3.23.4"
+    "zod": "^3.23.4",
+    "socket.io": "^4.7.5"
   }
 }
