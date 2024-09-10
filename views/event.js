@@ -22,4 +22,15 @@ function formatUpcomingMatches(matchList) {
   return upcomingMatchesList;
 }
 
-module.exports = { formatUpcomingMatches };
+function formatTeamStats(teamStats) {
+  return `
+          <p id="current_rank">Rank: ${teamStats.rank}</p>
+          <p id="RS">Avg. Ranking Score: ${teamStats.avgRankingScore}</p>
+          <p id="WL">Wins: ${teamStats.wins} - Losses: ${teamStats.losses}</p>
+          <p id="points_from_match">Avg. Match Score: ${teamStats.avgMatchScore}</p>
+          <p id="point_from_autos">Avg. Auto Score: ${teamStats.avgAutoScore}</p>
+          <p id="points_from_coopertition">Avg. Coopertition Score: ${teamStats.avgCoopertitionScore}</p>
+          <p id="points_from_stage">Avg. Stage Score: ${teamStats.avgStageScore}</p>`;
+}
+
+module.exports = { formatUpcomingMatches, formatTeamStats };

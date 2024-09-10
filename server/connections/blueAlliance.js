@@ -1,4 +1,5 @@
 const Match = require("../model/match");
+const TeamStats = require("../model/teamStats");
 const axios = require("axios");
 
 const eventKey = "2024joh"; // 2024ilch
@@ -7,7 +8,40 @@ const baseUrl = "https://www.thebluealliance.com/api/v3";
 const apiKey = process.env.TBA_API_KEY;
 const teamNumber = 3061;
 
-// Fetch all upcoming matches
+// fetch team stats
+async function fetchTeamStats() {
+  const endpoint = `${baseUrl}/team/frc${teamNumber}/event/${eventKey}/status`;
+
+  try {
+    const response = await axios.get(endpoint, {
+      headers: {
+        accept: "application/json",
+        "X-TBA-Auth-Key": apiKey,
+      },
+    });
+
+    if (!response.data || !response.data.qual || !response.data.qual.ranking) {
+      throw new Error("Invalid data structure in the response.");
+    }
+
+    const teamStats = response.data.qual.ranking;
+
+    return new TeamStats(
+      teamStats.rank,
+      teamStats.sort_orders[0],
+      teamStats.record.wins,
+      teamStats.record.losses,
+      teamStats.sort_orders[2],
+      teamStats.sort_orders[1],
+      teamStats.sort_orders[3],
+      teamStats.sort_orders[4]
+    );
+  } catch (error) {
+    console.error("Error fetching team statistics:", error.message);
+  }
+}
+
+// fetch upcoming matches
 async function fetchUpcomingMatches() {
   const endpoint = `${baseUrl}/event/${eventKey}/matches/simple`;
   const matchList = [];
@@ -44,4 +78,4 @@ async function fetchUpcomingMatches() {
   return matchList;
 }
 
-module.exports = { fetchUpcomingMatches: fetchUpcomingMatches };
+module.exports = { fetchUpcomingMatches, fetchTeamStats };

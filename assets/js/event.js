@@ -124,44 +124,13 @@ function formatTeamKeys(teamKeys) {
 
 // Fetch team statistics and update UI
 async function fetchTeamStats() {
-  const endpoint = `${baseUrl}/team/frc${teamNumber}/event/${eventKey}/status`;
+  const teamStats = document.querySelector("div.rankbox");
 
-  try {
-    const response = await axios.get(endpoint, {
-      headers: {
-        accept: "application/json",
-        "X-TBA-Auth-Key": apiKey,
-      },
-    });
-
-    if (!response.data || !response.data.qual || !response.data.qual.ranking) {
-      throw new Error("Invalid data structure in the response.");
-    }
-
-    const teamStats = response.data.qual.ranking;
-    document.getElementById(
-      "current_rank"
-    ).textContent = `Rank: ${teamStats.rank}`;
-    document.getElementById(
-      "RS"
-    ).textContent = `Avg. Ranking Score: ${teamStats.sort_orders[0]}`;
-    document.getElementById(
-      "WL"
-    ).textContent = `Wins: ${teamStats.record.wins} - Losses: ${teamStats.record.losses}`;
-    document.getElementById(
-      "points_from_match"
-    ).textContent = `Avg. Match Score: ${teamStats.sort_orders[2]}`;
-    document.getElementById(
-      "points_from_coopertition"
-    ).textContent = `Avg. Coopertition Score: ${teamStats.sort_orders[1]}`;
-    document.getElementById(
-      "points_from_auto"
-    ).textContent = `Avg. Auto Score: ${teamStats.sort_orders[3]}`;
-    document.getElementById(
-      "points_from_stage"
-    ).textContent = `Avg. Stage Score: ${teamStats.sort_orders[4]}`;
-  } catch (error) {
-    console.error("Error fetching team statistics:", error.message);
+  const response = await fetch("/teamStats");
+  if (response.ok) {
+    teamStats.innerHTML = await response.text();
+  } else {
+    console.log("error fetching team stats");
   }
 }
 
@@ -172,7 +141,7 @@ async function fetchAndDisplayUpcomingMatches() {
   if (response.ok) {
     upcomingMatchesList.innerHTML = await response.text();
   } else {
-    console.log("error creating entry");
+    console.log("error fetching upcoming matches");
   }
 }
 

@@ -1,8 +1,11 @@
 const express = require("express");
 const route = express.Router();
 const { emitNewEntry } = require("../socket/socket");
-const { fetchUpcomingMatches } = require("../connections/blueAlliance");
-const { formatUpcomingMatches } = require("../../views/event");
+const {
+  fetchUpcomingMatches,
+  fetchTeamStats,
+} = require("../connections/blueAlliance");
+const { formatUpcomingMatches, formatTeamStats } = require("../../views/event");
 
 // pass a path (e.g., "/") and callback function to the get method
 //  when the client makes an HTTP GET request to the specified path,
@@ -14,6 +17,10 @@ route.get("/", async (req, res) => {
 
 route.get("/upcomingMatches", async (req, res) => {
   res.send(formatUpcomingMatches(await fetchUpcomingMatches()));
+});
+
+route.get("/teamStats", async (req, res) => {
+  res.send(formatTeamStats(await fetchTeamStats()));
 });
 
 route.get("/robot", async (req, res) => {
