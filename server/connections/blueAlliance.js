@@ -78,4 +78,39 @@ async function fetchUpcomingMatches() {
   return matchList;
 }
 
-module.exports = { fetchUpcomingMatches, fetchTeamStats };
+// fetch past matches
+async function fetchPastMatches() {
+  const endpoint = `${baseUrl}/team/frc${teamNumber}/event/${eventKey}/matches`;
+  let matchList = [];
+
+  try {
+    const response = await axios.get(endpoint, {
+      headers: {
+        accept: "application/json",
+        "X-TBA-Auth-Key": apiKey,
+      },
+    });
+
+    matchList = response.data
+      .filter(
+        (match) =>
+          match.actual_time !== null &&
+          teamParticipatedInMatch(match, teamNumber)
+      )
+      .sort((a, b) => b.actual_time - a.actual_time);
+  } catch (error) {
+    console.error("Error fetching past matches:", error.message);
+  }
+
+  return matchList;
+}
+
+// Check if the team participated in a match
+function teamParticipatedInMatch(match, teamNumber) {
+  return (
+    match.alliances.red.team_keys.includes(`frc${teamNumber}`) ||
+    match.alliances.blue.team_keys.includes(`frc${teamNumber}`)
+  );
+}
+
+module.exports = { fetchTeamStats, fetchUpcomingMatches, fetchPastMatches };

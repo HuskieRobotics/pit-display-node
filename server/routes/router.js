@@ -2,10 +2,15 @@ const express = require("express");
 const route = express.Router();
 const { emitNewEntry } = require("../socket/socket");
 const {
-  fetchUpcomingMatches,
   fetchTeamStats,
+  fetchUpcomingMatches,
+  fetchPastMatches,
 } = require("../connections/blueAlliance");
-const { formatUpcomingMatches, formatTeamStats } = require("../../views/event");
+const {
+  formatTeamStats,
+  formatUpcomingMatches,
+  formatPastMatches,
+} = require("../../views/event");
 
 // pass a path (e.g., "/") and callback function to the get method
 //  when the client makes an HTTP GET request to the specified path,
@@ -15,12 +20,16 @@ route.get("/", async (req, res) => {
   res.render("event");
 });
 
+route.get("/teamStats", async (req, res) => {
+  res.send(formatTeamStats(await fetchTeamStats()));
+});
+
 route.get("/upcomingMatches", async (req, res) => {
   res.send(formatUpcomingMatches(await fetchUpcomingMatches()));
 });
 
-route.get("/teamStats", async (req, res) => {
-  res.send(formatTeamStats(await fetchTeamStats()));
+route.get("/pastMatches", async (req, res) => {
+  res.send(formatPastMatches(await fetchPastMatches()));
 });
 
 route.get("/robot", async (req, res) => {
