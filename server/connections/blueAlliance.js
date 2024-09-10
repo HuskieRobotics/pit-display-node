@@ -1,16 +1,14 @@
 const Match = require("../model/match");
 const TeamStats = require("../model/teamStats");
 const axios = require("axios");
+const config = require("../model/config");
 
-const eventKey = "2024joh"; // 2024ilch
 const baseUrl = "https://www.thebluealliance.com/api/v3";
-// FIXME: revoke this key which is exposed in the client side and public GitHub
 const apiKey = process.env.TBA_API_KEY;
-const teamNumber = 3061;
 
 // fetch team stats
 async function fetchTeamStats() {
-  const endpoint = `${baseUrl}/team/frc${teamNumber}/event/${eventKey}/status`;
+  const endpoint = `${baseUrl}/team/frc${config.teamNumber}/event/${config.eventKey}/status`;
 
   try {
     const response = await axios.get(endpoint, {
@@ -43,7 +41,7 @@ async function fetchTeamStats() {
 
 // fetch upcoming matches
 async function fetchUpcomingMatches() {
-  const endpoint = `${baseUrl}/event/${eventKey}/matches/simple`;
+  const endpoint = `${baseUrl}/event/${config.eventKey}/matches/simple`;
   const matchList = [];
 
   try {
@@ -80,7 +78,7 @@ async function fetchUpcomingMatches() {
 
 // fetch past matches
 async function fetchPastMatches() {
-  const endpoint = `${baseUrl}/team/frc${teamNumber}/event/${eventKey}/matches`;
+  const endpoint = `${baseUrl}/team/frc${config.teamNumber}/event/${config.eventKey}/matches`;
   let matchList = [];
 
   try {
@@ -95,7 +93,7 @@ async function fetchPastMatches() {
       .filter(
         (match) =>
           match.actual_time !== null &&
-          teamParticipatedInMatch(match, teamNumber)
+          teamParticipatedInMatch(match, config.teamNumber)
       )
       .sort((a, b) => b.actual_time - a.actual_time);
   } catch (error) {
