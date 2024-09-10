@@ -1,6 +1,5 @@
 const express = require("express");
 const route = express.Router();
-const { emitNewEntry } = require("../socket/socket");
 const {
   fetchTeamStats,
   fetchUpcomingMatches,

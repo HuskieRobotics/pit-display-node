@@ -13,10 +13,6 @@ const express = require("express");
 const app = express();
 const server = http.createServer(app);
 
-// create a new web socket server object
-const { createSocketServer } = require("./server/socket/socket");
-createSocketServer(server);
-
 // load environment variables from the .env file into process.env
 const dotenv = require("dotenv");
 dotenv.config({ path: ".env" });
