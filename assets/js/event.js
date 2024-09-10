@@ -1,3 +1,5 @@
+// Display upcoming matches
+
 const eventKey = "2024joh"; // 2024ilch
 const baseUrl = "https://www.thebluealliance.com/api/v3";
 // FIXME: revoke this key which is exposed in the client side and public GitHub
@@ -5,96 +7,7 @@ const apiKey =
   "zuz2hZHZJjx5u45ZwCHg6OpS9Jo5KlsuWCWCk4dDY4cDIdvHBXnAHipoSOPaELXi";
 const teamNumber = 3061;
 
-// Match class definition
-class Match {
-  constructor(matchKey, matchTime, matchType, matchNumber) {
-    this.matchKey = matchKey;
-    this.matchTime = matchTime;
-    this.matchType = matchType;
-    this.matchNumber = matchNumber;
-  }
-
-  getMatchKey() {
-    return this.matchKey;
-  }
-
-  getMatchTime() {
-    return this.matchTime;
-  }
-
-  getMatchType() {
-    return this.matchType;
-  }
-
-  getMatchNumber() {
-    return this.matchNumber;
-  }
-}
-
-// Fetch all upcoming matches
-async function fetchAllUpcomingMatches() {
-  const endpoint = `${baseUrl}/event/${eventKey}/matches/simple`;
-  const matchList = [];
-
-  try {
-    const response = await axios.get(endpoint, {
-      headers: {
-        accept: "application/json",
-        "X-TBA-Auth-Key": apiKey,
-      },
-    });
-
-    const matches = response.data || [];
-    const now = Date.now();
-    const upcomingMatches = matches
-      .filter((match) => new Date(match.time * 1000) >= now)
-      .sort((a, b) => a.time - b.time)
-      .slice(0, 4);
-
-    upcomingMatches.forEach((match) => {
-      const matchObj = new Match(
-        match.key,
-        new Date(match.time * 1000),
-        match.comp_level,
-        match.match_number
-      );
-      matchList.push(matchObj);
-    });
-  } catch (error) {
-    console.error("Error fetching upcoming matches:", error.message);
-  }
-
-  return matchList;
-}
-
-// Display upcoming matches
-function displayMatchDetails(matchList) {
-  const upcomingMatchesList = document.querySelector("#list_upcoming_matches");
-
-  if (!matchList || matchList.length === 0) {
-    upcomingMatchesList.innerHTML = `<p>No upcoming matches for Team ${teamNumber}.</p>`;
-  } else {
-    upcomingMatchesList.innerHTML = "";
-
-    matchList.forEach((match) => {
-      const matchDetails = document.createElement("div");
-      matchDetails.innerHTML = `
-            <h3>Match Key: ${match.getMatchKey()}</h3>
-            <p>Time: ${match.getMatchTime()}</p>
-            <p>Type: ${match.getMatchType()}</p>
-            <p>Number: ${match.getMatchNumber()}</p>
-            <hr>
-        `;
-      upcomingMatchesList.appendChild(matchDetails);
-    });
-  }
-}
-
-// Fetch and display upcoming matches
-async function fetchAndDisplayUpcomingMatches() {
-  const matchList = await fetchAllUpcomingMatches();
-  displayMatchDetails(matchList);
-}
+// FIXME: replace with periodic fetch request that updates the match info panes; don't reload since that will interrupt the stream
 
 // Fetch and display past matches
 async function fetchAndDisplayPastMatches() {
@@ -249,6 +162,17 @@ async function fetchTeamStats() {
     ).textContent = `Avg. Stage Score: ${teamStats.sort_orders[4]}`;
   } catch (error) {
     console.error("Error fetching team statistics:", error.message);
+  }
+}
+
+async function fetchAndDisplayUpcomingMatches() {
+  const upcomingMatchesList = document.querySelector("#list_upcoming_matches");
+
+  const response = await fetch("/upcomingMatches");
+  if (response.ok) {
+    upcomingMatchesList.innerHTML = await response.text();
+  } else {
+    console.log("error creating entry");
   }
 }
 
