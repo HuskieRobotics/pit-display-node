@@ -1,3 +1,4 @@
+const Alliance = require("../model/alliance");
 const Match = require("../model/match");
 const TeamStats = require("../model/teamStats");
 const axios = require("axios");
@@ -95,7 +96,28 @@ async function fetchPastMatches() {
           match.actual_time !== null &&
           teamParticipatedInMatch(match, config.teamNumber)
       )
-      .sort((a, b) => b.actual_time - a.actual_time);
+      .sort((a, b) => b.actual_time - a.actual_time)
+      .map((match) => {
+        const redAlliance = new Alliance(
+          match.alliances.red.team_keys,
+          match.alliances.red.score,
+          match.score_breakdown.red.rp
+        );
+        const blueAlliance = new Alliance(
+          match.alliances.blue.team_keys,
+          match.alliances.blue.score,
+          match.score_breakdown.blue.rp
+        );
+        return new Match(
+          match.key,
+          new Date(match.actual_time * 1000),
+          match.comp_level,
+          match.match_number,
+          match.set_number,
+          redAlliance,
+          blueAlliance
+        );
+      });
   } catch (error) {
     console.error("Error fetching past matches:", error.message);
   }

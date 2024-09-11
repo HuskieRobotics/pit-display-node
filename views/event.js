@@ -1,5 +1,4 @@
-// FIXME: move to a config file
-const teamNumber = 3061;
+const config = require("../server/model/config");
 
 function formatTeamStats(teamStats) {
   return `
@@ -17,15 +16,15 @@ function formatUpcomingMatches(matchList) {
   let upcomingMatchesList = "";
 
   if (!matchList || matchList.length === 0) {
-    upcomingMatchesList = `<p>No upcoming matches.</p>`;
+    upcomingMatchesList = `<p>No upcoming matches for Team ${config.teamNumber}.</p>`;
   } else {
     matchList.forEach((match) => {
       upcomingMatchesList += `
             <li>
-            <h3>Match Key: ${match.getMatchKey()}</h3>
-            <p>Time: ${match.getMatchTime()}</p>
-            <p>Type: ${match.getMatchType()}</p>
-            <p>Number: ${match.getMatchNumber()}</p>
+            <h3>Match Key: ${match.matchKey}</h3>
+            <p>Time: ${match.matchTime}</p>
+            <p>Type: ${match.matchType}</p>
+            <p>Number: ${match.matchNumber}</p>
             <hr>
             </li>
         `;
@@ -37,22 +36,21 @@ function formatUpcomingMatches(matchList) {
 
 function formatPastMatches(matchList) {
   if (matchList.length === 0) {
-    return `<p>No past matches available for the team at the specified event.</p>`;
+    return `<p>No past matches available for Team ${config.teamNumber} at the specified event.</p>`;
   }
 
   let pastMatchesList = "";
 
   matchList.forEach((match) => {
-    const matchNumber = match.match_number;
-    const alliances = match.alliances;
-    const teamInRed = alliances.red.team_keys.includes(`frc${teamNumber}`);
-    const teamInBlue = alliances.blue.team_keys.includes(`frc${teamNumber}`);
+    const matchNumber = match.matchNumber;
+    const teamOnRed = match.isTeamOnRed(config.teamNumber);
+    const teamOnBlue = match.isTeamOnBlue(config.teamNumber);
 
     // Determine if we won or lost the match and set the match number color
     let matchNumberColor;
     if (
-      (teamInRed && match.winning_alliance === "red") ||
-      (teamInBlue && match.winning_alliance === "blue")
+      (teamOnRed && match.redAlliance.score > match.blueAlliance.score) ||
+      (teamOnBlue && match.blueAlliance.score > match.redAlliance.score)
     ) {
       matchNumberColor = "#90EE90"; // Light green if we won
     } else {
@@ -60,14 +58,14 @@ function formatPastMatches(matchList) {
     }
 
     let matchLabel;
-    const isQualifier = match.comp_level === "qm";
-    if (match.comp_level === "f") {
+    const isQualifier = match.matchType === "qm";
+    if (match.matchType === "f") {
       matchLabel = `
          <p style="color: ${matchNumberColor}">Finals Match: ${matchNumber}:`;
-    } else if (match.comp_level === "sf") {
+    } else if (match.matchType === "sf") {
       matchLabel = `
          <p style="color: ${matchNumberColor}">Semifinals Set: ${
-        match.set_number + " Match: " + matchNumber
+        match.setNumber + " Match: " + matchNumber
       }:`;
     } else {
       matchLabel = `
@@ -75,15 +73,15 @@ function formatPastMatches(matchList) {
     }
 
     // Format team keys and display match details
-    const redAlliance = formatTeamKeys(alliances.red.team_keys);
-    const blueAlliance = formatTeamKeys(alliances.blue.team_keys);
-    const redScore = alliances.red.score;
-    const blueScore = alliances.blue.score;
+    const redAlliance = formatTeamKeys(match.redAlliance.teams);
+    const blueAlliance = formatTeamKeys(match.blueAlliance.teams);
+    const redScore = match.redAlliance.score;
+    const blueScore = match.blueAlliance.score;
     const redRankingPoints = isQualifier
-      ? `/${match.score_breakdown.red.rp})`
+      ? `/${match.redAlliance.rankingPoints})`
       : ")";
     const blueRankingPoints = isQualifier
-      ? `/${match.score_breakdown.blue.rp})`
+      ? `/${match.blueAlliance.rankingPoints})`
       : ")";
 
     pastMatchesList += `<li class="match">${matchLabel}</br>
@@ -100,7 +98,9 @@ function formatTeamKeys(teamKeys) {
   return teamKeys
     .map((teamKey) => {
       const teamId = teamKey.substring(3);
-      return teamId === teamNumber.toString() ? `<u>${teamId}</u>` : teamId;
+      return teamId === config.teamNumber.toString()
+        ? `<u>${teamId}</u>`
+        : teamId;
     })
     .join(", ");
 }
