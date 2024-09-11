@@ -55,18 +55,38 @@ async function fetchUpcomingMatches() {
 
     const matches = response.data || [];
     // FIXME: restore to Date.now() after testing
-    const now = new Date("April  1, 2024 03:24:00"); // Date.now();
-    const upcomingMatches = matches
+    const now = new Date("April  18, 2024 09:00:00"); // Date.now();
+    const allUpcomingMatches = matches
       .filter((match) => new Date(match.time * 1000) >= now)
-      .sort((a, b) => a.time - b.time)
-      .slice(0, 4);
+      .sort((a, b) => a.time - b.time);
+    const teamsNextMatch = allUpcomingMatches.find((match) =>
+      teamParticipatedInMatch(match, config.teamNumber)
+    );
+    const upcomingMatches = allUpcomingMatches.slice(0, 4);
+    if (upcomingMatches.includes(teamsNextMatch) === false) {
+      upcomingMatches.pop();
+      upcomingMatches.push(teamsNextMatch);
+    }
 
     upcomingMatches.forEach((match) => {
+      const redAlliance = new Alliance(
+        match.alliances.red.team_keys,
+        undefined,
+        undefined
+      );
+      const blueAlliance = new Alliance(
+        match.alliances.blue.team_keys,
+        undefined,
+        undefined
+      );
       const matchObj = new Match(
         match.key,
         new Date(match.time * 1000),
         match.comp_level,
-        match.match_number
+        match.match_number,
+        match.set_number,
+        redAlliance,
+        blueAlliance
       );
       matchList.push(matchObj);
     });

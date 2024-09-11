@@ -11,7 +11,6 @@ function formatTeamStats(teamStats) {
           <p id="points_from_stage">Avg. Stage Score: ${teamStats.avgStageScore}</p>`;
 }
 
-// FIXME: format with the information that is needed (teams, time, match number); include the next match for our team even if not the next 4
 function formatUpcomingMatches(matchList) {
   let upcomingMatchesList = "";
 
@@ -19,12 +18,18 @@ function formatUpcomingMatches(matchList) {
     upcomingMatchesList = `<p>No upcoming matches for Team ${config.teamNumber}.</p>`;
   } else {
     matchList.forEach((match) => {
+      const matchLabel = formatMatchLabel(match);
+      const formatter = new Intl.DateTimeFormat("en-US", {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+      const formattedTime = formatter.format(match.matchTime);
+      const redAlliance = formatTeamKeys(match.redAlliance.teams);
+      const blueAlliance = formatTeamKeys(match.blueAlliance.teams);
       upcomingMatchesList += `
-            <li>
-            <h3>Match Key: ${match.matchKey}</h3>
-            <p>Time: ${match.matchTime}</p>
-            <p>Type: ${match.matchType}</p>
-            <p>Number: ${match.matchNumber}</p>
+            <li class="match">${matchLabel} @ ${formattedTime}</br>
+            <span style="color: #FF8A8A;">${redAlliance}</span> vs.
+            <span style="color: #ADD8E6;">${blueAlliance}</span>
             <hr>
             </li>
         `;
@@ -42,35 +47,8 @@ function formatPastMatches(matchList) {
   let pastMatchesList = "";
 
   matchList.forEach((match) => {
-    const matchNumber = match.matchNumber;
-    const teamOnRed = match.isTeamOnRed(config.teamNumber);
-    const teamOnBlue = match.isTeamOnBlue(config.teamNumber);
-
-    // Determine if we won or lost the match and set the match number color
-    let matchNumberColor;
-    if (
-      (teamOnRed && match.redAlliance.score > match.blueAlliance.score) ||
-      (teamOnBlue && match.blueAlliance.score > match.redAlliance.score)
-    ) {
-      matchNumberColor = "#90EE90"; // Light green if we won
-    } else {
-      matchNumberColor = "#FFC1C1"; // Light red if we lost
-    }
-
-    let matchLabel;
+    const matchLabel = formatMatchLabel(match);
     const isQualifier = match.matchType === "qm";
-    if (match.matchType === "f") {
-      matchLabel = `
-         <p style="color: ${matchNumberColor}">Finals Match: ${matchNumber}:`;
-    } else if (match.matchType === "sf") {
-      matchLabel = `
-         <p style="color: ${matchNumberColor}">Semifinals Set: ${
-        match.setNumber + " Match: " + matchNumber
-      }:`;
-    } else {
-      matchLabel = `
-         <p style="color: ${matchNumberColor}">Match: ${matchNumber}:`;
-    }
 
     // Format team keys and display match details
     const redAlliance = formatTeamKeys(match.redAlliance.teams);
@@ -103,6 +81,45 @@ function formatTeamKeys(teamKeys) {
         : teamId;
     })
     .join(", ");
+}
+
+function formatMatchLabel(match) {
+  let matchLabel;
+  const matchNumber = match.matchNumber;
+  const teamOnRed = match.isTeamOnRed(config.teamNumber);
+  const teamOnBlue = match.isTeamOnBlue(config.teamNumber);
+
+  // Determine if we won or lost the match and set the match number color
+  let matchNumberColor;
+  if (
+    !match.redAlliance.score ||
+    !match.blueAlliance.score ||
+    match.redAlliance.score === match.blueAlliance.score
+  ) {
+    matchNumberColor = "#FFFFFF"; // white if tie or no score
+  } else if (
+    (teamOnRed && match.redAlliance.score > match.blueAlliance.score) ||
+    (teamOnBlue && match.blueAlliance.score > match.redAlliance.score)
+  ) {
+    matchNumberColor = "#90EE90"; // Light green if we won
+  } else {
+    matchNumberColor = "#FFC1C1"; // Light red if we lost
+  }
+
+  if (match.matchType === "f") {
+    matchLabel = `
+         <p style="color: ${matchNumberColor}">Finals Match ${matchNumber}:`;
+  } else if (match.matchType === "sf") {
+    matchLabel = `
+         <p style="color: ${matchNumberColor}">Semifinals Set ${
+      match.setNumber + ", Match " + matchNumber
+    }:`;
+  } else {
+    matchLabel = `
+         <p style="color: ${matchNumberColor}">Match ${matchNumber}:`;
+  }
+
+  return matchLabel;
 }
 
 module.exports = { formatTeamStats, formatUpcomingMatches, formatPastMatches };
