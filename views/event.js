@@ -2,13 +2,13 @@ const config = require("../server/model/config");
 
 function formatTeamStats(teamStats) {
   return `
-          <p id="current_rank">Rank: ${teamStats.rank}</p>
-          <p id="RS">Avg. Ranking Score: ${teamStats.avgRankingScore}</p>
-          <p id="WL">Wins: ${teamStats.wins} - Losses: ${teamStats.losses}</p>
-          <p id="points_from_match">Avg. Match Score: ${teamStats.avgMatchScore}</p>
-          <p id="point_from_autos">Avg. Auto Score: ${teamStats.avgAutoScore}</p>
-          <p id="points_from_coopertition">Avg. Coopertition Score: ${teamStats.avgCoopertitionScore}</p>
-          <p id="points_from_stage">Avg. Stage Score: ${teamStats.avgStageScore}</p>`;
+          <span id="current_rank">Rank: ${teamStats.rank}</span></br>
+          <span>Avg. Ranking Score: ${teamStats.avgRankingScore}</br>
+          Wins: ${teamStats.wins} - Losses: ${teamStats.losses}</br>
+          Avg. Match Score: ${teamStats.avgMatchScore}</br>
+          Avg. Auto Score: ${teamStats.avgAutoScore}</br>
+          Avg. Coopertition Score: ${teamStats.avgCoopertitionScore}</br>
+          Avg. Stage Score: ${teamStats.avgStageScore}</span>`;
 }
 
 function formatUpcomingMatches(matchList) {
@@ -30,7 +30,6 @@ function formatUpcomingMatches(matchList) {
             <li class="match">${matchLabel} @ ${formattedTime}</br>
             <span style="color: #FF8A8A;">${redAlliance}</span> vs.
             <span style="color: #ADD8E6;">${blueAlliance}</span>
-            <hr>
             </li>
         `;
     });
