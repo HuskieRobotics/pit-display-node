@@ -73,5 +73,10 @@
     "label": "Shooter Bottom",
     "path": "/AdvantageKit/Shooter/ShootMotorBottomTemperatureCelsius",
     "type": "double"
+  },
+  {
+    "label": "roboRIO CPU",
+    "path": "/AdvantageKit/SystemStats/CPUTempCelcius",
+    "type": "double"
   }
 ]
