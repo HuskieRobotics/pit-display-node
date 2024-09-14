@@ -22,6 +22,7 @@ function formatUpcomingMatches(matchList) {
       const formatter = new Intl.DateTimeFormat("en-US", {
         hour: "2-digit",
         minute: "2-digit",
+        timeZone: config.localTimeZone,
       });
       const formattedTime = formatter.format(match.matchTime);
       const redAlliance = formatTeamKeys(match.redAlliance.teams);
