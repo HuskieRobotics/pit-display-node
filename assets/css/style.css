@@ -106,6 +106,7 @@ div.twitchstream iframe {
 .pastmatches u {
   text-decoration: underline;
 }
+
 .test {
   background-color: #24252a;
   padding: 20px;
@@ -128,7 +129,6 @@ div.twitchstream iframe {
   border-radius: 0px;
   font-family: "Arial Rounded MT Bold", sans-serif;
   width: calc(80vw / 2);
-  height: 85vh;
   float: left;
 }
 
@@ -141,7 +141,6 @@ div.twitchstream iframe {
   font-family: "Arial Rounded MT Bold", sans-serif;
   border: 2px solid white; /* Adjust thickness as needed */
   width: calc(75vw / 2);
-  height: 20vh;
   float: left;
 }
 
@@ -153,7 +152,6 @@ div.twitchstream iframe {
   color: #ffffff;
   font-family: "Arial Rounded MT Bold", sans-serif;
   width: calc(22vw / 2);
-  height: 20vh;
   float: left;
 }
 

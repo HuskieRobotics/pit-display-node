@@ -1,0 +1,77 @@
+[
+  {
+    "label": "FL Drive",
+    "path": "/AdvantageKit/Drivetrain/FL/DriveTempCelsius",
+    "type": "double"
+  },
+  {
+    "label": "FL Steer",
+    "path": "/AdvantageKit/Drivetrain/FL/SteerTempCelsius",
+    "type": "double"
+  },
+  {
+    "label": "FR Drive",
+    "path": "/AdvantageKit/Drivetrain/FR/DriveTempCelsius",
+    "type": "double"
+  },
+  {
+    "label": "FR Steer",
+    "path": "/AdvantageKit/Drivetrain/FR/SteerTempCelsius",
+    "type": "double"
+  },
+  {
+    "label": "BR Drive",
+    "path": "/AdvantageKit/Drivetrain/BR/DriveTempCelsius",
+    "type": "double"
+  },
+  {
+    "label": "BR Steer",
+    "path": "/AdvantageKit/Drivetrain/BR/SteerTempCelsius",
+    "type": "double"
+  },
+  {
+    "label": "BL Drive",
+    "path": "/AdvantageKit/Drivetrain/BL/DriveTempCelsius",
+    "type": "double"
+  },
+  {
+    "label": "BL Steer",
+    "path": "/AdvantageKit/Drivetrain/BL/SteerTempCelsius",
+    "type": "double"
+  },
+  {
+    "label": "Intake Roller",
+    "path": "/AdvantageKit/Intake/RollerTempCelsius",
+    "type": "double"
+  },
+  {
+    "label": "Intake Kicker",
+    "path": "/AdvantageKit/Intake/KickerTempCelsius",
+    "type": "double"
+  },
+  {
+    "label": "Climber",
+    "path": "/AdvantageKit/Climber/ClimberMotorTemperatureCelsius",
+    "type": "double"
+  },
+  {
+    "label": "Shooter Angle",
+    "path": "/AdvantageKit/Shooter/AngleMotorTemperatureCelsius",
+    "type": "double"
+  },
+  {
+    "label": "Shooter Deflector",
+    "path": "/AdvantageKit/Shooter/DeflectorMotorTemperatureCelsius",
+    "type": "double"
+  },
+  {
+    "label": "Shooter Top",
+    "path": "/AdvantageKit/Shooter/ShootMotorTopTemperatureCelsius",
+    "type": "double"
+  },
+  {
+    "label": "Shooter Bottom",
+    "path": "/AdvantageKit/Shooter/ShootMotorBottomTemperatureCelsius",
+    "type": "double"
+  }
+]
