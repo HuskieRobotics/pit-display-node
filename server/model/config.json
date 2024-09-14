@@ -1,5 +1,6 @@
 {
   "teamNumber": 3061,
   "eventKey": "2024joh",
-  "localTimeZone": "America/Chicago"
+  "localTimeZone": "America/Chicago",
+  "streamURL": "https://player.twitch.tv/?channel=rocketleague&parent=pit.team3061.org"
 }

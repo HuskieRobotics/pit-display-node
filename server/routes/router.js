@@ -1,5 +1,6 @@
 const express = require("express");
 const route = express.Router();
+const config = require("../model/config");
 const {
   fetchTeamStats,
   fetchUpcomingMatches,
@@ -18,7 +19,7 @@ const { formatTemperatures } = require("../../views/robot");
 //  the callback function is executed
 route.get("/", async (req, res) => {
   // the res parameter references the HTTP response object
-  res.render("event");
+  res.render("event", { streamURL: config.streamURL });
 });
 
 route.get("/teamStats", async (req, res) => {
