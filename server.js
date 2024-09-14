@@ -38,6 +38,6 @@ app.use("/html", express.static("assets/html"));
 app.use("/", require("./server/routes/router"));
 
 // start the server on port 8080
-server.listen(8080, () => {
-  console.log("server is listening on http://localhost:8080");
+server.listen(8081, () => {
+  console.log("server is listening on http://localhost:8081");
 });
