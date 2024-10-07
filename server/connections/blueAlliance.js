@@ -54,8 +54,7 @@ async function fetchUpcomingMatches() {
     });
 
     const matches = response.data || [];
-    // FIXME: restore to Date.now() after testing
-    const now = new Date("April  18, 2024 09:00:00"); // Date.now();
+    const now = Date.now();
     const allUpcomingMatches = matches
       .filter((match) => new Date(match.time * 1000) >= now)
       .sort((a, b) => a.time - b.time);
