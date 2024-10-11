@@ -1,6 +1,10 @@
 const config = require("../server/model/config");
 
 function formatTeamStats(teamStats) {
+  if (!teamStats) {
+    return `No team statistics available for Team ${config.teamNumber}.</p>`;
+  }
+
   return `
           <span id="current_rank">Rank: ${teamStats.rank}</span></br>
           <span>Avg. Ranking Score: ${teamStats.avgRankingScore}</br>

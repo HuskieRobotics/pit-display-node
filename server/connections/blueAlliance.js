@@ -37,6 +37,7 @@ async function fetchTeamStats() {
     );
   } catch (error) {
     console.error("Error fetching team statistics:", error.message);
+    return null;
   }
 }
 
@@ -91,6 +92,7 @@ async function fetchUpcomingMatches() {
     });
   } catch (error) {
     console.error("Error fetching upcoming matches:", error.message);
+    return null;
   }
 
   return matchList;
@@ -139,6 +141,7 @@ async function fetchPastMatches() {
       });
   } catch (error) {
     console.error("Error fetching past matches:", error.message);
+    return null;
   }
 
   return matchList;
