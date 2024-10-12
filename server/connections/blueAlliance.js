@@ -57,7 +57,7 @@ async function fetchUpcomingMatches() {
     const matches = response.data || [];
     const now = Date.now();
     const allUpcomingMatches = matches
-      .filter((match) => new Date(match.time * 1000) >= now)
+      .filter((match) => match.actual_time === null)
       .sort((a, b) => a.time - b.time);
     const teamsNextMatch = allUpcomingMatches.find((match) =>
       teamParticipatedInMatch(match, config.teamNumber)
