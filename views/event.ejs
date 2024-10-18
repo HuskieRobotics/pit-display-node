@@ -1,0 +1,64 @@
+<!-- include header -->
+<%- include('include/_header') %>
+<!-- /include header -->
+
+  <body>
+    <section>
+      <navigation>
+        <!-- Add your navigation links or buttons here -->
+        <a href="/">
+          <button class="button">
+            <img
+              src="/img/calendar.png"
+              alt="Match Info"
+              style="width: 50px; height: 50px"
+            />
+          </button>
+        </a>
+
+        <a href="http://localhost:8081/robot">
+          <button class="button">
+            <img
+              src="/img/statistics.png"
+              alt="Robot Stats"
+              style="width: 50px; height: 50px"
+            />
+          </button>
+        </a>
+
+        <a href="/info">
+          <button class="button">
+            <img
+              src="/img/info.png"
+              alt="App Info"
+              style="width: 50px; height: 50px"
+            />
+          </button>
+        </a>
+      </navigation>
+      <stats>
+        <div class="rankbox"></div>
+
+        <div class="upcomingmatches">
+          <h3 id="upcoming_matches">Upcoming Matches</h3>
+          <ul id="list_upcoming_matches"></ul>
+        </div>
+
+        <div class="pastmatches">
+          <h3 id="past_matches">Past Matches</h3>
+          <ul id="list_past_matches"></ul>
+        </div>
+      </stats>
+
+      <stream>
+        <div class="twitchstream">
+          <iframe src="<%= streamURL %>" frameborder="0" allowfullscreen="true" scrolling="no"></iframe>
+        </div>
+      </stream>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <script src="/js/event.js"></script>
+  </body>
+</html>

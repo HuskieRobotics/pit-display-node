@@ -2,73 +2,59 @@ body {
   background-color: #171717;
 }
 
-.navigation {
-  position: fixed;
-  left: 0;
-  top: 0;
-  height: 100%;
+section {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+navigation {
   background-color: rgb(0, 0, 0);
   display: flex;
   flex-direction: column;
   padding: 20px;
-  width: calc(100vw / 50);
+  width: 50px;
 }
 
-.rankbox,
-.pastmatches,
-.twitchstream,
-.upcomingmatches {
+stream {
+  flex-grow: 1;
+}
+
+div.rankbox,
+div.pastmatches,
+div.twitchstream,
+div.upcomingmatches {
   background-color: #24252a;
-  padding: 20px;
+  padding: 5px;
   margin: 10px;
   text-align: left;
   color: #ffffff;
   border-radius: 10px;
-  font-family: "Arial Rounded MT Bold", sans-serif;
   border: 2px solid white; /* Adjust thickness as needed */
-  width: calc(60vw / 2);
-  height: 44vh;
   font-family: "Source Code Pro", monospace;
   font-optical-sizing: auto;
   font-weight: 400; /* Replace with the desired font weight */
   font-style: normal;
 }
 
-.twitchstream {
-  width: calc(104vw / 2);
-  height: 64vh;
-}
-
-.upcomingmatches {
-  width: calc(104vw / 2);
-  height: 24vh;
-}
-
-.container {
-  float: left;
-  margin-left: 100px;
-}
-.container_2 {
-  float: right;
-  margin-right: 100px;
-}
-
-.pastmatches {
+div.pastmatches {
   overflow: auto;
 }
 
-.upcomingmatches {
-  overflow: auto;
+div.rankbox {
+  text-align: center;
 }
 
-.rankbox {
-  overflow: auto; /* Add scrollbars when content overflows */
-}
-
-.rankbox p {
+div.rankbox span {
   font-size: 20px;
   font-weight: bold;
   text-align: center;
+}
+
+li.match {
+  border: none;
+  background-color: #1a1a1a;
 }
 
 #current_rank {
@@ -77,28 +63,10 @@ body {
   text-align: center;
 }
 
-#RS {
-}
-
-#WL {
-}
-
-#points_from_match {
-}
-
-#points_from_autos {
-}
-
-#points_from_charge {
-}
-
-#RP {
-}
-
-.twitchstream iframe {
+div.twitchstream iframe {
   border-radius: 10px;
-  height: 95%;
   width: 100%;
+  height: 90vh;
   align-self: center;
 }
 
@@ -138,6 +106,7 @@ body {
 .pastmatches u {
   text-decoration: underline;
 }
+
 .test {
   background-color: #24252a;
   padding: 20px;
@@ -160,7 +129,6 @@ body {
   border-radius: 0px;
   font-family: "Arial Rounded MT Bold", sans-serif;
   width: calc(80vw / 2);
-  height: 85vh;
   float: left;
 }
 
@@ -173,7 +141,6 @@ body {
   font-family: "Arial Rounded MT Bold", sans-serif;
   border: 2px solid white; /* Adjust thickness as needed */
   width: calc(75vw / 2);
-  height: 20vh;
   float: left;
 }
 
@@ -185,7 +152,6 @@ body {
   color: #ffffff;
   font-family: "Arial Rounded MT Bold", sans-serif;
   width: calc(22vw / 2);
-  height: 20vh;
   float: left;
 }
 
