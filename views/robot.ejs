@@ -117,7 +117,7 @@
 
       <div class="checks">
         <details>
-          <summary> Pre-Match (in pit) </summary>
+          <summary> Pre-Match (in pit): </summary>
             <label>
               <input type="checkbox" name="check1" value="check1" /> Driver Station laptop is charged
             </label>
@@ -156,7 +156,7 @@
             <br />
         </details>
         <details>
-          <summary> Pre-Match </summary>
+          <summary> Pre-Match: </summary>
           <p>Whenever</p>
           <label>
             <input type="checkbox" name="check10" value="check10" /> Ethernet port is covered
@@ -174,8 +174,207 @@
             <input type="checkbox" name="check13" value="check13" /> Limelight is 17.7 degrees below horizontal
           </label>
           <br />
-          <!-- CONTINUE HERE AT ON FIELD-->
+          <p>On field</p>
+          <label>
+            <input type="checkbox" name="check14" value="check14" /> Make sure robot is on
+          </label>
+          <br />
+          <label>
+            <input type="checkbox" name="check15" value="check15" /> Move robot to starting location
+          </label>
+          <br />
+          <label>
+            <input type="checkbox" name="check16" value="check16" /> After code loads, move shooter to starting Angle
+          </label>
+          <br />
+          <label>
+            <input type="checkbox" name="check17" value="check17" /> Check that wheels point in direction of auto path
+          </label>
+          <br />
+          <label>
+            <input type="checkbox" name="check18" value="check18" /> Preload one note
+          </label>
+          <br />
+          <label>
+            <input type="checkbox" name="check19" value="check19" /> Ensure mechanisms are within frame perimeter
+          </label>
+          <br />
+          <label>
+            <input type="checkbox" name="check20" value="check20" /> Verify LEDs on all components indicate working CAN connection
+          </label>
+          <br />
+          <label>
+            <input type="checkbox" name="check21" value="check21" /> Do not leave the field until all is good
+          </label>
+          <br />
+          <p>Driver Station</p>
+          <label>
+            <input type="checkbox" name="check22" value="check22" /> Controllers + control box connected to Driver Station and reads correctly
+          </label>
+          <br />
+          <label>
+            <input type="checkbox" name="check23" value="check23" /> Confirm AprilTags are seen
+          </label>
+          <br />
+          <label style = "padding-left:40px;">
+            <input type="checkbox" name="check24" value="check24"/> Check small AprilTag for confirm focus
+          </label>
+          <br />
+          <label style = "padding-left:40px;">
+            <input type="checkbox" name="check25" value="check25" /> Check AprilTag pair to confirm multi-tag
+          </label>
+          <br />
+          <label>
+            <input type="checkbox" name="check26" value="check26" /> Confirm Limelight camera is streaming
+          </label>
+          <br />
+          <label>
+            <input type="checkbox" name="check27" value="check27" /> Shooter pivot motor is inverted
+          </label>
+          <br />
+          <label>
+            <input type="checkbox" name="check28" value="check28" /> Check alerts in Elastic Dashboard and address them, if any
+          </label>
+          <br />
         </details>
+        <details>
+          <summary>Post-Match (on field): </summary>
+          <label>
+            <input type="checkbox" name="check29" value="check29" /> Turn off Robot and remove note
+          </label>
+          <br />
+          <label>
+            <input type="checkbox" name="check30" value="check30" /> Inspect for major damage
+          </label>
+          <br />
+          <label>
+            <input type="checkbox" name="check31" value="check31" /> Investigate issues with video/photos to diagnose/communmicate later
+          </label>
+        </details>
+        <details>
+          <summary> Post-Match (in pit): </summary>
+          <label>
+            <input type="checkbox" name="check32" value="check32" /> Reboot Computer
+          </label>
+          <br />
+          <label>
+            <input type="checkbox" name="check33" value="check33" /> Download log file to Driver Station computer, copy to log file flash drive
+          </label>
+          <br />
+          <label>
+            <input type="checkbox" name="check34" value="check34" /> Check the CPU temperature of each Raspberry Pi
+          </label>
+          <br />
+          <label>
+            <input type="checkbox" name="check35" value="check35" /> Charge Driver Station computer
+          </label>
+        </details>
+        <details>
+          <summary> Robot Items: </summary>
+          <label>
+            <input type="checkbox" name="check36" value="check36" /> Driver Laptop + Charger + Ethernet Pigtail
+          </label>
+          <br />
+          <label>
+            <input type="checkbox" name="check37" value="check37" /> Ian's joysticks
+          </label>
+          <br />
+          <label>
+            <input type="checkbox" name="check38" value="check38" /> Jake's controller + button panel
+          </label>
+          <br />
+          <label>
+            <input type="checkbox" name="check39" value="check39" /> Ethernet + USB B cables
+          </label>
+          <br />
+          <label>
+            <input type="checkbox" name="check40" value="check40" /> Emergency Tool Box
+          </label>
+          <br />
+          <label>
+            <input type="checkbox" name="check41" value="check41" /> Angle measurer + tape measure
+          </label>
+          <br />
+          <label>
+            <input type="checkbox" name="check42" value="check42" /> Snips + small white zip ties
+          </label>
+          <br />
+          <label>
+            <input type="checkbox" name="check43" value="check43" /> Two 7/16 bumper wrenches and short 1/8 t-wrench
+          </label>
+          <br />
+          <label>
+            <input type="checkbox" name="check44" value="check44" /> Drill with battery
+          </label>
+        </details>
+        <details>
+          <summary>Full Systems Check: </summary>
+          <p>Startup </p>
+          <label>
+            <input type="checkbox" name="check45" value="check45" /> Robot in starting position - SHOOTER DOWN TO HARDSTOPS
+          </label>
+          <br />
+          <label>
+            <input type="checkbox" name="check46" value="check46" /> Disable vision
+          </label>
+          <br />
+          <label>
+            <input type="checkbox" name="check47" value="check47" /> Turn on robot (after above are done)
+          </label>
+          <br />
+          <label>
+            <input type="checkbox" name="check48" value="check48" /> Joysticks show up. Make sure all joysticks buttons work and joystick y and x value boxes fill all the way when moving in x and y direction. If not working, refresh.
+          </label>
+          <br />
+          <label>
+            <input type="checkbox" name="check49" value="check49" /> Verify RSL is solid orange
+          </label>
+          <br />
+          <label>
+            <input type="checkbox" name="check50" value="check50" /> Verify CAN
+          </label>
+          <br />
+          <label>
+            <input type="checkbox" name="check51" value="check51" /> Make sure correct code is deployed
+          </label>
+          <br />
+          <label>
+            <input type="checkbox" name="check52" value="check52" /> Limelight streams to Elastic Dashboard
+          </label>
+          <br />
+          <label>
+            <input type="checkbox" name="check53" value="check53" /> Check cameras- phontonvision, detects apriltag correctly
+          </label>
+          <br />
+          <label>
+            <input type="checkbox" name="check54" value="check54" /> Check for sticky faults
+          </label>
+          <br />
+          <p>Enabled </p>
+          <label>
+            <input type="checkbox" name="check55" value="check55" /> Verify RSL is blinking orange
+          </label>
+          <br />
+          <label>
+            <input type="checkbox" name="check56" value="check56" /> Swerve modules - front, back, left, right and then rotate both ways
+          </label>
+          <br />
+          <label>
+            <input type="checkbox" name="check57" value="check57" /> Climber goes up and down
+          </label>
+          <br />
+          <label>
+            <input type="checkbox" name="check58" value="check58" /> Intake rollers spin and reverse
+          </label>
+          <br />
+          <label>
+            <input type="checkbox" name="check59" value="check59" /> Check that note path triggers in the correct order - intakes, then intake reverses, kicker
+          </label>
+          <br />
+          <!-- START IN ENABLED FULL SYSTEMS CHECK HERE  -->
+        </details>
+
+
       </div>
       
     </section>
