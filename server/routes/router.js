@@ -47,4 +47,8 @@ route.get("/info", async (req, res) => {
   res.render("info");
 });
 
+route.get("/settings", (req, res) => {
+  res.render("settings");
+});
+
 module.exports = route;
