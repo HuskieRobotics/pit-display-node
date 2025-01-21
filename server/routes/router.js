@@ -2,6 +2,17 @@ const express = require("express");
 const route = express.Router();
 const config = require("../model/config");
 const tasks = require("../model/checklist");
+const newTasks = tasks.map((task) => {
+  return {
+    name: task.name,
+    checklistItems: task.checklistItems.map((item) => {
+      return {
+        taskName: item,
+        checked: false,
+      };
+    }),
+  };
+});
 const {
   fetchTeamStats,
   fetchUpcomingMatches,
@@ -18,7 +29,6 @@ const { formatTemperatures } = require("../../views/robot");
 // pass a path (e.g., "/") and callback function to the get method
 //  when the client makes an HTTP GET request to the specified path,
 //  the callback function is executed
-
 
 route.get("/", async (req, res) => {
   // the res parameter references the HTTP response object
@@ -41,15 +51,14 @@ route.get("/robot", async (req, res) => {
   // res.render("robot", { tasks: tasks});
   try {
     const temperatures = await getMotorTemperatures();
-    res.render("robot", { 
-      tasks: tasks,
-      temperatures: formatTemperatures(temperatures)
+    res.render("robot", {
+      tasks: newTasks,
+      temperatures: formatTemperatures(temperatures),
     });
   } catch (error) {
     console.error("Error in /robot route:", error);
     res.status(500).send("Error loading robot page");
   }
-
 });
 
 route.get("/temperatures", async (req, res) => {
