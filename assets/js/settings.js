@@ -4,8 +4,11 @@ document.addEventListener("DOMContentLoaded", function () {
   const streamingLink = document.getElementById("streaming-link");
   const submitButton = document.getElementById("submit-button");
 
+  let isTwitch = false;
+
   dropdown.addEventListener("change", function () {
     selectedService.textContent = `Selected service: ${dropdown.value}`;
+    isTwitch = dropdown.value.toLowerCase() === "twitch";
   });
 
   submitButton.addEventListener("click", function () {
