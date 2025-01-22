@@ -17,5 +17,11 @@
       "webRoot": "${workspaceFolder}/assets",
       "outputCapture": "std"
     }
+  ],
+  "compounds": [
+    {
+      "name": "Full Stack: Server + Client",
+      "configurations": ["Node Server", "Node Client"]
+    }
   ]
 }
