@@ -28,8 +28,10 @@ fetchTemperatures();
 // first just print the name of the thing that was clicked
 
 const checklist = document.querySelectorAll("input");
-checklist.forEach((item) => {
-  item.addEventListener("click", (event) => {
-    console.log(event.target.taskName);
+checklist.forEach((checkbox) => {
+  checkbox.addEventListener("click", (event) => {
+    const label = event.target.closest("label");
+    const taskText = label.textContent.trim();
+    console.log(taskText);
   });
 });
