@@ -32,6 +32,11 @@ checklist.forEach((checkbox) => {
   checkbox.addEventListener("click", (event) => {
     const label = event.target.closest("label");
     const taskText = label.textContent.trim();
-    console.log(taskText);
+    const isChecked = event.target.checked;
+    // console.log(`Task: ${taskText} ~ Checked: ${isChecked}`);
+    socket.emit("checklist", { taskText, isChecked });
+
+    // Store the state
+    checkbox.dataset.checked = isChecked;
   });
 });

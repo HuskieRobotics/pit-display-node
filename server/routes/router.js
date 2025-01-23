@@ -2,17 +2,21 @@ const express = require("express");
 const route = express.Router();
 const config = require("../model/config");
 const tasks = require("../model/checklist");
-const newTasks = tasks.map((task) => {
-  return {
-    name: task.name,
-    checklistItems: task.checklistItems.map((item) => {
-      return {
-        taskName: item,
-        checked: false,
-      };
-    }),
-  };
-});
+const { makeTaskObject } = require("../../assets/js/robot");
+// const newTasks = tasks.map((task) => {
+//   return {
+//     name: task.name,
+//     checklistItems: task.checklistItems.map((item) => {
+//       return {
+//         taskName: item,
+//         checked: false,
+//       };
+//     }),
+//   };
+// });
+
+const tasks
+
 const {
   fetchTeamStats,
   fetchUpcomingMatches,

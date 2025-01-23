@@ -10,6 +10,10 @@ function createSocketServer(httpServer) {
   io.on("connection", (socket) => {
     console.log("a user connected");
 
+    socket.on("checklist", (check) => {
+      console.log(check);
+    });
+
     socket.on("disconnect", () => {
       console.log("user disconnected");
     });
