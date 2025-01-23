@@ -7,25 +7,41 @@
         <container>
             <div class="rankbox">
                 <h1>Settings</h1>
-                <label for="streaming-service">Choose Twitch or YouTube:</label>
+                <label for="streaming-service">Choose Twitch/YouTube:</label>
                 <select id="streaming-service" name="streaming-service">
                     <option value="twitch">Twitch</option>
                     <option value="youtube">YouTube</option>
                 </select>
+
+                <br></br>
                 
-                <br><label for="streaming-link">Enter the link for the selected service:</label></br>
+                <br><label for="streaming-link">Paste Twitch channel/YouTube live stream link:</label></br>
                 <input type="text" id="streaming-link" name="streaming-link" placeholder="Enter the link here">
-                <button id="submit-button">Submit</button>
+                <button id="submit-button-link">Submit</button>
+
+                <br></br>
                 
                 <br><label for="Team name">Enter the team name:</label></br>
-                <input type="text" id="Team Name" name="Team name" placeholder="Enter the team name">
-                <button id="submit-button">Submit</button>
+                <input type="text" id="Team Number" name="Team name" placeholder="Enter the team name">
+                <button id="submit-button-teamnumber">Submit</button>
+
+                <br></br>
 
                 <br><label for="Event key">Enter the event key:</label></br>
                 <input type="text" id="Event key" name="Event key" placeholder="Enter the event key">
-                <button id="submit-button">Submit</button>
+                <button id="submit-button-eventkey">Submit</button>
 
-                
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                    const streamingServiceSelect = document.getElementById('streaming-service');
+                    let isTwitch = streamingServiceSelect.value === 'twitch';
+
+                    streamingServiceSelect.addEventListener('change', function() {
+                        isTwitch = streamingServiceSelect.value === 'twitch';
+                        console.log('isTwitch:', isTwitch);
+                    });
+                });
+            </script>
 
             </div>
         </container>
