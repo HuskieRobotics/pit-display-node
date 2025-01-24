@@ -15,7 +15,7 @@ const { makeTaskObject } = require("../../assets/js/robot");
 //   };
 // });
 
-const tasks
+const newTasks = tasks.map((task) => makeTaskObject(task));
 
 const {
   fetchTeamStats,

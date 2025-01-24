@@ -45,7 +45,7 @@
             
             <% for (var i = 0; i < task.checklistItems.length; i++) { %>
               <label>
-                <input type="checkbox" name="check<%= i %>" value="check<%= i %>" /> <%= task.checklistItems[i].taskName %>
+                <input type="checkbox" name="check<%= i %>" value="check<%= i %>" /> <%= task.checklistItems[i] %>
               </label>
               <br />
             <% } %>
