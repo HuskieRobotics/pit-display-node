@@ -15,13 +15,13 @@
 
                 <br></br>
                 
-                <br><label for="streaming-link">Paste Twitch channel/YouTube live stream link:</label></br>
+                <br><label for="streaming-link">Enter the link for the selected service:</label></br>
                 <input type="text" id="streaming-link" name="streaming-link" placeholder="Enter the link here">
                 <button id="submit-button-link">Submit</button>
 
                 <br></br>
                 
-                <br><label for="Team name">Enter the team name:</label></br>
+                <!-- <br><label for="Team name">Enter the team name:</label></br>
                 <input type="text" id="Team Number" name="Team name" placeholder="Enter the team name">
                 <button id="submit-button-teamnumber">Submit</button>
 
@@ -29,16 +29,43 @@
 
                 <br><label for="Event key">Enter the event key:</label></br>
                 <input type="text" id="Event key" name="Event key" placeholder="Enter the event key">
-                <button id="submit-button-eventkey">Submit</button>
+                <button id="submit-button-eventkey">Submit</button> -->
 
                 <script>
                     document.addEventListener('DOMContentLoaded', function() {
                     const streamingServiceSelect = document.getElementById('streaming-service');
+                    const streamingLinkInput = document.getElementById('streaming-link');
+                    const submitButtonLink = document.getElementById('submit-button-link');
                     let isTwitch = streamingServiceSelect.value === 'twitch';
 
-                    streamingServiceSelect.addEventListener('change', function() {
-                        isTwitch = streamingServiceSelect.value === 'twitch';
-                        console.log('isTwitch:', isTwitch);
+
+
+
+
+                    // Load saved values from local storage
+                const savedService = localStorage.getItem("streaming-service");
+                const savedLink = localStorage.getItem("streaming-link");
+
+                if (savedService) {
+                    streamingServiceSelect.value = savedService;
+                }
+
+                if (savedLink) {
+                    streamingLinkInput.value = savedLink;
+                }
+
+                streamingServiceSelect.addEventListener('change', function() {
+                    isTwitch = streamingServiceSelect.value === 'twitch';
+                    console.log('isTwitch:', isTwitch);
+                    // Save the current choice to local storage
+                    localStorage.setItem("streaming-service", streamingServiceSelect.value);
+                });
+
+                submitButtonLink.addEventListener('click', function() {
+                    // Save the streaming link to local storage
+                    const streamingLinkValue = streamingLinkInput.value;
+                    localStorage.setItem("streaming-link", streamingLinkValue);
+                    console.log(`Entered link: ${streamingLinkValue}`);
                     });
                 });
             </script>
