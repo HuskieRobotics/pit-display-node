@@ -2,7 +2,7 @@ const express = require("express");
 const route = express.Router();
 const config = require("../model/config");
 const tasks = require("../model/checklist");
-const { makeTaskObject } = require("../../assets/js/robot");
+const { makeTaskObject } = require("../../views/robot");
 // const newTasks = tasks.map((task) => {
 //   return {
 //     name: task.name,
@@ -15,7 +15,7 @@ const { makeTaskObject } = require("../../assets/js/robot");
 //   };
 // });
 
-const newTasks = tasks.map((task) => makeTaskObject(task));
+const newTasks = makeTaskObject(tasks);
 
 const {
   fetchTeamStats,

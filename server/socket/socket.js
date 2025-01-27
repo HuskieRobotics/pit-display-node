@@ -1,5 +1,5 @@
 const { Server } = require("socket.io");
-
+const { updateChecked } = require("../../views/robot");
 let io;
 
 function createSocketServer(httpServer) {
@@ -11,6 +11,8 @@ function createSocketServer(httpServer) {
     console.log("a user connected");
 
     socket.on("checklist", (check) => {
+      console.log(check);
+      updateChecked(check);
       console.log(check);
     });
 
