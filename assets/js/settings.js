@@ -24,4 +24,16 @@ document.addEventListener("DOMContentLoaded", function () {
   });
   // add an event listener to the submit button for the team name
   // add an event listener to the submit button for the event key
+
+  const entry = {
+    streamingService: selectedService,
+    streamingLink: streamingLinkInput,
+  };
+  fetch("/settings", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(entry), // turns the js object reference into json form
+  });
 });
