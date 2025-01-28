@@ -34,6 +34,7 @@
                 <script>
                     document.addEventListener('DOMContentLoaded', function() {
                     const streamingServiceSelect = document.getElementById('streaming-service');
+                    const selectedService = document.getElementById('selected-service');
                     const streamingLinkInput = document.getElementById('streaming-link');
                     const submitButtonLink = document.getElementById('submit-button-link');
                     let isTwitch = streamingServiceSelect.value === 'twitch';
@@ -43,25 +44,25 @@
 
 
                     // Load saved values from local storage
-                const savedService = localStorage.getItem("streaming-service");
-                const savedLink = localStorage.getItem("streaming-link");
+                    const savedService = localStorage.getItem("streaming-service");
+                    const savedLink = localStorage.getItem("streaming-link");
 
-                if (savedService) {
-                    streamingServiceSelect.value = savedService;
-                }
+                    if (savedService) {
+                        streamingServiceSelect.value = savedService;
+                    }
 
-                if (savedLink) {
-                    streamingLinkInput.value = savedLink;
-                }
+                    if (savedLink) {
+                        streamingLinkInput.value = savedLink;
+                    }
 
-                streamingServiceSelect.addEventListener('change', function() {
+                    streamingServiceSelect.addEventListener('change', function() {
                     isTwitch = streamingServiceSelect.value === 'twitch';
                     console.log('isTwitch:', isTwitch);
                     // Save the current choice to local storage
                     localStorage.setItem("streaming-service", streamingServiceSelect.value);
-                });
+                    });
 
-                submitButtonLink.addEventListener('click', function() {
+                    submitButtonLink.addEventListener('click', function() {
                     // Save the streaming link to local storage
                     const streamingLinkValue = streamingLinkInput.value;
                     localStorage.setItem("streaming-link", streamingLinkValue);
