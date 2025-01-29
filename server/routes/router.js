@@ -54,7 +54,7 @@ route.get("/settings", (req, res) => {
 route.post("/settings", (req, res) => {
   const { streamingService, streamingLink } = req.body;
 
-  console.log("Streaming servie:", streamingService);
+  console.log("Streaming service:", streamingService);
   console.log("Streaming link:", streamingLink);
 
   // sends response back to the client
