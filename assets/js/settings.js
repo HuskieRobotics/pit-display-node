@@ -20,20 +20,20 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log(`Selected service: ${selectedServiceValue}`);
     console.log(`Entered link: ${streamingLinkValue}`);
 
+    const streamObject = {
+      streamingService: selectedServiceValue,
+      streamingLink: streamingLinkValue,
+    };
+    fetch("/settings", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(streamObject), // turns the js object reference into json form
+    });
+
     // save all of these values even after going to the homepage again
   });
   // add an event listener to the submit button for the team name
   // add an event listener to the submit button for the event key
-
-  const entry = {
-    streamingService: selectedService,
-    streamingLink: streamingLinkInput,
-  };
-  fetch("/settings", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(entry), // turns the js object reference into json form
-  });
 });

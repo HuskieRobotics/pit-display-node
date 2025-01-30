@@ -57,8 +57,10 @@ route.post("/settings", (req, res) => {
   console.log("Streaming service:", streamingService);
   console.log("Streaming link:", streamingLink);
 
-  // sends response back to the client
+  // send a response back to the client to test
   res.json({ success: true, message: "Settings saved successfully" });
+  res.json({ message: "streaming service: " + streamingService });
+  res.json({ message: "streaming link: " + streamingLink });
 });
 
 module.exports = route;
