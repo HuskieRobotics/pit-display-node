@@ -11,8 +11,9 @@ const {
   formatUpcomingMatches,
   formatPastMatches,
 } = require("../../views/event");
-const { getMotorTemperatures } = require("../connections/nt4");
+const { getMotorTemperatures, getPDHCurrents } = require("../connections/nt4");
 const { formatTemperatures } = require("../../views/robot");
+const { formatPDHCurrents } = require("../../views/pdh");
 
 // pass a path (e.g., "/") and callback function to the get method
 //  when the client makes an HTTP GET request to the specified path,
@@ -40,6 +41,10 @@ route.get("/robot", async (req, res) => {
 
 route.get("/temperatures", async (req, res) => {
   res.send(formatTemperatures(getMotorTemperatures()));
+});
+
+route.get("/pdhCurrents", async (req, res) => {
+  res.send(formatPDHCurrents(getPDHCurrents()));
 });
 
 route.get("/info", async (req, res) => {

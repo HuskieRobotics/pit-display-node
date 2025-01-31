@@ -94,5 +94,149 @@
     "path": "/AdvantageKit/SystemStats/CPUTempCelcius",
     "type": "double",
     "dataCategory": "SYSTEM_TEMP"
+  },
+  {
+    "label": "PDH Channel 0",
+    "path": "/AdvantageKit/PowerDistribution/ChannelCurrent/0",
+    "type": "double",
+    "dataCategory": "PDH_CURRENT"
+  },
+  {
+    "label": "PDH Channel 1",
+    "path": "/AdvantageKit/PowerDistribution/ChannelCurrent/1",
+    "type": "double",
+    "dataCategory": "PDH_CURRENT"
+  },
+  {
+    "label": "PDH Channel 2",
+    "path": "/AdvantageKit/PowerDistribution/ChannelCurrent/2",
+    "type": "double",
+    "dataCategory": "PDH_CURRENT"
+  },
+  {
+    "label": "PDH Channel 3",
+    "path": "/AdvantageKit/PowerDistribution/ChannelCurrent/3",
+    "type": "double",
+    "dataCategory": "PDH_CURRENT"
+  },
+  {
+    "label": "PDH Channel 4",
+    "path": "/AdvantageKit/PowerDistribution/ChannelCurrent/4",
+    "type": "double",
+    "dataCategory": "PDH_CURRENT"
+  },
+  {
+    "label": "PDH Channel 5",
+    "path": "/AdvantageKit/PowerDistribution/ChannelCurrent/5",
+    "type": "double",
+    "dataCategory": "PDH_CURRENT"
+  },
+  {
+    "label": "PDH Channel 6",
+    "path": "/AdvantageKit/PowerDistribution/ChannelCurrent/6",
+    "type": "double",
+    "dataCategory": "PDH_CURRENT"
+  },
+  {
+    "label": "PDH Channel 7",
+    "path": "/AdvantageKit/PowerDistribution/ChannelCurrent/7",
+    "type": "double",
+    "dataCategory": "PDH_CURRENT"
+  },
+  {
+    "label": "PDH Channel 8",
+    "path": "/AdvantageKit/PowerDistribution/ChannelCurrent/8",
+    "type": "double",
+    "dataCategory": "PDH_CURRENT"
+  },
+  {
+    "label": "PDH Channel 9",
+    "path": "/AdvantageKit/PowerDistribution/ChannelCurrent/9",
+    "type": "double",
+    "dataCategory": "PDH_CURRENT"
+  },
+  {
+    "label": "PDH Channel 10",
+    "path": "/AdvantageKit/PowerDistribution/ChannelCurrent/10",
+    "type": "double",
+    "dataCategory": "PDH_CURRENT"
+  },
+  {
+    "label": "PDH Channel 11",
+    "path": "/AdvantageKit/PowerDistribution/ChannelCurrent/11",
+    "type": "double",
+    "dataCategory": "PDH_CURRENT"
+  },
+  {
+    "label": "PDH Channel 12",
+    "path": "/AdvantageKit/PowerDistribution/ChannelCurrent/12",
+    "type": "double",
+    "dataCategory": "PDH_CURRENT"
+  },
+  {
+    "label": "PDH Channel 13",
+    "path": "/AdvantageKit/PowerDistribution/ChannelCurrent/13",
+    "type": "double",
+    "dataCategory": "PDH_CURRENT"
+  },
+  {
+    "label": "PDH Channel 14",
+    "path": "/AdvantageKit/PowerDistribution/ChannelCurrent/14",
+    "type": "double",
+    "dataCategory": "PDH_CURRENT"
+  },
+  {
+    "label": "PDH Channel 15",
+    "path": "/AdvantageKit/PowerDistribution/ChannelCurrent/15",
+    "type": "double",
+    "dataCategory": "PDH_CURRENT"
+  },
+  {
+    "label": "PDH Channel 16",
+    "path": "/AdvantageKit/PowerDistribution/ChannelCurrent/16",
+    "type": "double",
+    "dataCategory": "PDH_CURRENT"
+  },
+  {
+    "label": "PDH Channel 17",
+    "path": "/AdvantageKit/PowerDistribution/ChannelCurrent/17",
+    "type": "double",
+    "dataCategory": "PDH_CURRENT"
+  },
+  {
+    "label": "PDH Channel 18",
+    "path": "/AdvantageKit/PowerDistribution/ChannelCurrent/18",
+    "type": "double",
+    "dataCategory": "PDH_CURRENT"
+  },
+  {
+    "label": "PDH Channel 19",
+    "path": "/AdvantageKit/PowerDistribution/ChannelCurrent/19",
+    "type": "double",
+    "dataCategory": "PDH_CURRENT"
+  },
+  {
+    "label": "PDH Channel 20",
+    "path": "/AdvantageKit/PowerDistribution/ChannelCurrent/20",
+    "type": "double",
+    "dataCategory": "PDH_CURRENT"
+  },
+  {
+    "label": "PDH Channel 21",
+    "path": "/AdvantageKit/PowerDistribution/ChannelCurrent/21",
+    "type": "double",
+    "dataCategory": "PDH_CURRENT"
+  },
+  {
+    "label": "PDH Channel 22",
+    "path": "/AdvantageKit/PowerDistribution/ChannelCurrent/22",
+    "type": "double",
+    "dataCategory": "PDH_CURRENT"
+  },
+  {
+    "label": "PDH Channel 23",
+    "path": "/AdvantageKit/PowerDistribution/ChannelCurrent/23",
+    "type": "double",
+    "dataCategory": "PDH_CURRENT"
   }
 ]

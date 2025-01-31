@@ -16,51 +16,34 @@ function formatTemperatures(temperatures) {
       !t.label.includes("Deflector")
   );
 
+  const formatTemp = (temp) => {
+    // For motor temps, 0 is considered invalid/unreadable
+    const displayValue =
+      temp.value === 0 ? "N/A" : `${temp.value.toFixed(1)}°C`;
+    return `<p style="color: ${getTemperatureColor(temp.value)}">${
+      temp.label
+    }: ${displayValue}</p>`;
+  };
+
   const formattedTemperatures = `
     <div class="temp1">
-      ${drivetrainTemps
-        .map(
-          (temp) =>
-            `<p style="color: ${getTemperatureColor(temp.value)}">${
-              temp.label
-            }: ${temp.value.toFixed(1)}°C</p>`
-        )
-        .join("\n")}
+      ${drivetrainTemps.map(formatTemp).join("\n")}
     </div>
     <div class="temp2">
-      ${intakeTemps
-        .map(
-          (temp) =>
-            `<p style="color: ${getTemperatureColor(temp.value)}">${
-              temp.label
-            }: ${temp.value.toFixed(1)}°C</p>`
-        )
-        .join("\n")}
-      ${otherTemps
-        .map(
-          (temp) =>
-            `<p style="color: ${getTemperatureColor(temp.value)}">${
-              temp.label
-            }: ${temp.value.toFixed(1)}°C</p>`
-        )
-        .join("\n")}
+      ${intakeTemps.map(formatTemp).join("\n")}
+      ${otherTemps.map(formatTemp).join("\n")}
     </div>
     <div class="temp3">
-      ${shooterTemps
-        .map(
-          (temp) =>
-            `<p style="color: ${getTemperatureColor(temp.value)}">${
-              temp.label
-            }: ${temp.value.toFixed(1)}°C</p>`
-        )
-        .join("\n")}
+      ${shooterTemps.map(formatTemp).join("\n")}
     </div>`;
 
   return formattedTemperatures;
 }
 
 function getTemperatureColor(temperature) {
-  if (temperature < 30) {
+  if (temperature === 0) {
+    return "#888888"; // Gray for N/A
+  } else if (temperature < 30) {
     return "DeepSkyBlue";
   } else if (temperature < 50) {
     return "green";

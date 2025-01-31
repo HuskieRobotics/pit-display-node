@@ -9,6 +9,11 @@ socket.on("temperatures", (entry) => {
   temperatures.innerHTML = entry;
 });
 
+socket.on("pdhCurrents", (entry) => {
+  const pdhDisplay = document.querySelector("div.bar");
+  pdhDisplay.innerHTML = entry;
+});
+
 async function fetchTemperatures() {
   const temperatures = document.querySelector("div.temp");
 
@@ -20,4 +25,16 @@ async function fetchTemperatures() {
   }
 }
 
+async function fetchPDHCurrents() {
+  const pdhDisplay = document.querySelector("div.bar");
+
+  const response = await fetch("/pdhCurrents");
+  if (response.ok) {
+    pdhDisplay.innerHTML = await response.text();
+  } else {
+    console.log("error fetching PDH currents");
+  }
+}
+
 fetchTemperatures();
+fetchPDHCurrents();

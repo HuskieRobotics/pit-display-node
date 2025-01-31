@@ -254,3 +254,76 @@ div.twitchstream iframe {
   font-family: "Arial Rounded MT Bold", sans-serif;
   font-size: 12px;
 }
+
+.pdh-container {
+  background-color: #24252a;
+  margin: 0;
+  padding: 8px;
+  text-align: center;
+  color: #ffffff;
+  font-family: "Arial Rounded MT Bold", sans-serif;
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.pdh-header {
+  font-size: 1em;
+  margin-bottom: 5px;
+  color: #ffffff;
+  text-align: center;
+}
+
+.pdh-high-current-section {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 4px;
+  background-color: #2a2b30;
+  padding: 4px;
+  border-radius: 4px;
+}
+
+.pdh-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 2px;
+}
+
+.pdh-channel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2px;
+  border-radius: 3px;
+  background-color: #24252a;
+  min-width: 35px;
+}
+
+.pdh-channel.high-current {
+  border: 1px solid #ff6b00;
+}
+
+.pdh-channel.low-current {
+  border: 1px solid #4a90e2;
+}
+
+.channel-number {
+  font-size: 0.7em;
+  color: #888;
+  margin-bottom: 1px;
+}
+
+.current-value {
+  font-size: 0.8em;
+  font-weight: bold;
+}
+
+.pdh-low-current-section {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  background-color: #2a2b30;
+  padding: 4px;
+  border-radius: 4px;
+}
