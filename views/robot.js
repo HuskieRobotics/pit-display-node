@@ -1,14 +1,60 @@
 function formatTemperatures(temperatures) {
-  let formattedTemperatures = `<div class="temp1">`;
+  // Group temperatures by subsystem
+  const drivetrainTemps = temperatures.filter(
+    (t) => t.label.includes("Drive") || t.label.includes("Steer")
+  );
+  const intakeTemps = temperatures.filter((t) => t.label.includes("Intake"));
+  const shooterTemps = temperatures.filter(
+    (t) => t.label.includes("Shooter") || t.label.includes("Deflector")
+  );
+  const otherTemps = temperatures.filter(
+    (t) =>
+      !t.label.includes("Drive") &&
+      !t.label.includes("Steer") &&
+      !t.label.includes("Intake") &&
+      !t.label.includes("Shooter") &&
+      !t.label.includes("Deflector")
+  );
 
-  temperatures.forEach((temperature) => {
-    formattedTemperatures += `<p style="color: ${getTemperatureColor(
-      temperature.value
-    )}">${temperature.label}: ${temperature.value.toFixed(1)}°C</p>
-    `;
-  });
-
-  formattedTemperatures += "</div>";
+  const formattedTemperatures = `
+    <div class="temp1">
+      ${drivetrainTemps
+        .map(
+          (temp) =>
+            `<p style="color: ${getTemperatureColor(temp.value)}">${
+              temp.label
+            }: ${temp.value.toFixed(1)}°C</p>`
+        )
+        .join("\n")}
+    </div>
+    <div class="temp2">
+      ${intakeTemps
+        .map(
+          (temp) =>
+            `<p style="color: ${getTemperatureColor(temp.value)}">${
+              temp.label
+            }: ${temp.value.toFixed(1)}°C</p>`
+        )
+        .join("\n")}
+      ${otherTemps
+        .map(
+          (temp) =>
+            `<p style="color: ${getTemperatureColor(temp.value)}">${
+              temp.label
+            }: ${temp.value.toFixed(1)}°C</p>`
+        )
+        .join("\n")}
+    </div>
+    <div class="temp3">
+      ${shooterTemps
+        .map(
+          (temp) =>
+            `<p style="color: ${getTemperatureColor(temp.value)}">${
+              temp.label
+            }: ${temp.value.toFixed(1)}°C</p>`
+        )
+        .join("\n")}
+    </div>`;
 
   return formattedTemperatures;
 }

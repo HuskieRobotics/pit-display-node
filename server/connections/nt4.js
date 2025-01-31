@@ -29,12 +29,13 @@ if (process.env.ROBOT_IS_LOCAL === "true") {
 function getMotorTemperatures() {
   const motorTemperatures = [];
   for (const topic of ntTopics) {
-    motorTemperatures.push({
-      label: topic.label,
-      value: topic.value || 0.0,
-    });
+    if (topic.dataCategory === "MOTOR_TEMP") {
+      motorTemperatures.push({
+        label: topic.label,
+        value: topic.value || 0.0,
+      });
+    }
   }
-
   return motorTemperatures;
 }
 
