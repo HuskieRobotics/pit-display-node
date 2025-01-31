@@ -48,7 +48,8 @@ route.get("/info", async (req, res) => {
 });
 
 route.get("/settings", (req, res) => {
-  res.render("settings");
+  res.render("settings", {});
+  // const streamServiceSelect = streamObject.streamingService;
 });
 
 route.post("/settings", (req, res) => {

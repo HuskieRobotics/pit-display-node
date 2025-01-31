@@ -24,6 +24,8 @@ document.addEventListener("DOMContentLoaded", function () {
       streamingService: selectedServiceValue,
       streamingLink: streamingLinkValue,
     };
+
+    const streamServiceSelect = streamObject.streamingService;
     fetch("/settings", {
       method: "POST",
       headers: {
