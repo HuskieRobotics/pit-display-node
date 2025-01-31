@@ -1,8 +1,13 @@
 const nt4Client = require("ntcore-ts-client");
 const ntTopics = require("../model/ntTopics");
-const { emitTemperatures, emitPDHCurrents } = require("../socket/socket");
+const {
+  emitTemperatures,
+  emitPDHCurrents,
+  emitPowerStats,
+} = require("../socket/socket");
 const { formatTemperatures } = require("../../views/robot");
 const { formatPDHCurrents } = require("../../views/pdh");
+const { formatPowerStats } = require("../../views/power");
 
 let ntCore;
 
@@ -21,6 +26,7 @@ if (process.env.ROBOT_IS_LOCAL === "true") {
           value !== null && value !== undefined ? value : null;
         emitTemperatures(formatTemperatures(getMotorTemperatures()));
         emitPDHCurrents(formatPDHCurrents(getPDHCurrents()));
+        emitPowerStats(formatPowerStats(getPowerStats()));
       }, true);
     } else {
       console.log("Unsupported NT type");
@@ -60,4 +66,20 @@ function getPDHCurrents() {
   return pdhCurrents.sort((a, b) => a.channel - b.channel);
 }
 
-module.exports = { getMotorTemperatures, getPDHCurrents };
+function getPowerStats() {
+  const powerStats = [];
+  for (const topic of ntTopics) {
+    if (topic.dataCategory === "POWER_STATS") {
+      powerStats.push({
+        label: topic.label,
+        value:
+          topic.value !== null && topic.value !== undefined
+            ? topic.value
+            : null,
+      });
+    }
+  }
+  return powerStats;
+}
+
+module.exports = { getMotorTemperatures, getPDHCurrents, getPowerStats };

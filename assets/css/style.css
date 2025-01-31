@@ -327,3 +327,27 @@ div.twitchstream iframe {
   padding: 4px;
   border-radius: 4px;
 }
+
+.power-stat-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.power-stat-label {
+  font-size: 1.2em;
+  color: #ffffff;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.power-stat-value {
+  font-size: 2.5em;
+  font-weight: bold;
+  text-align: center;
+}

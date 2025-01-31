@@ -26,4 +26,13 @@ function emitPDHCurrents(entry) {
   io.emit("pdhCurrents", entry);
 }
 
-module.exports = { createSocketServer, emitTemperatures, emitPDHCurrents };
+function emitPowerStats(stats) {
+  io.emit("powerStats", stats);
+}
+
+module.exports = {
+  createSocketServer,
+  emitTemperatures,
+  emitPDHCurrents,
+  emitPowerStats,
+};

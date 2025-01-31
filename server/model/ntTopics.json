@@ -238,5 +238,17 @@
     "path": "/AdvantageKit/PowerDistribution/ChannelCurrent/23",
     "type": "double",
     "dataCategory": "PDH_CURRENT"
+  },
+  {
+    "label": "Total Current",
+    "path": "/AdvantageKit/PowerDistribution/TotalCurrent",
+    "type": "double",
+    "dataCategory": "POWER_STATS"
+  },
+  {
+    "label": "Battery Voltage",
+    "path": "/AdvantageKit/PowerDistribution/Voltage",
+    "type": "double",
+    "dataCategory": "POWER_STATS"
   }
 ]
