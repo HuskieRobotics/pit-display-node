@@ -47,8 +47,9 @@ route.get("/info", async (req, res) => {
   res.render("info");
 });
 
+let existingLink = "";
 route.get("/settings", (req, res) => {
-  res.render("settings", {});
+  res.render("settings", { existingLink: existingLink });
   // const streamServiceSelect = streamObject.streamingService;
 });
 
@@ -58,10 +59,14 @@ route.post("/settings", (req, res) => {
   console.log("Streaming service:", streamingService);
   console.log("Streaming link:", streamingLink);
 
+  existingLink = streamingLink;
+
   // send a response back to the client to test
   res.json({ success: true, message: "Settings saved successfully" });
   res.json({ message: "streaming service: " + streamingService });
   res.json({ message: "streaming link: " + streamingLink });
+
+  res.redirect("/");
 });
 
 module.exports = route;
