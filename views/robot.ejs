@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <!-- include header -->
 <%- include('include/_header') %>
 <!-- /include header -->
@@ -37,21 +38,19 @@
         </a>
       </navigation>
 
-      <!-- <div class="checklist"></div> -->
       <div class="checklist">
-          <% tasks.forEach(function(task) { %>
+          <% tasks.forEach(function(task, taskIndex) { %>
             <details>
               <summary><%= task.name %></summary>
             
             <% for (var i = 0; i < task.checklistItems.length; i++) { %>
               <label>
-                <input type="checkbox" name="check<%= i %>" value="check<%= i %>" /> <%= task.checklistItems[i].taskName %>
+                <input type="checkbox" data-key="checklist-<%= taskIndex %>-<%= i %>" name="check<%= taskIndex %>_<%= i %>" value="check<%= taskIndex %>_<%= i %>" /> <%= task.checklistItems[i].taskName %>
               </label>
               <br />
             <% } %>
             </details>
           <% }); %>
-        </div>
       </div>
       <div class="data">
         <div class="temp">

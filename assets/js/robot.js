@@ -22,21 +22,24 @@ async function fetchTemperatures() {
 
 fetchTemperatures();
 
-// so to make sure, do an all query selector for all input types of button in the class
-// then for each one, use a for loop to make a action listener for each one
-// which responds on click
-// first just print the name of the thing that was clicked
+// Select all checkboxes with a data-key attribute for persistence
+const checklist = document.querySelectorAll('input[type="checkbox"][data-key]');
 
-const checklist = document.querySelectorAll("input");
 checklist.forEach((checkbox) => {
+  // Load persisted state on page load
+  const key = checkbox.getAttribute('data-key');
+  const saved = localStorage.getItem(key);
+  if (saved === 'true') {
+    checkbox.checked = true;
+  }
+
   checkbox.addEventListener("click", (event) => {
     const label = event.target.closest("label");
     const taskText = label.textContent.trim();
     const isChecked = event.target.checked;
-    // console.log(`Task: ${taskText} ~ Checked: ${isChecked}`);
+    const key = event.target.getAttribute('data-key');
+    // Save state to localStorage
+    localStorage.setItem(key, isChecked);
     socket.emit("checklist", { taskText, isChecked });
-
-    // Store the state
-    checkbox.dataset.checked = isChecked;
   });
 });
