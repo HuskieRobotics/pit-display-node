@@ -2,38 +2,48 @@
 <%- include('include/_header') %>
 <!-- /include header -->
 
-<body>
+  <body>
     <section>
-        <container>
-            <div class="rankbox">
-                <h1>Settings</h1>
-                <label for="streaming-service">Choose Twitch/YouTube:</label>
-                <select id="streaming-service" name="streaming-service">
-                    <option value="twitch">Twitch</option>
-                    <option value="youtube">YouTube</option>
-                </select>
-
-                <div id="selected-service"></div> 
-
-                <br></br>
-                
-                <br><label for="streaming-link">Enter the link for the selected service:</label></br>
-                <form action = "/settings" method = "POST">
-                <input type="text" id="streaming-link" name="streaming-link" placeholder="enter link here">
-                <button id="submit-button-link">Submit</button>
-                </form>
-                <div id="streaming-link-input"></div>
-
-                <br></br>
-                
-                
-
-               
-
-            </div>
-        </container>
+      <navigation>
+        <!-- Navigation links -->
+        <a href="/">
+          <button class="button">
+            <img src="/img/calendar.png" alt="Match Info" style="width: 50px; height: 50px" />
+          </button>
+        </a>
+        <a href="http://localhost:8081/robot">
+          <button class="button">
+            <img src="/img/statistics.png" alt="Robot Stats" style="width: 50px; height: 50px" />
+          </button>
+        </a>
+        <a href="/info">
+          <button class="button">
+            <img src="/img/info.png" alt="App Info" style="width: 50px; height: 50px" />
+          </button>
+        </a>
+        <a href="/settings">
+          <button class="button">
+            <img src="/img/gear.png" alt="Settings" style="width: 50px; height: 50px" />
+          </button>
+        </a>
+      </navigation>
+      <container>
+        <div class="rankbox">
+          <h3>Stream Settings</h3>
+          <form action="/settings" method="POST">
+            <label for="streamingService">Streaming Service:</label>
+            <select name="streamingService" id="streamingService">
+              <option value="twitch" <%= streamProvider === 'twitch' ? 'selected' : '' %>>Twitch</option>
+              <option value="youtube" <%= streamProvider === 'youtube' ? 'selected' : '' %>>YouTube</option>
+            </select>
+            <br><br>
+            <label for="streamingLink">Streaming Link:</label>
+            <input type="text" id="streamingLink" name="streamingLink" value="<%= streamUrl %>" />
+            <br><br>
+            <button type="submit">Save Settings</button>
+          </form>
+        </div>
+      </container>
     </section>
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="/js/settings.js"></script>
-</body>
+  </body>
 </html>

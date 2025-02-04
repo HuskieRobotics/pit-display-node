@@ -8,81 +8,57 @@
         <!-- Add your navigation links or buttons here -->
         <a href="/">
           <button class="button">
-            <img
-              src="/img/calendar.png"
-              alt="Match Info"
-              style="width: 50px; height: 50px"
-            />
+            <img src="/img/calendar.png" alt="Match Info" style="width: 50px; height: 50px" />
           </button>
         </a>
-
         <a href="http://localhost:8081/robot">
           <button class="button">
-            <img
-              src="/img/statistics.png"
-              alt="Robot Stats"
-              style="width: 50px; height: 50px"
-            />
+            <img src="/img/statistics.png" alt="Robot Stats" style="width: 50px; height: 50px" />
           </button>
         </a>
-
         <a href="/info">
           <button class="button">
-            <img
-              src="/img/info.png"
-              alt="App Info"
-              style="width: 50px; height: 50px"
-            />
+            <img src="/img/info.png" alt="App Info" style="width: 50px; height: 50px" />
           </button>
         </a>
-
-        <a href = "/settings">
+        <a href="/settings">
           <button class="button">
-            <img
-              src="/img/gear.png"
-              alt="Settings"
-              style="width: 50px; height: 50px"
-            />
+            <img src="/img/gear.png" alt="Settings" style="width: 50px; height: 50px" />
           </button>
         </a>
-
       </navigation>
       <stats>
         <div class="rankbox"></div>
-
         <div class="upcomingmatches">
           <h3 id="upcoming_matches">Upcoming Matches</h3>
           <ul id="list_upcoming_matches"></ul>
         </div>
-
         <div class="pastmatches">
           <h3 id="past_matches">Past Matches</h3>
           <ul id="list_past_matches"></ul>
         </div>
       </stats>
-
-      
-
       <iframe id="streaming-iframe" width="560" height="315" frameborder="0" allowfullscreen></iframe>
       <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const isTwitch = localStorage.getItem('streaming-service') === 'twitch';
-            const streamingLink = localStorage.getItem('streaming-link');
+            const streamProvider = "<%= streamProvider %>";
+            const streamUrl = "<%= streamUrl %>";
             const iframe = document.getElementById('streaming-iframe');
-
-            if (isTwitch) {
-                iframe.src = `https://player.twitch.tv/?channel=${streamingLink}&parent=${window.location.hostname}`;
+            if (streamProvider === 'twitch') {
+                const channel = streamUrl.split('/').pop();
+                iframe.src = `https://player.twitch.tv/?channel=${channel}&parent=${window.location.hostname}`;
+            } else if (streamProvider === 'youtube') {
+                // Extract video ID from common YouTube URL formats
+                const videoIdMatch = streamUrl.match(/(?:youtube\.com\/.*[?&]v=|youtu\.be\/)([^&]+)/);
+                const videoId = videoIdMatch ? videoIdMatch[1] : streamUrl;
+                iframe.src = `https://www.youtube.com/embed/${videoId}`;
             } else {
-                iframe.src = `https://www.youtube.com/embed/${streamingLink}`;
+                iframe.src = streamUrl;
             }
         });
       </script>
-
-
     </section>
-
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-
     <script src="/js/event.js"></script>
   </body>
 </html>
