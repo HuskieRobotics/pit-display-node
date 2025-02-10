@@ -13,15 +13,25 @@ const {
 } = require("../../views/event");
 const { getMotorTemperatures } = require("../connections/nt4");
 const { formatTemperatures } = require("../../views/robot");
+const StreamSettings = require("../model/StreamSettings");
 
-// pass a path (e.g., "/") and callback function to the get method
-//  when the client makes an HTTP GET request to the specified path,
-//  the callback function is executed
+// GET main page - read stream settings from DB and pass to view
 route.get("/", async (req, res) => {
-  // the res parameter references the HTTP response object
-  res.render("event", { streamURL: config.streamURL });
+  let streamProvider = "twitch";
+  let streamUrl = "https://twitch.tv/your_channel_name";
+  try {
+    const settings = await StreamSettings.findById("67a0e0cd31da43b3d5ba6151").lean();
+    if (settings) {
+      streamProvider = settings.streamProvider;
+      streamUrl = settings.streamUrl;
+    }
+  } catch (err) {
+    console.error("Error fetching stream settings:", err.message);
+  }
+  res.render("event", { streamProvider, streamUrl });
 });
 
+// GET teamStats route remains the same
 route.get("/teamStats", async (req, res) => {
   res.send(formatTeamStats(await fetchTeamStats()));
 });
@@ -45,6 +55,37 @@ route.get("/temperatures", async (req, res) => {
 route.get("/info", async (req, res) => {
   console.log("info");
   res.render("info");
+});
+
+// GET settings page - read current stream settings from DB and pass to view
+route.get("/settings", async (req, res) => {
+  let streamProvider = "twitch";
+  let streamUrl = "https://twitch.tv/your_channel_name";
+  try {
+    const settings = await StreamSettings.findById("67a0e0cd31da43b3d5ba6151").lean();
+    if (settings) {
+      streamProvider = settings.streamProvider;
+      streamUrl = settings.streamUrl;
+    }
+  } catch (err) {
+    console.error("Error fetching stream settings:", err.message);
+  }
+  res.render("settings", { streamProvider, streamUrl });
+});
+
+// POST settings - update the stream settings document in the DB
+route.post("/settings", async (req, res) => {
+  const { streamingService, streamingLink } = req.body;
+  try {
+    await StreamSettings.findByIdAndUpdate("67a0e0cd31da43b3d5ba6151", {
+      streamProvider: streamingService,
+      streamUrl: streamingLink
+    }, { new: true, upsert: true });
+    console.log("Updated stream settings:", streamingService, streamingLink);
+  } catch (err) {
+    console.error("Error updating stream settings:", err.message);
+  }
+  res.redirect("/");
 });
 
 module.exports = route;

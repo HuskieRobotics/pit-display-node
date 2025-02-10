@@ -4,61 +4,39 @@
 
   <body>
     <section>
-      <navigation>
-        <!-- Add your navigation links or buttons here -->
-        <a href="/">
-          <button class="button">
-            <img
-              src="/img/calendar.png"
-              alt="Match Info"
-              style="width: 50px; height: 50px"
-            />
-          </button>
-        </a>
-
-        <a href="http://localhost:8081/robot">
-          <button class="button">
-            <img
-              src="/img/statistics.png"
-              alt="Robot Stats"
-              style="width: 50px; height: 50px"
-            />
-          </button>
-        </a>
-
-        <a href="/info">
-          <button class="button">
-            <img
-              src="/img/info.png"
-              alt="App Info"
-              style="width: 50px; height: 50px"
-            />
-          </button>
-        </a>
-      </navigation>
+      <%- include('include/_sidebar') %>
       <stats>
         <div class="rankbox"></div>
-
         <div class="upcomingmatches">
           <h3 id="upcoming_matches">Upcoming Matches</h3>
           <ul id="list_upcoming_matches"></ul>
         </div>
-
         <div class="pastmatches">
           <h3 id="past_matches">Past Matches</h3>
           <ul id="list_past_matches"></ul>
         </div>
       </stats>
-
-      <stream>
-        <div class="twitchstream">
-          <iframe src="<%= streamURL %>" frameborder="0" allowfullscreen="true" scrolling="no"></iframe>
-        </div>
-      </stream>
+      <iframe id="streaming-iframe" style="flex-grow: 1; height: 100vh; border: 0;" allowfullscreen></iframe>
+      <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const streamProvider = "<%= streamProvider %>";
+            const streamUrl = "<%= streamUrl %>";
+            const iframe = document.getElementById('streaming-iframe');
+            if (streamProvider === 'twitch') {
+                const channel = streamUrl.split('/').pop();
+                iframe.src = `https://player.twitch.tv/?channel=${channel}&parent=${window.location.hostname}`;
+            } else if (streamProvider === 'youtube') {
+                // Extract video ID from common YouTube URL formats
+                const videoIdMatch = streamUrl.match(/(?:youtube\.com\/.*[?&]v=|youtu\.be\/)([^&]+)/);
+                const videoId = videoIdMatch ? videoIdMatch[1] : streamUrl;
+                iframe.src = `https://www.youtube.com/embed/${videoId}`;
+            } else {
+                iframe.src = streamUrl;
+            }
+        });
+      </script>
     </section>
-
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-
     <script src="/js/event.js"></script>
   </body>
 </html>
