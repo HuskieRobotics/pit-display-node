@@ -1,6 +1,22 @@
 const express = require("express");
 const route = express.Router();
 const config = require("../model/config");
+const tasks = require("../model/checklist");
+const { makeTaskObject } = require("../../views/robot");
+// const newTasks = tasks.map((task) => {
+//   return {
+//     name: task.name,
+//     checklistItems: task.checklistItems.map((item) => {
+//       return {
+//         taskName: item,
+//         checked: false,
+//       };
+//     }),
+//   };
+// });
+
+const newTasks = makeTaskObject(tasks);
+
 const {
   fetchTeamStats,
   fetchUpcomingMatches,
@@ -15,7 +31,9 @@ const { getMotorTemperatures } = require("../connections/nt4");
 const { formatTemperatures } = require("../../views/robot");
 const StreamSettings = require("../model/StreamSettings");
 
-// GET main page - read stream settings from DB and pass to view
+// GET main page - read stream settings from DB and pass to view.
+// When the client makes an HTTP GET request to the specified path,
+// the callback function is executed.
 route.get("/", async (req, res) => {
   let streamProvider = "twitch";
   let streamUrl = "https://twitch.tv/your_channel_name";
@@ -45,7 +63,16 @@ route.get("/pastMatches", async (req, res) => {
 });
 
 route.get("/robot", async (req, res) => {
-  res.render("robot");
+  try {
+    const temperatures = await getMotorTemperatures();
+    res.render("robot", {
+      tasks: newTasks,
+      temperatures: formatTemperatures(temperatures),
+    });
+  } catch (error) {
+    console.error("Error in /robot route:", error);
+    res.status(500).send("Error loading robot page");
+  }
 });
 
 route.get("/temperatures", async (req, res) => {
@@ -77,10 +104,14 @@ route.get("/settings", async (req, res) => {
 route.post("/settings", async (req, res) => {
   const { streamingService, streamingLink } = req.body;
   try {
-    await StreamSettings.findByIdAndUpdate("67a0e0cd31da43b3d5ba6151", {
-      streamProvider: streamingService,
-      streamUrl: streamingLink
-    }, { new: true, upsert: true });
+    await StreamSettings.findByIdAndUpdate(
+      "67a0e0cd31da43b3d5ba6151",
+      {
+        streamProvider: streamingService,
+        streamUrl: streamingLink,
+      },
+      { new: true, upsert: true }
+    );
     console.log("Updated stream settings:", streamingService, streamingLink);
   } catch (err) {
     console.error("Error updating stream settings:", err.message);

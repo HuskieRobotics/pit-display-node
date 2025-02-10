@@ -150,7 +150,7 @@ div.twitchstream iframe {
   margin: 10px;
   text-align: left;
   color: #ffffff;
-  font-family: "Arial Rounded MT Bold", sans-serif;
+  font-family: "Source Code Pro", monospace;
   width: calc(22vw / 2);
   float: left;
 }
@@ -161,7 +161,7 @@ div.twitchstream iframe {
   text-align: left;
   color: #ffffff;
   border-radius: 10px;
-  font-family: "Arial Rounded MT Bold", sans-serif;
+  font-family: "Source Code Pro", monospace;
   border: 2px solid white; /* Adjust thickness as needed */
   width: calc(75vw / 2);
   height: 20vh;
@@ -173,7 +173,7 @@ div.twitchstream iframe {
   text-align: left;
   color: #ffffff;
   border-radius: 10px;
-  font-family: "Arial Rounded MT Bold", sans-serif;
+  font-family: "Source Code Pro", monospace;
   border: 2px solid white; /* Adjust thickness as needed */
   width: calc(35vw / 2);
   height: 20vh;
@@ -185,7 +185,7 @@ div.twitchstream iframe {
   text-align: left;
   color: #ffffff;
   border-radius: 10px;
-  font-family: "Arial Rounded MT Bold", sans-serif;
+  font-family: "Source Code Pro", monospace;
   border: 2px solid white; /* Adjust thickness as needed */
   width: calc(35vw / 2);
   height: 20vh;
@@ -197,7 +197,7 @@ div.twitchstream iframe {
   text-align: left;
   color: #ffffff;
   border-radius: 10px;
-  font-family: "Arial Rounded MT Bold", sans-serif;
+  font-family: "Source Code Pro", monospace;
   border: 2px solid white; /* Adjust thickness as needed */
   width: calc(75vw / 2);
   height: 20vh;
@@ -214,7 +214,7 @@ div.twitchstream iframe {
   text-align: center;
   color: #5f5757;
   border-radius: 10px;
-  font-family: "Arial Rounded MT Bold", sans-serif;
+  font-family: "Source Code Pro", monospace;
   border: 2px solid white; /* Adjust thickness as needed */
   width: calc(30vw / 2);
   height: 10vh;
@@ -232,7 +232,7 @@ div.twitchstream iframe {
   text-align: center;
   color: #ffffff;
   border-radius: 10px;
-  font-family: "Arial Rounded MT Bold", sans-serif;
+  font-family: "Source Code Pro", monospace;
   border: 2px solid white; /* Adjust thickness as needed */
   width: calc(15vw / 2);
   height: 2vh;
@@ -251,6 +251,20 @@ div.twitchstream iframe {
 
 .checkpar {
   color: #ffffff;
-  font-family: "Arial Rounded MT Bold", sans-serif;
+  font-family: "Source Code Pro", monospace;
   font-size: 12px;
+}
+
+.checklist p {
+  font-size: 20px;
+}
+
+.checklist summary {
+  font-size: 18px;
+  font-family: "Operator Mono", monospace;
+}
+
+.checklist {
+  font-family: "Oxygen Mono", monospace;
+  font-size: 15px;
 }

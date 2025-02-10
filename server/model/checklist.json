@@ -1,23 +1,27 @@
-{
-  "Checklist": {
-    "General": ["Bumplers + Covers Off, Pins In"],
-    "Mechanical": [
-      "Swerve Inspection",
-      "Turret Wiggle + Inspect",
-      "Arm Wiggle + Inspect",
-      "Leadscrew Inspect",
-      "Walk the Arm",
-      "Death Screw",
-      "Drag Chain",
-      "Intake Wiggle"
-    ],
-    "Electrical": [
-      "Status Lights",
-      "Battery Connection",
-      "Turret Encoder + Underside Connections",
-      "Arm Encoder",
-      "RoboRIO + Ethernet Connections"
-    ],
-    "After Checks": ["Bumpers + Covers On", "Robot On", "Systems Check"]
+[ 
+  {
+    "name": "Post-Match (in pit)",
+    "checklistItems":
+      [
+        "Reboot Computer",
+        "Download log file to Driver Station computer, copy to log file flash drive",
+        "Check the CPU temperature of each Raspberry Pi",
+        "Charge Driver Station Computer"
+      ]
+  },
+  {
+    "name": "Robot Items",
+    "checklistItems": 
+    [
+      "Driver Labtop + Charger + Ethernet Pigtail",
+      "Ian's joysticks",
+      "Jake's contoller + button panel",
+      "Ethernet + USB B cables",
+      "Emergency Tool Box",
+      "Angle measurer + tape measure",
+      "Snips + small white zip ties",
+      "Two 7/16 bumper wrenches and short 1/8 t-wrench",
+      "Drill with battery"
+    ]
   }
-}
+]

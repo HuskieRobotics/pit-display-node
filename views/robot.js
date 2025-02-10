@@ -27,4 +27,25 @@ function getTemperatureColor(temperature) {
   }
 }
 
-module.exports = { formatTemperatures };
+// move map code into a new fucntion in routes.js and require and call it
+let newTasks;
+function makeTaskObject(tasks) {
+  newTasks = tasks.map((task) => {
+    return {
+      name: task.name,
+      checklistItems: task.checklistItems.map((item) => {
+        return {
+          taskName: item,
+          checked: false,
+        };
+      }),
+    };
+  });
+  return newTasks;
+}
+
+function updateChecked(task) {
+  console.log(newTasks);
+}
+
+module.exports = { formatTemperatures, makeTaskObject, updateChecked };
