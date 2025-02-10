@@ -90,7 +90,7 @@ div.twitchstream iframe {
   text-align: left;
   color: #ffffff;
   border-radius: 10px;
-  font-family: "Arial Rounded MT Bold", sans-serif;
+  font-family: "Source Code Pro", monospace;
   border: 2px solid white; /* Adjust thickness as needed */
   width: calc(35vw / 2);
   height: 85vh;
@@ -114,7 +114,7 @@ div.twitchstream iframe {
   text-align: left;
   color: #ffffff;
   border-radius: 10px;
-  font-family: "Arial Rounded MT Bold", sans-serif;
+  font-family: "Source Code Pro", monospace;
   border: 2px solid white; /* Adjust thickness as needed */
   width: calc(35vw / 2);
   height: 85vh;
@@ -127,7 +127,7 @@ div.twitchstream iframe {
   text-align: left;
   color: #ffffff;
   border-radius: 0px;
-  font-family: "Arial Rounded MT Bold", sans-serif;
+  font-family: "Source Code Pro", monospace;
   width: calc(80vw / 2);
   float: left;
 }
@@ -138,7 +138,7 @@ div.twitchstream iframe {
   text-align: left;
   color: #ffffff;
   border-radius: 10px;
-  font-family: "Arial Rounded MT Bold", sans-serif;
+  font-family: "Source Code Pro", monospace;
   border: 2px solid white; /* Adjust thickness as needed */
   width: calc(75vw / 2);
   float: left;
@@ -265,7 +265,7 @@ div.twitchstream iframe {
   padding: 8px;
   text-align: center;
   color: #ffffff;
-  font-family: "Arial Rounded MT Bold", sans-serif;
+  font-family: "Source Code Pro", monospace;
   height: 100%;
   width: 100%;
   box-sizing: border-box;
@@ -363,10 +363,10 @@ div.twitchstream iframe {
 
 .checklist summary {
   font-size: 18px;
-  font-family: "Operator Mono", monospace;
+  font-family: "Source Code Pro", monospace;
 }
 
 .checklist {
-  font-family: "Oxygen Mono", monospace;
+  font-family: "Source Code Pro", monospace;
   font-size: 15px;
 }
