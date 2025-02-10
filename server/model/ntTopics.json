@@ -2,81 +2,115 @@
   {
     "label": "FL Drive",
     "path": "/AdvantageKit/Drivetrain/FL/DriveTempCelsius",
-    "type": "double"
+    "type": "double",
+    "dataCategory": "MOTOR_TEMP"
   },
   {
     "label": "FL Steer",
     "path": "/AdvantageKit/Drivetrain/FL/SteerTempCelsius",
-    "type": "double"
+    "type": "double",
+    "dataCategory": "MOTOR_TEMP"
   },
   {
     "label": "FR Drive",
     "path": "/AdvantageKit/Drivetrain/FR/DriveTempCelsius",
-    "type": "double"
+    "type": "double",
+    "dataCategory": "MOTOR_TEMP"
   },
   {
     "label": "FR Steer",
     "path": "/AdvantageKit/Drivetrain/FR/SteerTempCelsius",
-    "type": "double"
+    "type": "double",
+    "dataCategory": "MOTOR_TEMP"
   },
   {
     "label": "BR Drive",
     "path": "/AdvantageKit/Drivetrain/BR/DriveTempCelsius",
-    "type": "double"
+    "type": "double",
+    "dataCategory": "MOTOR_TEMP"
   },
   {
     "label": "BR Steer",
     "path": "/AdvantageKit/Drivetrain/BR/SteerTempCelsius",
-    "type": "double"
+    "type": "double",
+    "dataCategory": "MOTOR_TEMP"
   },
   {
     "label": "BL Drive",
     "path": "/AdvantageKit/Drivetrain/BL/DriveTempCelsius",
-    "type": "double"
+    "type": "double",
+    "dataCategory": "MOTOR_TEMP"
   },
   {
     "label": "BL Steer",
     "path": "/AdvantageKit/Drivetrain/BL/SteerTempCelsius",
-    "type": "double"
+    "type": "double",
+    "dataCategory": "MOTOR_TEMP"
   },
   {
     "label": "Intake Roller",
     "path": "/AdvantageKit/Intake/RollerTempCelsius",
-    "type": "double"
+    "type": "double",
+    "dataCategory": "MOTOR_TEMP"
   },
   {
     "label": "Intake Kicker",
     "path": "/AdvantageKit/Intake/KickerTempCelsius",
-    "type": "double"
+    "type": "double",
+    "dataCategory": "MOTOR_TEMP"
   },
   {
     "label": "Climber",
     "path": "/AdvantageKit/Climber/ClimberMotorTemperatureCelsius",
-    "type": "double"
+    "type": "double",
+    "dataCategory": "MOTOR_TEMP"
   },
   {
     "label": "Shooter Angle",
     "path": "/AdvantageKit/Shooter/AngleMotorTemperatureCelsius",
-    "type": "double"
+    "type": "double",
+    "dataCategory": "MOTOR_TEMP"
   },
   {
     "label": "Shooter Deflector",
     "path": "/AdvantageKit/Shooter/DeflectorMotorTemperatureCelsius",
-    "type": "double"
+    "type": "double",
+    "dataCategory": "MOTOR_TEMP"
   },
   {
     "label": "Shooter Top",
     "path": "/AdvantageKit/Shooter/ShootMotorTopTemperatureCelsius",
-    "type": "double"
+    "type": "double",
+    "dataCategory": "MOTOR_TEMP"
   },
   {
     "label": "Shooter Bottom",
     "path": "/AdvantageKit/Shooter/ShootMotorBottomTemperatureCelsius",
-    "type": "double"
+    "type": "double",
+    "dataCategory": "MOTOR_TEMP"
   },
   {
     "label": "roboRIO CPU",
     "path": "/AdvantageKit/SystemStats/CPUTempCelcius",
-    "type": "double"
+    "type": "double",
+    "dataCategory": "SYSTEM_TEMP"
+  },
+  {
+    "label": "Channel Currents",
+    "path": "/AdvantageKit/PowerDistribution/ChannelCurrent",
+    "type": "double[]",
+    "dataCategory": "PDH_CURRENT"
+  },
+  {
+    "label": "Total Current",
+    "path": "/AdvantageKit/PowerDistribution/TotalCurrent",
+    "type": "double",
+    "dataCategory": "POWER_STATS"
+  },
+  {
+    "label": "Battery Voltage",
+    "path": "/AdvantageKit/PowerDistribution/Voltage",
+    "type": "double",
+    "dataCategory": "POWER_STATS"
   }
 ]

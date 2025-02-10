@@ -28,4 +28,17 @@ function emitTemperatures(entry) {
   io.emit("temperatures", entry);
 }
 
-module.exports = { createSocketServer, emitTemperatures };
+function emitPDHCurrents(entry) {
+  io.emit("pdhCurrents", entry);
+}
+
+function emitPowerStats(stats) {
+  io.emit("powerStats", stats);
+}
+
+module.exports = {
+  createSocketServer,
+  emitTemperatures,
+  emitPDHCurrents,
+  emitPowerStats,
+};

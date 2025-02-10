@@ -27,13 +27,17 @@ const {
   formatUpcomingMatches,
   formatPastMatches,
 } = require("../../views/event");
-const { getMotorTemperatures } = require("../connections/nt4");
+const {
+  getMotorTemperatures,
+  getPDHCurrents,
+  getPowerStats,
+} = require("../connections/nt4");
 const { formatTemperatures } = require("../../views/robot");
+const { formatPDHCurrents } = require("../../views/pdh");
+const { formatPowerStats } = require("../../views/power");
 const StreamSettings = require("../model/StreamSettings");
 
 // GET main page - read stream settings from DB and pass to view.
-// When the client makes an HTTP GET request to the specified path,
-// the callback function is executed.
 route.get("/", async (req, res) => {
   let streamProvider = "twitch";
   let streamUrl = "https://twitch.tv/your_channel_name";
@@ -76,7 +80,15 @@ route.get("/robot", async (req, res) => {
 });
 
 route.get("/temperatures", async (req, res) => {
-  res.send(formatTemperatures(getMotorTemperatures()));
+  res.send(formatTemperatures(await getMotorTemperatures()));
+});
+
+route.get("/pdhCurrents", async (req, res) => {
+  res.send(formatPDHCurrents(await getPDHCurrents()));
+});
+
+route.get("/powerStats", async (req, res) => {
+  res.json(formatPowerStats(await getPowerStats()));
 });
 
 route.get("/info", async (req, res) => {
