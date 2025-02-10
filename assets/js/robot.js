@@ -1,6 +1,6 @@
 /**
- * contains client-side JavaScript function
- *  (primarily event handlers to fetch data from the Node server)
+ * contains client-side JavaScript functions
+ * (primarily event handlers to fetch data from the Node server)
  */
 const socket = window.io();
 
@@ -24,7 +24,6 @@ socket.on("powerStats", (stats) => {
 
 async function fetchTemperatures() {
   const temperatures = document.querySelector("div.temp");
-
   const response = await fetch("/temperatures");
   if (response.ok) {
     temperatures.innerHTML = await response.text();
@@ -35,7 +34,6 @@ async function fetchTemperatures() {
 
 async function fetchPDHCurrents() {
   const pdhDisplay = document.querySelector("div.bar");
-
   const response = await fetch("/pdhCurrents");
   if (response.ok) {
     pdhDisplay.innerHTML = await response.text();
@@ -47,7 +45,6 @@ async function fetchPDHCurrents() {
 async function fetchPowerStats() {
   const runtimeDisplay = document.querySelector("div.runtime");
   const voltageDisplay = document.querySelector("div.voltage");
-
   const response = await fetch("/powerStats");
   if (response.ok) {
     const stats = await response.json();
@@ -61,3 +58,25 @@ async function fetchPowerStats() {
 fetchTemperatures();
 fetchPDHCurrents();
 fetchPowerStats();
+
+// Select all checkboxes with a data-key attribute for persistence
+const checklist = document.querySelectorAll('input[type="checkbox"][data-key]');
+
+checklist.forEach((checkbox) => {
+  // Load persisted state on page load
+  const key = checkbox.getAttribute('data-key');
+  const saved = localStorage.getItem(key);
+  if (saved === 'true') {
+    checkbox.checked = true;
+  }
+
+  checkbox.addEventListener("click", (event) => {
+    const label = event.target.closest("label");
+    const taskText = label.textContent.trim();
+    const isChecked = event.target.checked;
+    const key = event.target.getAttribute('data-key');
+    // Save state to localStorage
+    localStorage.setItem(key, isChecked);
+    socket.emit("checklist", { taskText, isChecked });
+  });
+});

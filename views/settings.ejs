@@ -1,0 +1,27 @@
+<!-- include header -->
+<%- include('include/_header') %>
+<!-- /include header -->
+
+  <body>
+    <section>
+      <%- include('include/_sidebar') %>
+      <container>
+        <div class="rankbox">
+          <h3>Stream Settings</h3>
+          <form action="/settings" method="POST">
+            <label for="streamingService">Streaming Service:</label>
+            <select name="streamingService" id="streamingService">
+              <option value="twitch" <%= streamProvider === 'twitch' ? 'selected' : '' %>>Twitch</option>
+              <option value="youtube" <%= streamProvider === 'youtube' ? 'selected' : '' %>>YouTube</option>
+            </select>
+            <br><br>
+            <label for="streamingLink">Streaming Link:</label>
+            <input type="text" id="streamingLink" name="streamingLink" value="<%= streamUrl %>" />
+            <br><br>
+            <button type="submit">Save Settings</button>
+          </form>
+        </div>
+      </container>
+    </section>
+  </body>
+</html>
