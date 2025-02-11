@@ -20,12 +20,11 @@ document.addEventListener("DOMContentLoaded", function () {
     // Log the selected streaming service, link, team name, and event key
     console.log(`Selected service: ${selectedServiceValue}`);
     console.log(`Entered link: ${streamingLinkValue}`);
-    console.log(`Entered event key: ${eventKey}`);
+    // console.log(`Entered event key: ${eventKey}`);
 
     const streamObject = {
       streamingService: selectedServiceValue,
       streamingLink: streamingLinkValue,
-      eventKey: eventKey,
     };
 
     const streamServiceSelect = streamObject.streamingService;

@@ -6,10 +6,11 @@ const config = require("../model/config");
 
 const baseUrl = "https://www.thebluealliance.com/api/v3";
 const apiKey = process.env.TBA_API_KEY;
+let currentEventKey = ;
 
 // fetch team stats
 async function fetchTeamStats() {
-  const endpoint = `${baseUrl}/team/frc${config.teamNumber}/event/${config.eventKey}/status`;
+  const endpoint = `${baseUrl}/team/frc${config.teamNumber}/event/${currentEventKey}/status`;
 
   try {
     const response = await axios.get(endpoint, {
