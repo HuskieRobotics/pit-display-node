@@ -23,17 +23,26 @@ async function fetchTeamStats() {
       throw new Error("Invalid data structure in the response.");
     }
 
-    const teamStats = response.data.qual.ranking;
+    const ranking = response.data.qual.ranking;
+    const sortOrders = ranking.sort_orders || [];
+    const sortOrderInfo = response.data.qual.sort_order_info || [];
+    let otherStats = [];
+
+    // Map each sort_order_info entry to its corresponding value in sortOrders
+    for (let i = 0; i < sortOrderInfo.length; i++) {
+      const value = sortOrders[i] !== undefined ? sortOrders[i] : null;
+      otherStats.push({
+        name: sortOrderInfo[i].name,
+        value: value,
+        precision: sortOrderInfo[i].precision,
+      });
+    }
 
     return new TeamStats(
-      teamStats.rank,
-      teamStats.sort_orders[0],
-      teamStats.record.wins,
-      teamStats.record.losses,
-      teamStats.sort_orders[2],
-      teamStats.sort_orders[1],
-      teamStats.sort_orders[3],
-      teamStats.sort_orders[4]
+      ranking.rank,
+      ranking.record.wins,
+      ranking.record.losses,
+      otherStats
     );
   } catch (error) {
     console.error("Error fetching team statistics:", error.message);
