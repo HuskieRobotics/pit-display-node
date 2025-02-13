@@ -6,7 +6,7 @@ const config = require("../model/config");
 
 const baseUrl = "https://www.thebluealliance.com/api/v3";
 const apiKey = process.env.TBA_API_KEY;
-let currentEventKey = ;
+const currentEventKey = config.eventKey;
 
 // fetch team stats
 async function fetchTeamStats() {
@@ -56,7 +56,7 @@ async function fetchUpcomingMatches() {
     });
 
     const matches = response.data || [];
-    const now = Date.now();
+    // const now = Date.now();
     const allUpcomingMatches = matches
       .filter((match) => match.actual_time === null)
       .sort((a, b) => a.time - b.time);

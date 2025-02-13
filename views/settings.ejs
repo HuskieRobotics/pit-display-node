@@ -16,10 +16,11 @@
             </select>
             <br><br>
             <label for="streamingLink">Streaming Link:</label>
-            <input type="text" id="streamingLink" name="streamingLink" value="event key" />
+            <input type="text" id="streamingLink" name="streamingLink" value="<%= streamUrl %>" />
             <br><br>
             <label for="eventKey">Event Key:</label>
-            <input type="text" id="eventKey" name="eventKey" placeholder="2024abcd"  />
+            <input type="text" id="eventKey" name="eventKey" value="<%= eventKey %>" placeholder="2024abcd" />
+            <br><br>
             <button type="submit">Save Settings</button>
           </form>
         </div>
