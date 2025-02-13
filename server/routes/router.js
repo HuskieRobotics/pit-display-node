@@ -3,17 +3,6 @@ const route = express.Router();
 const config = require("../model/config");
 const tasks = require("../model/checklist");
 const { makeTaskObject } = require("../../views/robot");
-// const newTasks = tasks.map((task) => {
-//   return {
-//     name: task.name,
-//     checklistItems: task.checklistItems.map((item) => {
-//       return {
-//         taskName: item,
-//         checked: false,
-//       };
-//     }),
-//   };
-// });
 
 const newTasks = makeTaskObject(tasks);
 
@@ -42,7 +31,9 @@ route.get("/", async (req, res) => {
   let streamProvider = "twitch";
   let streamUrl = "https://twitch.tv/your_channel_name";
   try {
-    const settings = await StreamSettings.findById("67a0e0cd31da43b3d5ba6151").lean();
+    const settings = await StreamSettings.findById(
+      "67a0e0cd31da43b3d5ba6151"
+    ).lean();
     if (settings) {
       streamProvider = settings.streamProvider;
       streamUrl = settings.streamUrl;
@@ -101,7 +92,9 @@ route.get("/settings", async (req, res) => {
   let streamProvider = "twitch";
   let streamUrl = "https://twitch.tv/your_channel_name";
   try {
-    const settings = await StreamSettings.findById("67a0e0cd31da43b3d5ba6151").lean();
+    const settings = await StreamSettings.findById(
+      "67a0e0cd31da43b3d5ba6151"
+    ).lean();
     if (settings) {
       streamProvider = settings.streamProvider;
       streamUrl = settings.streamUrl;
@@ -129,6 +122,12 @@ route.post("/settings", async (req, res) => {
     console.error("Error updating stream settings:", err.message);
   }
   res.redirect("/");
+});
+
+route.post("/nexus", async (req, res) => {
+  const notif = req.body;
+  console.log(notif);
+  res.status(200);
 });
 
 module.exports = route;
