@@ -26,12 +26,35 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
     const streamServiceSelect = streamObject.streamingService;
-    fetch("/settings", {
+    // fetch("/settings", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify(streamObject), // turns the js object reference into json form
+    // });
+
+    fetch("/nexus", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(streamObject), // turns the js object reference into json form
+      body:
+        "{" +
+        "  eventKey: 'demo2747'," +
+        "  dataAsOfTime: 1739546206951," +
+        "  matches: [" +
+        "    {" +
+        "      label: 'Practice 1'," +
+        "      status: 'Queuing soon'," +
+        "      redTeams: [Array]," +
+        "      blueTeams: [Array]," +
+        "      times: [Object]" +
+        "    }" +
+        "  ]," +
+        "  announcements: []," +
+        "  partsRequests: []" +
+        "}",
     });
 
     // save all of these values even after going to the homepage again
