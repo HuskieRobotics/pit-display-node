@@ -127,7 +127,7 @@ route.post("/settings", async (req, res) => {
 route.post("/nexus", async (req, res) => {
   const notif = req.body;
   console.log(notif);
-  res.status(200);
+  res.status(200).end();
 });
 
 module.exports = route;
