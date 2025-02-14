@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", function () {
       headers: {
         "Content-Type": "application/json",
       },
-      body: {
+      body: JSON.stringify({
         eventKey: "demo2747",
         dataAsOfTime: 1739546206951,
         matches: [
@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", function () {
         ],
         announcements: [],
         partsRequests: [],
-      },
+      }),
     });
 
     // save all of these values even after going to the homepage again
