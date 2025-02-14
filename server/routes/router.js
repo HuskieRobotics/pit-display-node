@@ -1,5 +1,27 @@
 const express = require("express");
 const route = express.Router();
+<<<<<<< Updated upstream
+=======
+const fs = require("fs");
+const path = require("path");
+const config = require("../model/config");
+const tasks = require("../model/checklist");
+const { makeTaskObject } = require("../../views/robot");
+// const newTasks = tasks.map((task) => {
+//   return {
+//     name: task.name,
+//     checklistItems: task.checklistItems.map((item) => {
+//       return {
+//         taskName: item,
+//         checked: false,
+//       };
+//     }),
+//   };
+// });
+
+const newTasks = makeTaskObject(tasks);
+
+>>>>>>> Stashed changes
 const {
   fetchTeamStats,
   fetchUpcomingMatches,
@@ -75,10 +97,18 @@ route.get("/settings", async (req, res) => {
   } catch (err) {
     console.error("Error fetching stream settings:", err.message);
   }
+<<<<<<< Updated upstream
   res.render("settings", { streamProvider, streamUrl, eventKey });
+=======
+  res.render("settings", {
+    streamProvider,
+    streamUrl,
+    eventKey: config.eventKey,
+  });
+>>>>>>> Stashed changes
 });
 
-// POST settings - update the stream settings document in the DB
+// POST settings - update the stream settings document in the DB and config.json
 route.post("/settings", async (req, res) => {
   const { streamingService, streamingLink, eventKey } = req.body;
   try {
@@ -91,6 +121,7 @@ route.post("/settings", async (req, res) => {
       },
       { new: true, upsert: true }
     );
+<<<<<<< Updated upstream
     console.log(
       "Updated stream settings:",
       streamingService,
@@ -103,8 +134,23 @@ route.post("/settings", async (req, res) => {
     const config = require(configPath);
     config.eventKey = eventKey;
     require("fs").writeFileSync(configPath, JSON.stringify(config, null, 2));
+=======
+
+    // Update config.json if eventKey changed
+    if (eventKey && eventKey !== config.eventKey) {
+      const configPath = path.join(__dirname, "../model/config.json");
+      const configData = { ...config, eventKey };
+      fs.writeFileSync(configPath, JSON.stringify(configData, null, 2));
+    }
+
+    console.log("Updated settings:", {
+      streamingService,
+      streamingLink,
+      eventKey,
+    });
+>>>>>>> Stashed changes
   } catch (err) {
-    console.error("Error updating stream settings:", err.message);
+    console.error("Error updating settings:", err.message);
   }
   res.redirect("/");
 });
