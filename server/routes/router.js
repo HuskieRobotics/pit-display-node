@@ -126,6 +126,8 @@ route.post("/settings", async (req, res) => {
 
 route.post("/nexus", async (req, res) => {
   const notif = req.body;
+  notif.matches.label = req.body.matches.label;
+  console.log(notif.matches.label);
   console.log(notif);
   res.status(200).end();
 });

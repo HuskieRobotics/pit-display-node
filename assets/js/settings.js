@@ -11,7 +11,8 @@ document.addEventListener("DOMContentLoaded", function () {
     // save the current choice even after going to the homepage again
   });
 
-  submitButtonLink.addEventListener("click", function () {
+  submitButtonLink.addEventListener("click", function (event) {
+    event.preventDefault(); // Prevent form submission if button is in a form
     // Capture the selected streaming service, link, team name, and event key
     const selectedServiceValue = dropdown.value;
     const streamingLinkValue = streamingLinkInput.value;
@@ -20,12 +21,12 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log(`Selected service: ${selectedServiceValue}`);
     console.log(`Entered link: ${streamingLinkValue}`);
 
-    const streamObject = {
-      streamingService: selectedServiceValue,
-      streamingLink: streamingLinkValue,
-    };
+    // const streamObject = {
+    //   streamingService: selectedServiceValue,
+    //   streamingLink: streamingLinkValue,
+    // };
 
-    const streamServiceSelect = streamObject.streamingService;
+    // const streamServiceSelect = streamObject.streamingService;
     // fetch("/settings", {
     //   method: "POST",
     //   headers: {
