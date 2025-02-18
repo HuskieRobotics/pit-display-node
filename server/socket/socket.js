@@ -2,6 +2,10 @@ const { Server } = require("socket.io");
 const { updateChecked } = require("../../views/robot");
 let io;
 
+function emitPerformanceData(data) {
+  io.emit("performanceData", data);
+}
+
 function createSocketServer(httpServer) {
   io = new Server(httpServer, {
     connectionStateRecovery: {},
@@ -41,4 +45,5 @@ module.exports = {
   emitTemperatures,
   emitPDHCurrents,
   emitPowerStats,
+  emitPerformanceData,
 };
