@@ -16,13 +16,17 @@ document.addEventListener("DOMContentLoaded", function () {
     const selectedServiceValue = dropdown.value;
     const streamingLinkValue = streamingLinkInput.value;
 
+    const eventKey = document.getElementById("eventKey").value;
+
     // Log the selected streaming service, link, team name, and event key
     console.log(`Selected service: ${selectedServiceValue}`);
     console.log(`Entered link: ${streamingLinkValue}`);
+    console.log("entered event key: ", eventKey);
 
     const streamObject = {
       streamingService: selectedServiceValue,
       streamingLink: streamingLinkValue,
+      eventKey: eventKey,
     };
 
     const streamServiceSelect = streamObject.streamingService;
