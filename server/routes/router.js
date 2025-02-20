@@ -126,9 +126,13 @@ route.post("/settings", async (req, res) => {
 
 route.post("/nexus", async (req, res) => {
   const notif = req.body;
-  notif.matches.label = req.body.matches.label;
-  console.log(notif.matches.label);
+  notif.matches.label = req.body.matches[0].label;
+  notif.matches.status = req.body.matches[0].status;
   console.log(notif);
+  console.log(notif.matches.label);
+  console.log(notif.matches.status);
+  // adding to req body... fidn how to amke it an object
+
   res.status(200).end();
 });
 
