@@ -102,6 +102,8 @@ route.get("/info", async (req, res) => {
 route.get("/settings", async (req, res) => {
   let streamProvider = "twitch";
   let streamUrl = "https://twitch.tv/your_channel_name";
+  let eventKey = "tbaEventKey";
+  let teamNumber = "99999";
 
   try {
     const settings = await StreamSettings.findById(
@@ -110,28 +112,36 @@ route.get("/settings", async (req, res) => {
     if (settings) {
       streamProvider = settings.streamProvider;
       streamUrl = settings.streamUrl;
-      let eventKey = settings.eventKey;
-      let teamNumber = settings.teamNumber;
+      eventKey = settings.eventKey;
+      teamNumber = settings.teamNumber;
     }
   } catch (err) {
     console.error("Error fetching stream settings:", err.message);
   }
-  res.render("settings", { streamProvider, streamUrl });
+  res.render("settings", { streamProvider, streamUrl, eventKey, teamNumber });
 });
 
 // POST settings - update the stream settings document in the DB
 route.post("/settings", async (req, res) => {
-  const { streamingService, streamingLink } = req.body;
+  const { streamingService, streamingLink, eventKey, teamNumber } = req.body;
   try {
     await StreamSettings.findByIdAndUpdate(
       "67a0e0cd31da43b3d5ba6151",
       {
         streamProvider: streamingService,
         streamUrl: streamingLink,
+        eventKey: eventKey,
+        teamNumber: teamNumber,
       },
       { new: true, upsert: true }
     );
-    console.log("Updated stream settings:", streamingService, streamingLink);
+    console.log(
+      "Updated stream settings:",
+      streamingService,
+      streamingLink,
+      eventKey,
+      teamNumber
+    );
   } catch (err) {
     console.error("Error updating stream settings:", err.message);
   }

@@ -8,7 +8,7 @@
       <container>
         <div class="rankbox">
           <h3>Stream Settings</h3>
-          <form action="/settings" method="POST">
+          
             <label for="streamingService">Streaming Service:</label>
             <select name="streamingService" id="streamingService">
               <option value="twitch" <%= streamProvider === 'twitch' ? 'selected' : '' %>>Twitch</option>
@@ -23,9 +23,11 @@
             <br><br><label for="teamNumber">Team Number:</label>
             <input type="text" id="teamNumber" name="teamNumber" value="enter team number here" />
             <button type="submit">Save Settings</button>
-          </form>
+          
         </div>
       </container>
     </section>
+    
+    <script src="/js/settings.js"></script>
   </body>
 </html>

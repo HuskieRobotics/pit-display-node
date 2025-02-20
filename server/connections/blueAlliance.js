@@ -7,6 +7,22 @@ const config = require("../model/config");
 const baseUrl = "https://www.thebluealliance.com/api/v3";
 const apiKey = process.env.TBA_API_KEY;
 
+// save the team nuber and event key into the database
+async function updateEventConfig(teamNumber, eventKey) {
+  try {
+    // Update the configuration document or create one if it doesn't exist
+    const updatedConfig = await Config.findOneAndUpdate(
+      {},
+      { teamNumber, eventKey },
+      { new: true, upsert: true }
+    );
+    return updatedConfig;
+  } catch (error) {
+    console.error("Error updating configuration:", error.message);
+    return null;
+  }
+}
+
 // fetch team stats
 async function fetchTeamStats() {
   const endpoint = `${baseUrl}/team/frc${config.teamNumber}/event/${config.eventKey}/status`;
@@ -51,8 +67,9 @@ async function fetchTeamStats() {
 }
 
 // fetch upcoming matches
-async function fetchUpcomingMatches() {
-  const endpoint = `${baseUrl}/event/${config.eventKey}/matches/simple`;
+// fetch upcoming matches with dynamic event key
+async function fetchUpcomingMatches(teamNumber, eventKey) {
+  const endpoint = `${baseUrl}/event/${eventKey}/matches/simple`;
   const matchList = [];
 
   try {
@@ -64,15 +81,14 @@ async function fetchUpcomingMatches() {
     });
 
     const matches = response.data || [];
-    const now = Date.now();
     const allUpcomingMatches = matches
       .filter((match) => match.actual_time === null)
       .sort((a, b) => a.time - b.time);
     const teamsNextMatch = allUpcomingMatches.find((match) =>
-      teamParticipatedInMatch(match, config.teamNumber)
+      teamParticipatedInMatch(match, teamNumber)
     );
     const upcomingMatches = allUpcomingMatches.slice(0, 4);
-    if (upcomingMatches.includes(teamsNextMatch) === false) {
+    if (teamsNextMatch && !upcomingMatches.includes(teamsNextMatch)) {
       upcomingMatches.pop();
       upcomingMatches.push(teamsNextMatch);
     }
