@@ -42,9 +42,7 @@ route.get("/", async (req, res) => {
   let streamProvider = "twitch";
   let streamUrl = "https://twitch.tv/your_channel_name";
   try {
-    const settings = await StreamSettings.findById(
-      "67a0e0cd31da43b3d5ba6151"
-    ).lean();
+    const settings = await StreamSettings.findOne().lean();
     if (settings) {
       streamProvider = settings.streamProvider;
       streamUrl = settings.streamUrl;
@@ -100,23 +98,14 @@ route.get("/info", async (req, res) => {
 
 // GET settings page - read current stream settings from DB and pass to view
 route.get("/settings", async (req, res) => {
-  let streamProvider = "twitch";
-  let streamUrl = "https://twitch.tv/your_channel_name";
-  let eventKey = "tbaEventKey";
-  let teamNumber = "99999";
-
-  try {
-    const settings = await StreamSettings.findOne();
-    if (settings) {
-      streamProvider = settings.streamProvider;
-      streamUrl = settings.streamUrl;
-      eventKey = settings.eventKey;
-      teamNumber = settings.teamNumber;
-    }
-  } catch (err) {
-    console.error("Error fetching stream settings:", err.message);
-  }
-  res.render("settings", { streamProvider, streamUrl, eventKey, teamNumber });
+  const currentSettings = getSettings();
+  // res.render("settings", { currentSettings.streamProvider, streamUrl, eventKey, teamNumber });
+  res.render("settings", {
+    streamProvider: currentSettings.streamProvider,
+    streamUrl: currentSettings.streamUrl,
+    eventKey: currentSettings.eventKey,
+    teamNumber: currentSettings.teamNumber,
+  });
 });
 
 // POST settings - update the stream settings document in the DB
