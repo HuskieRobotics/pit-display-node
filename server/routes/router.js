@@ -106,9 +106,7 @@ route.get("/settings", async (req, res) => {
   let teamNumber = "99999";
 
   try {
-    const settings = await StreamSettings.findById(
-      "67a0e0cd31da43b3d5ba6151"
-    ).lean();
+    const settings = await StreamSettings.findOne();
     if (settings) {
       streamProvider = settings.streamProvider;
       streamUrl = settings.streamUrl;
@@ -125,16 +123,12 @@ route.get("/settings", async (req, res) => {
 route.post("/settings", async (req, res) => {
   const { streamingService, streamingLink, eventKey, teamNumber } = req.body;
   try {
-    await StreamSettings.findByIdAndUpdate(
-      "67a0e0cd31da43b3d5ba6151",
-      {
-        streamProvider: streamingService,
-        streamUrl: streamingLink,
-        eventKey: eventKey,
-        teamNumber: teamNumber,
-      },
-      { new: true, upsert: true }
-    );
+    await StreamSettings.findOne({
+      streamProvider: streamingService,
+      streamUrl: streamingLink,
+      eventKey: eventKey,
+      teamNumber: teamNumber,
+    });
     console.log(
       "Updated stream settings:",
       streamingService,
