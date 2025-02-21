@@ -25,6 +25,8 @@ const { formatTemperatures } = require("../../views/robot");
 const { formatPDHCurrents } = require("../../views/pdh");
 const { formatPowerStats } = require("../../views/power");
 const StreamSettings = require("../model/StreamSettings");
+const { emit } = require("process");
+const { emitNexus } = require("../socket/socket");
 
 // GET main page - read stream settings from DB and pass to view.
 route.get("/", async (req, res) => {
@@ -126,13 +128,7 @@ route.post("/settings", async (req, res) => {
 
 route.post("/nexus", async (req, res) => {
   const notif = req.body;
-  notif.matches.label = req.body.matches[0].label;
-  notif.matches.status = req.body.matches[0].status;
-  console.log(notif);
-  console.log(notif.matches.label);
-  console.log(notif.matches.status);
-  // adding to req body... fidn how to amke it an object
-
+  emitNexus(notif);
   res.status(200).end();
 });
 

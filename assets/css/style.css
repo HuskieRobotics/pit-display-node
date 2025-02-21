@@ -370,3 +370,21 @@ div.twitchstream iframe {
   font-family: "Source Code Pro", monospace;
   font-size: 15px;
 }
+
+.popup {
+  width: 400px;
+  height: 200px;
+  background: #fff;
+  border-radius: 6px;
+  position: absolute;
+  top: -100%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  scale: 0.1;
+  text-align: center;
+  padding: 20px;
+  visibility: hidden;
+}
+
+.popup button {
+}
