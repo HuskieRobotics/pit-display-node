@@ -1,3 +1,5 @@
+const http = require("http");
+
 /**
  * contains client-side JavaScript functions
  * (primarily event handlers to fetch data from the Node server)
@@ -26,6 +28,16 @@ socket.on("nexus", (info) => {
   console.log(info);
   openPopup();
 });
+
+function openPopup() {
+  const popup = document.getElementById("popup");
+  popup.classList.add("open-popup");
+}
+
+function closePopup() {
+  const popup = document.getElementById("popup");
+  popup.classList.remove("open-popup");
+}
 
 async function fetchTemperatures() {
   const temperatures = document.querySelector("div.temp");

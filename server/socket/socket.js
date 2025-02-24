@@ -36,8 +36,8 @@ function emitPowerStats(stats) {
   io.emit("powerStats", stats);
 }
 
-function emitNexus(info) {
-  io.emit("nexus", info);
+function emitNexus(notification) {
+  io.emit("nexus", notification);
 }
 
 module.exports = {
