@@ -3,6 +3,7 @@ const route = express.Router();
 const config = require("../model/config");
 const tasks = require("../model/checklist");
 const { makeTaskObject } = require("../../views/robot");
+const getSettings = require("../model/settings");
 // const newTasks = tasks.map((task) => {
 //   return {
 //     name: task.name,
