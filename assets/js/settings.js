@@ -3,13 +3,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
   submitButtonLink.addEventListener("click", function () {
     // Capture the selected streaming service, link, team name, and event key
+    // const selectedService = document.getElementById("selected-service").value;
     const dropdown = document.getElementById("streamingService");
     const selectedService = dropdown.value;
-
     const streamingLinkInput = document.getElementById("streamingLink").value;
-
     const teamNumber = document.getElementById("teamNumber").value;
     const eventKey = document.getElementById("eventKey").value;
+
+    // const dropdown = document.getElementById("streamingService");
+    // const selectedService = dropdown.value;
+    // const streamingLinkInput = document.getElementById("streamingLink").value;
 
     const streamObject = {
       streamingService: selectedService,
@@ -17,6 +20,8 @@ document.addEventListener("DOMContentLoaded", function () {
       eventKey,
       teamNumber,
     };
+
+    console.log(streamObject);
 
     fetch("/settings", {
       method: "POST",
