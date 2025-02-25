@@ -3,13 +3,28 @@ const Match = require("../model/match");
 const TeamStats = require("../model/teamStats");
 const axios = require("axios");
 const config = require("../model/config");
+const StreamSettings = require("../model/StreamSettings");
 
 const baseUrl = "https://www.thebluealliance.com/api/v3";
 const apiKey = process.env.TBA_API_KEY;
 
+// Get the event key from MongoDB or use the default from config
+async function getEventKey() {
+  try {
+    const settings = await StreamSettings.findById("67a0e0cd31da43b3d5ba6151").lean();
+    if (settings && settings.eventKey) {
+      return settings.eventKey;
+    }
+  } catch (error) {
+    console.error("Error fetching event key from DB:", error.message);
+  }
+  return config.eventKey; // Fallback to config
+}
+
 // fetch team stats
 async function fetchTeamStats() {
-  const endpoint = `${baseUrl}/team/frc${config.teamNumber}/event/${config.eventKey}/status`;
+  const eventKey = await getEventKey();
+  const endpoint = `${baseUrl}/team/frc${config.teamNumber}/event/${eventKey}/status`;
 
   try {
     const response = await axios.get(endpoint, {
@@ -52,7 +67,8 @@ async function fetchTeamStats() {
 
 // fetch upcoming matches
 async function fetchUpcomingMatches() {
-  const endpoint = `${baseUrl}/event/${config.eventKey}/matches/simple`;
+  const eventKey = await getEventKey();
+  const endpoint = `${baseUrl}/event/${eventKey}/matches/simple`;
   const matchList = [];
 
   try {
@@ -109,7 +125,8 @@ async function fetchUpcomingMatches() {
 
 // fetch past matches
 async function fetchPastMatches() {
-  const endpoint = `${baseUrl}/team/frc${config.teamNumber}/event/${config.eventKey}/matches`;
+  const eventKey = await getEventKey();
+  const endpoint = `${baseUrl}/team/frc${config.teamNumber}/event/${eventKey}/matches`;
   let matchList = [];
 
   try {
