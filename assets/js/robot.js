@@ -1,4 +1,4 @@
-// const http = require("http");
+const http = require("http");
 
 /**
  * contains client-side JavaScript functions
@@ -25,19 +25,14 @@ socket.on("powerStats", (stats) => {
 });
 
 socket.on("nexus", (info) => {
-  console.log(info);
-  openPopup();
+  console.log("Nexus notification:", info);
+  // openPopup();
 });
 
-function openPopup() {
-  const popup = document.getElementById("popup");
-  popup.classList.add("open-popup");
-}
-
-function closePopup() {
-  const popup = document.getElementById("popup");
-  popup.classList.remove("open-popup");
-}
+// function openPopup() {
+//   const popup = document.getElementById("popup");
+//   popup.classList.add("open-popup");
+// }
 
 async function fetchTemperatures() {
   const temperatures = document.querySelector("div.temp");

@@ -37,6 +37,7 @@ function emitPowerStats(stats) {
 }
 
 function emitNexus(notification) {
+  console.log("Emitting nexus notification:", notification);
   io.emit("nexus", notification);
 }
 

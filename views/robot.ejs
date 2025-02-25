@@ -135,7 +135,12 @@
       </div>
 
     </section>
-
+    <script>
+      function closePopup() {
+        const popup = document.getElementById("popup");
+        popup.classList.remove("open-popup");
+      }
+    </script>
     <script src="/socket.io/socket.io.js"></script>
     <script src="/js/robot.js"></script>
   </body>
