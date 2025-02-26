@@ -48,50 +48,38 @@
     "dataCategory": "MOTOR_TEMP"
   },
   {
-    "label": "Intake Roller",
-    "path": "/AdvantageKit/Intake/RollerTempCelsius",
-    "type": "double",
-    "dataCategory": "MOTOR_TEMP"
-  },
-  {
-    "label": "Intake Kicker",
-    "path": "/AdvantageKit/Intake/KickerTempCelsius",
-    "type": "double",
-    "dataCategory": "MOTOR_TEMP"
-  },
-  {
     "label": "Climber",
-    "path": "/AdvantageKit/Climber/ClimberMotorTemperatureCelsius",
+    "path": "/AdvantageKit/Climber/TempCelcius",
     "type": "double",
     "dataCategory": "MOTOR_TEMP"
   },
   {
-    "label": "Shooter Angle",
-    "path": "/AdvantageKit/Shooter/AngleMotorTemperatureCelsius",
+    "label": "Elevator Lead",
+    "path": "/AdvantageKit/Elevator/LeadTempCelsius",
     "type": "double",
     "dataCategory": "MOTOR_TEMP"
   },
   {
-    "label": "Shooter Deflector",
-    "path": "/AdvantageKit/Shooter/DeflectorMotorTemperatureCelsius",
+    "label": "Elevator Follower",
+    "path": "/AdvantageKit/Elevator/FollowerTempCelsius",
     "type": "double",
     "dataCategory": "MOTOR_TEMP"
   },
   {
-    "label": "Shooter Top",
-    "path": "/AdvantageKit/Shooter/ShootMotorTopTemperatureCelsius",
+    "label": "Funnel",
+    "path": "/AdvantageKit/Manipulator/FunnelTempCelsius",
     "type": "double",
     "dataCategory": "MOTOR_TEMP"
   },
   {
-    "label": "Shooter Bottom",
-    "path": "/AdvantageKit/Shooter/ShootMotorBottomTemperatureCelsius",
+    "label": "Manipulator",
+    "path": "/AdvantageKit/Manipulator/IndexerTempCelsius",
     "type": "double",
     "dataCategory": "MOTOR_TEMP"
   },
   {
     "label": "roboRIO CPU",
-    "path": "/AdvantageKit/SystemStats/CPUTempCelcius",
+    "path": "/AdvantageKit/SystemStats/CPUTempCelsius",
     "type": "double",
     "dataCategory": "SYSTEM_TEMP"
   },
