@@ -100,7 +100,11 @@ function getPowerStats() {
 
 function getCodeRuntime() {
   const codeRuntime = ntTopics.find((t) => t.label === "Code Runtime");
-  return codeRuntime && codeRuntime.value ? codeRuntime.value : null;
+  if (codeRuntime && codeRuntime.value) {
+    return codeRuntime.value;
+  } else {
+    return "no code runtime data available";
+  }
 }
 
 module.exports = {
