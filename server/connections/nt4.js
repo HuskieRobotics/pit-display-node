@@ -98,4 +98,14 @@ function getPowerStats() {
   return powerStats;
 }
 
-module.exports = { getMotorTemperatures, getPDHCurrents, getPowerStats };
+function getCodeRuntime() {
+  const codeRuntime = ntTopics.find((t) => t.label === "Code Runtime");
+  return codeRuntime && codeRuntime.value ? codeRuntime.value : null;
+}
+
+module.exports = {
+  getMotorTemperatures,
+  getPDHCurrents,
+  getPowerStats,
+  getCodeRuntime,
+};

@@ -100,5 +100,23 @@
     "path": "/AdvantageKit/PowerDistribution/Voltage",
     "type": "double",
     "dataCategory": "POWER_STATS"
+  },
+  {
+    "label": "Full Cycle MS",
+    "path": "/RealOutputs/LoggedRobot/FullCycleMS",
+    "type": "double",
+    "dataCategory": "CODE_RUNTIME"
+  },
+  {
+    "label": "Log Period MS",
+    "path": "/RealOutputs/LoggedRobot/LogPeriodicMS",
+    "type": "double",
+    "dataCategory": "CODE_RUNTIME"
+  },
+  {
+    "label": "User Code MS",
+    "path": "/RealOutputs/LoggedRobot/UserCodeMS",
+    "type": "double",
+    "dataCategory": "CODE_RUNTIME"
   }
 ]
