@@ -1,4 +1,4 @@
-const http = require("http");
+// const http = require("http");
 
 /**
  * contains client-side JavaScript functions
@@ -25,7 +25,7 @@ socket.on("powerStats", (stats) => {
 });
 
 socket.on("nexus", (info) => {
-  console.log("Nexus notification:", info);
+  console.log(info);
   // openPopup();
 });
 
