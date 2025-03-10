@@ -16,6 +16,10 @@ function createSocketServer(httpServer) {
       console.log(check);
     });
 
+    socket.on("nexus", (data) => {
+      console.log(data);
+    });
+
     socket.on("disconnect", () => {
       console.log("user disconnected");
     });
@@ -37,7 +41,6 @@ function emitPowerStats(stats) {
 }
 
 function emitNexus(notification) {
-  console.log("Emitting nexus notification:", notification);
   io.emit("nexus", notification);
 }
 
