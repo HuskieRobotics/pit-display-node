@@ -25,14 +25,28 @@ socket.on("powerStats", (stats) => {
 });
 
 socket.on("nexus", (info) => {
-  console.log(info);
-  // openPopup();
+  openPopup(info);
 });
 
-// function openPopup() {
-//   const popup = document.getElementById("popup");
-//   popup.classList.add("open-popup");
-// }
+function openPopup(info) {
+  const popUp = document.getElementById("popup");
+  const text = document.getElementById("popUpText");
+  const formatter = new Intl.DateTimeFormat("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+    timeZone: "America/Chicago",
+  });
+  const time = info.match[0].times.estimatedQueueTime;
+  const label = info.match[0].label;
+  const status = info.match[0].status;
+  const formattedTime = formatter.format(time);
+  text.innerHTML = label + " is " + status + " at " + formattedTime;
+  popUp.classList.add("open-popup");
+}
+function closePopup() {
+  const popUp = document.getElementById("popup");
+  popUp.classList.remove("open-popup");
+}
 
 async function fetchTemperatures() {
   const temperatures = document.querySelector("div.temp");

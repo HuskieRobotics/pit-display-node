@@ -43,13 +43,15 @@ document.addEventListener("DOMContentLoaded", function () {
       body: JSON.stringify({
         eventKey: "demo2747",
         dataAsOfTime: 1739546206951,
-        matches: [
+        match: [
           {
             label: "Practice 1",
             status: "Queuing soon",
             redTeams: [Array],
             blueTeams: [Array],
-            times: [Object],
+            times: {
+              estimatedQueueTime: 1739546206951,
+            },
           },
         ],
         announcements: [],

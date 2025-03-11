@@ -130,17 +130,11 @@
       </div>
       
       <div class="popup" id = "popup">
-        <p>Hi! This is supposed to be a pop-up</p>
+        <p id = "popUpText">Hi!</p>
         <button type="button" onclick="closePopup()">Close</button>
       </div>
 
     </section>
-    <script>
-      function closePopup() {
-        const popup = document.getElementById("popup");
-        popup.classList.remove("open-popup");
-      }
-    </script>
     <script src="/socket.io/socket.io.js"></script>
     <script src="/js/robot.js"></script>
   </body>

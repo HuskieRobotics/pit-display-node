@@ -16,10 +16,6 @@ function createSocketServer(httpServer) {
       console.log(check);
     });
 
-    socket.on("nexus", (data) => {
-      console.log(data);
-    });
-
     socket.on("disconnect", () => {
       console.log("user disconnected");
     });
