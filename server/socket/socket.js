@@ -21,6 +21,15 @@ function createSocketServer(httpServer) {
     });
   });
 
+  // For example, emit robot runtime data every 2 seconds:
+  setInterval(() => {
+    const data = {
+      timestamp: new Date().toLocaleTimeString(),
+      runtime: Math.floor(Math.random() * 1000), // replace with real runtime value
+    };
+    io.emit("robotRuntime", data);
+  }, 2000);
+
   return io;
 }
 

@@ -14,12 +14,40 @@ socket.on("pdhCurrents", (entry) => {
   pdhDisplay.innerHTML = entry;
 });
 
-socket.on("powerStats", (stats) => {
-  const runtimeDisplay = document.querySelector("div.runtime");
-  const voltageDisplay = document.querySelector("div.voltage");
+// Setup chart for robot runtime graph (assumes using Chart.js or similar)
+const ctx = document.getElementById("runtimeGraph").getContext("2d");
+const runtimeChart = new Chart(ctx, {
+  type: "line",
+  data: {
+    labels: [], // timestamps
+    datasets: [
+      {
+        label: "Robot Code Runtime",
+        data: [],
+        borderColor: "rgba(75, 192, 192, 1)",
+        fill: false,
+      },
+    ],
+  },
+  options: {
+    scales: {
+      x: { display: true },
+      y: { beginAtZero: true },
+    },
+  },
+});
 
-  runtimeDisplay.innerHTML = stats.currentDisplay;
-  voltageDisplay.innerHTML = stats.voltageDisplay;
+// Listen for robot runtime data similar to other measurements
+socket.on("robotRuntime", (data) => {
+  // Assume data contains { timestamp, runtime }
+  runtimeChart.data.labels.push(data.timestamp);
+  runtimeChart.data.datasets[0].data.push(data.runtime);
+  // Maintain a fixed length of data points
+  if (runtimeChart.data.labels.length > 20) {
+    runtimeChart.data.labels.shift();
+    runtimeChart.data.datasets[0].data.shift();
+  }
+  runtimeChart.update();
 });
 
 async function fetchTemperatures() {
@@ -42,31 +70,17 @@ async function fetchPDHCurrents() {
   }
 }
 
-async function fetchPowerStats() {
-  const runtimeDisplay = document.querySelector("div.runtime");
-  const voltageDisplay = document.querySelector("div.voltage");
-  const response = await fetch("/powerStats");
-  if (response.ok) {
-    const stats = await response.json();
-    runtimeDisplay.innerHTML = stats.currentDisplay;
-    voltageDisplay.innerHTML = stats.voltageDisplay;
-  } else {
-    console.log("error fetching power stats");
-  }
-}
-
 fetchTemperatures();
 fetchPDHCurrents();
-fetchPowerStats();
 
 // Select all checkboxes with a data-key attribute for persistence
 const checklist = document.querySelectorAll('input[type="checkbox"][data-key]');
 
 checklist.forEach((checkbox) => {
   // Load persisted state on page load
-  const key = checkbox.getAttribute('data-key');
+  const key = checkbox.getAttribute("data-key");
   const saved = localStorage.getItem(key);
-  if (saved === 'true') {
+  if (saved === "true") {
     checkbox.checked = true;
   }
 
@@ -74,7 +88,7 @@ checklist.forEach((checkbox) => {
     const label = event.target.closest("label");
     const taskText = label.textContent.trim();
     const isChecked = event.target.checked;
-    const key = event.target.getAttribute('data-key');
+    const key = event.target.getAttribute("data-key");
     // Save state to localStorage
     localStorage.setItem(key, isChecked);
     socket.emit("checklist", { taskText, isChecked });

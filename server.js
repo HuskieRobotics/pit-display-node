@@ -3,6 +3,10 @@
  * this file is executed by the Node server
  */
 
+// load environment variables from the .env file into process.env
+const dotenv = require("dotenv");
+dotenv.config({ path: ".env" });
+
 // import the http module, which provides an HTTP server
 const http = require("http");
 
@@ -17,22 +21,19 @@ const server = http.createServer(app);
 const { createSocketServer } = require("./server/socket/socket");
 createSocketServer(server);
 
-// load environment variables from the .env file into process.env
-const dotenv = require("dotenv");
-dotenv.config({ path: ".env" });
-
 // connect to MongoDB using mongoose
 const mongoose = require("mongoose");
-mongoose.connect(process.env.MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
-.then(() => {
-  console.log("Connected to MongoDB");
-})
-.catch((err) => {
-  console.error("MongoDB connection error:", err);
-});
+mongoose
+  .connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => {
+    console.log("Connected to MongoDB");
+  })
+  .catch((err) => {
+    console.error("MongoDB connection error:", err);
+  });
 
 // add middleware to handle JSON in HTTP request bodies (used with POST commands)
 app.use(express.json());
