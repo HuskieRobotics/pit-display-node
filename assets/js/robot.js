@@ -39,8 +39,9 @@ function openPopup(info) {
   const time = info.match[0].times.estimatedQueueTime;
   const label = info.match[0].label;
   const status = info.match[0].status;
+  const val = status.charAt(0).toLowerCase() + status.slice(1);
   const formattedTime = formatter.format(time);
-  text.innerHTML = label + " is " + status + " at " + formattedTime;
+  text.innerHTML = label + " is " + val + " at " + formattedTime + "!";
   popUp.classList.add("open-popup");
 }
 function closePopup() {

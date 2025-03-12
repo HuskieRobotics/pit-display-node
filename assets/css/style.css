@@ -379,6 +379,8 @@ div.twitchstream iframe {
   position: absolute;
   top: -50%;
   left: 50%;
+  font: "Source Code Pro", monospace;
+  font-size: 20px;
   transform: translate(-50%, -50%);
   scale: 0.1;
   text-align: center;
@@ -393,5 +395,14 @@ div.twitchstream iframe {
   transform: translate(-50%, -50%);
   scale: 1;
 }
+
 .popup button {
+  text-align: center;
+  background-color: #34384b;
+  color: white;
+  font-family: "Source Code Pro", monospace;
+  border: none;
+  padding: 10px 20px;
+  margin: 10px;
+  border-radius: 10px;
 }
