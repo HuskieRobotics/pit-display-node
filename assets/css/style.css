@@ -169,16 +169,26 @@ div.twitchstream iframe {
 }
 
 .runtime {
-  background-color: #24252a;
   margin: 10px;
   text-align: left;
   color: #ffffff;
-  border-radius: 10px;
   font-family: "Source Code Pro", monospace;
-  border: 2px solid white; /* Adjust thickness as needed */
+  background: none; /* remove filled background */
+  border: none; /* remove complete border */
+  border-bottom: 2px solid white; /* line graph baseline */
   width: calc(35vw / 2);
-  height: 20vh;
+  height: auto; /* remove fixed height */
   float: left;
+  position: relative;
+}
+
+.runtime::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 0; /* no extra height */
 }
 
 .voltage {

@@ -48,6 +48,15 @@ app.use("/img", express.static("assets/img"));
 app.use("/js", express.static("assets/js"));
 app.use("/html", express.static("assets/html"));
 
+// NEW: Endpoint that returns ROBOT CODE runtime info
+app.get("/robot/api/runtimeInfo", (req, res) => {
+  const runtimeInfo = {
+    uptime: process.uptime(),
+    timestamp: new Date().toISOString(),
+  };
+  res.json(runtimeInfo);
+});
+
 // to keep this file manageable, we will move the routes to a separate file
 // the exported router object is an example of middleware
 app.use("/", require("./server/routes/router"));

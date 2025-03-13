@@ -58,35 +58,38 @@
       <div class="runtime"></div>
       <div class="voltage"></div>
       <div class="can"></div>
-      <!-- Graph Placeholder -->
-      <div class="graph">
-        <h2>Graph Placeholder</h2>
-        <canvas id="graphPlaceholder" width="600" height="400"></canvas>
-        <script>
-      window.addEventListener("load", function() {
-        const canvas = document.getElementById('graphPlaceholder');
-        const ctx = canvas.getContext('2d');
-        
-        // Use performance.now() to determine the runtime (ms) since the navigation started
-        const runtime = Math.floor(performance.now());
-        const maxRuntime = 5000; // maximum value for scaling
-        const barMaxWidth = 500; // maximum width for the bar graph
-
-        // Calculate current bar width (clamp to barMaxWidth if runtime exceeds maxRuntime)
-        const barWidth = (runtime / maxRuntime) * barMaxWidth;
-
-        // Clear the canvas and draw the runtime bar
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = '#4CAF50';
-        ctx.fillRect(50, 150, barWidth, 50);
-
-        // Add text label with the runtime preceded by a descriptor label
-        ctx.font = '20px Arial';
-        ctx.fillStyle = '#fff';
-        ctx.fillText(`Page Runtime: ${runtime}ms`, 50, 140);
-      });
-    </script>
+      <!-- Removed original PAGE RUNTIME graph placeholder -->
+      <!--Robot Code Runtime Chart (does not disturb checklist etc.) -->
+      <div class="runtime-graph">
+        <h2>Robot Code Runtime Information</h2>
+        <canvas id="runtimeChart" width="600" height="400"></canvas>
       </div>
+      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+      <script>
+        // NEW: Fetch runtime info from server and render using Chart.js
+        async function renderRuntimeChart() {
+          const response = await fetch('/robot/api/runtimeInfo');
+          const data = await response.json();
+          const ctx = document.getElementById('runtimeChart').getContext('2d');
+          new Chart(ctx, {
+            type: 'bar',
+            data: {
+              labels: ['Uptime (s)'],
+              datasets: [{
+                label: 'Robot Uptime',
+                data: [data.uptime],
+                backgroundColor: 'rgba(54, 162, 235, 0.6)'
+              }]
+            },
+            options: {
+              scales: {
+                y: { beginAtZero: true }
+              }
+            }
+          });
+        }
+        renderRuntimeChart();
+      </script>
     </div>
 
     <div class="test">
