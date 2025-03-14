@@ -1,5 +1,9 @@
 // ...existing code setting up the line chart...
-const ctx = document.getElementById("chart").getContext("2d");
+const canvas = document.getElementById("chart");
+canvas.width = 400; // reduced width
+canvas.height = 300; // reduced height
+const ctx = canvas.getContext("2d");
+
 const chart = new Chart(ctx, {
   type: "line",
   data: {
@@ -8,27 +12,30 @@ const chart = new Chart(ctx, {
       {
         // ...existing dataset properties...
         data: [],
-        borderColor: "white", // new white line color
-        backgroundColor: "rgba(255,255,255,0.2)", // new white translucent fill for points
+        borderColor: "white",
+        backgroundColor: "rgba(255,255,255,0.2)",
+        borderWidth: 2, // reduced thickness
+        pointRadius: 3, // smaller points
       },
     ],
   },
   options: {
     scales: {
       x: {
-        ticks: { color: "white" }, // new white x-axis labels
-        grid: { color: "rgba(255,255,255,0.2)" }, // new white grid lines for x-axis
+        ticks: { color: "white" },
+        grid: { color: "rgba(255,255,255,0.2)" },
       },
       y: {
-        ticks: { color: "white" }, // new white y-axis labels
-        grid: { color: "rgba(255,255,255,0.2)" }, // new white grid lines for y-axis
+        ticks: { color: "white" },
+        grid: { color: "rgba(255,255,255,0.2)" },
       },
     },
     plugins: {
       legend: {
-        labels: { color: "white" }, // new white legend text
+        labels: { color: "white" },
       },
     },
+    responsive: false, // ensure canvas styling is respected
   },
 });
 
