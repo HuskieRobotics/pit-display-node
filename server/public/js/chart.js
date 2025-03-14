@@ -54,6 +54,7 @@ function addPointToChart(point) {
 fetch("/api/chart")
   .then((res) => res.json())
   .then((data) => {
+    console.log("Raw chart data:", data); // new print statement for debugging
     data.forEach((point) => {
       addPointToChart(point);
     });
