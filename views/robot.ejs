@@ -72,7 +72,7 @@
           const data = await response.json();
           const ctx = document.getElementById('runtimeChart').getContext('2d');
           new Chart(ctx, {
-            type: 'bar',
+            type: 'line',
             data: {
               labels: ['Uptime (s)'],
               datasets: [{

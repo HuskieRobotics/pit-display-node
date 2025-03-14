@@ -2,5 +2,6 @@
   "teamNumber": 3061,
   "eventKey": "2024ksla",
   "localTimeZone": "America/Chicago",
-  "streamURL": "https://player.twitch.tv/?channel=funroboticsnetwork&parent=pit.team3061.org"
+  "streamURL": "https://player.twitch.tv/?channel=funroboticsnetwork&parent=pit.team3061.org",
+  "graphType": "line"
 }
