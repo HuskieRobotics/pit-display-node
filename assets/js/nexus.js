@@ -1,6 +1,7 @@
 const nexusSocket = window.io();
 
 nexusSocket.on("nexus", (info) => {
+  console.log(info);
   openPopup(info);
 });
 
