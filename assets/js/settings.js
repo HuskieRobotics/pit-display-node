@@ -14,50 +14,50 @@ document.addEventListener("DOMContentLoaded", function () {
   submitButtonLink.addEventListener("click", function (event) {
     event.preventDefault(); // Prevent form submission if button is in a form
     // Capture the selected streaming service, link, team name, and event key
-    // const selectedServiceValue = dropdown.value;
-    // const streamingLinkValue = streamingLinkInput.value;
+    const selectedServiceValue = dropdown.value;
+    const streamingLinkValue = streamingLinkInput.value;
 
     // // Log the selected streaming service, link, team name, and event key
-    // console.log(`Selected service: ${selectedServiceValue}`);
-    // console.log(`Entered link: ${streamingLinkValue}`);
+    console.log(`Selected service: ${selectedServiceValue}`);
+    console.log(`Entered link: ${streamingLinkValue}`);
 
-    // const streamObject = {
-    //   streamingService: selectedServiceValue,
-    //   streamingLink: streamingLinkValue,
-    // };
+    const streamObject = {
+      streamingService: selectedServiceValue,
+      streamingLink: streamingLinkValue,
+    };
 
-    // const streamServiceSelect = streamObject.streamingService;
-    // fetch("/settings", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify(streamObject), // turns the js object reference into json form
-    // });
-
-    fetch("/nexus", {
+    const streamServiceSelect = streamObject.streamingService;
+    fetch("/settings", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        eventKey: "demo2747",
-        dataAsOfTime: 1739546206951,
-        match: [
-          {
-            label: "Practice 1",
-            status: "Queuing soon",
-            redTeams: [Array],
-            blueTeams: [Array],
-            times: {
-              estimatedQueueTime: 1739546206951,
-            },
-          },
-        ],
-        announcements: [],
-        partsRequests: [],
-      }),
+      body: JSON.stringify(streamObject), // turns the js object reference into json form
     });
+
+    // fetch("/nexus", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({
+    //     eventKey: "demo2747",
+    //     dataAsOfTime: 1739546206951,
+    //     match: [
+    //       {
+    //         label: "Practice 1",
+    //         status: "Queuing soon",
+    //         redTeams: [Array],
+    //         blueTeams: [Array],
+    //         times: {
+    //           estimatedQueueTime: 1739546206951,
+    //         },
+    //       },
+    //     ],
+    //     announcements: [],
+    //     partsRequests: [],
+    //   }),
+    // });
 
     // save all of these values even after going to the homepage again
   });
