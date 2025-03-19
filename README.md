@@ -16,6 +16,9 @@ Upcoming matches: A schedule of all upcoming matches so the team has a good sens
 Checklist: Useful when preparing for a match.
 Temperature data: Uses network tables to get the temperatures of each motor and other parts of the robot to catch failures early.
 
+**Second Page (incomplete):**
+There are inputs for streaming link that corresponds to the streaming service (Twitch/YouTube). Additionally, there is an input for the event key, which fetches data about the match and competition from the Blue Alliance API. This resolves the prior issue about having to change the event key in config.json and committing this change during every single competition.
+
 This project is based on Ranger Robotics’ Flutter app: [Link](https://github.com/3015RangerRobotics/2023Public)
 
 ## Motivation
