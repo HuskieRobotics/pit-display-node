@@ -32,23 +32,58 @@ const runtimeChart = new Chart(ctx, {
   options: {
     scales: {
       x: { display: true },
-      y: { beginAtZero: true },
+      y: {
+        beginAtZero: true,
+        // The suggested max can be set if needed
+      },
     },
+    plugins: {
+      annotation: {
+        annotations: {
+          line1: {
+            type: "line",
+            yMin: 20,
+            yMax: 20,
+            borderColor: "red",
+            borderWidth: 2,
+            label: {
+              content: "20 ms",
+              enabled: true,
+              position: "center",
+            },
+          },
+        },
+      },
+    },
+    responsive: false,
   },
 });
 
 // Listen for robot runtime data similar to other measurements
-socket.on("robotRuntime", (data) => {
-  // Assume data contains { timestamp, runtime }
-  runtimeChart.data.labels.push(data.timestamp);
-  runtimeChart.data.datasets[0].data.push(data.runtime);
-  // Maintain a fixed length of data points
-  if (runtimeChart.data.labels.length > 20) {
-    runtimeChart.data.labels.shift();
-    runtimeChart.data.datasets[0].data.shift();
+// socket.on("robotRuntime", (data) => {
+//   // Assume data contains { timestamp, runtime }
+//   runtimeChart.data.labels.push(data.timestamp);
+//   runtimeChart.data.datasets[0].data.push(data.runtime);
+//   // Maintain a fixed length of data points
+//   if (runtimeChart.data.labels.length > 20) {
+//     runtimeChart.data.labels.shift();
+//     runtimeChart.data.datasets[0].data.shift();
+//   }
+//   runtimeChart.update();
+// });
+
+async function fetchRuntime() {
+  const runtimeDisplay = document.querySelector("div.runtime");
+  const response = await fetch("/runtime");
+  if (response.ok) {
+    runtimeDisplay.innerHTML = await response.text();
+  } else {
+    console.error("Error fetching runtime data");
   }
-  runtimeChart.update();
-});
+}
+
+// Call the function to fetch runtime info on page load
+fetchRuntime();
 
 async function fetchTemperatures() {
   const temperatures = document.querySelector("div.temp");
@@ -94,3 +129,5 @@ checklist.forEach((checkbox) => {
     socket.emit("checklist", { taskText, isChecked });
   });
 });
+
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>;
