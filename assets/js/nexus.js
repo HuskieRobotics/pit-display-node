@@ -13,9 +13,9 @@ function openPopup(info) {
     minute: "2-digit",
     timeZone: "America/Chicago",
   });
-  const time = info.matches[0].times.estimatedQueueTime;
-  const label = info.matches[0].label;
-  const status = info.matches[0].status;
+  const time = info.matches[info.matches.length - 1].times.estimatedQueueTime;
+  const label = info.matches[info.matches.length - 1].label;
+  const status = info.matches[info.matches.length - 1].status;
   const val = status.charAt(0).toLowerCase() + status.slice(1);
   const formattedTime = formatter.format(time);
   text.innerHTML = label + " is " + val + " at " + formattedTime + "!";
