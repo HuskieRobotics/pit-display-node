@@ -100,5 +100,12 @@
     "path": "/AdvantageKit/PowerDistribution/Voltage",
     "type": "double",
     "dataCategory": "POWER_STATS"
+  },
+
+  {
+    "label": "Code Runtime",
+    "path": "/RealOutputs/LoggedRobot/UserCodeMS",
+    "type": "double",
+    "dataCategory": "POWER_STATS"
   }
 ]
