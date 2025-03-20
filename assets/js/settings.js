@@ -1,66 +1,45 @@
 document.addEventListener("DOMContentLoaded", function () {
+  // Validate event key format (from main branch)
+  const eventKeyInput = document.getElementById("eventKey");
+  if (eventKeyInput) {
+    eventKeyInput.addEventListener("change", function() {
+      const eventKey = eventKeyInput.value.trim();
+      // Optional validation - event keys are typically in format YYYY[event code]
+      // For example: 2024ksla
+      if (eventKey && !eventKey.match(/^\d{4}[a-z0-9]+$/i)) {
+        console.warn("Event key format may be incorrect. Expected format is YYYY followed by event code (e.g. 2024ksla)");
+        // You could add visual feedback here if desired
+      }
+    });
+  }
+
+  // Handle custom streaming service form submission (from nexusNotifications branch)
   const dropdown = document.getElementById("streaming-service");
   const selectedService = document.getElementById("selected-service");
   const streamingLinkInput = document.getElementById("streaming-link");
-
   const submitButtonLink = document.getElementById("submit-button-link");
 
-  // dropdown.addEventListener("change", function () {
-  //   selectedService.textContent = `Selected service: ${dropdown.value}`;
-  //   console.log("Selected service: ", dropdown.value);
-  //   // save the current choice even after going to the homepage again
-  // });
+  if (submitButtonLink) {
+    submitButtonLink.addEventListener("click", function (event) {
+      event.preventDefault(); // Prevent form submission if button is in a form
+      // Capture the selected streaming service and streaming link
+      const selectedServiceValue = dropdown ? dropdown.value : "";
+      const streamingLinkValue = streamingLinkInput ? streamingLinkInput.value : "";
+      console.log(`Selected service: ${selectedServiceValue}`);
+      console.log(`Entered link: ${streamingLinkValue}`);
 
-  submitButtonLink.addEventListener("click", function (event) {
-    event.preventDefault(); // Prevent form submission if button is in a form
-    // Capture the selected streaming service, link, team name, and event key
-    const selectedServiceValue = dropdown.value;
-    const streamingLinkValue = streamingLinkInput.value;
+      const streamObject = {
+        streamingService: selectedServiceValue,
+        streamingLink: streamingLinkValue,
+      };
 
-    // // Log the selected streaming service, link, team name, and event key
-    console.log(`Selected service: ${selectedServiceValue}`);
-    console.log(`Entered link: ${streamingLinkValue}`);
-
-    const streamObject = {
-      streamingService: selectedServiceValue,
-      streamingLink: streamingLinkValue,
-    };
-
-    const streamServiceSelect = streamObject.streamingService;
-    fetch("/settings", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(streamObject), // turns the js object reference into json form
+      fetch("/settings", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(streamObject),
+      });
     });
-
-    // fetch("/nexus", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({
-    //     eventKey: "demo2747",
-    //     dataAsOfTime: 1739546206951,
-    //     match: [
-    //       {
-    //         label: "Practice 1",
-    //         status: "Queuing soon",
-    //         redTeams: [Array],
-    //         blueTeams: [Array],
-    //         times: {
-    //           estimatedQueueTime: 1739546206951,
-    //         },
-    //       },
-    //     ],
-    //     announcements: [],
-    //     partsRequests: [],
-    //   }),
-    // });
-
-    // save all of these values even after going to the homepage again
-  });
-  // add an event listener to the submit button for the team name
-  // add an event listener to the submit button for the event key
+  }
 });

@@ -2,17 +2,19 @@ const config = require("../server/model/config");
 
 function formatTeamStats(teamStats) {
   if (!teamStats) {
-    return `No team statistics available for Team ${config.teamNumber}.</p>`;
+    return `<p>No team statistics available for Team ${config.teamNumber}.</p>`;
   }
 
-  return `
-          <span id="current_rank">Rank: ${teamStats.rank}</span></br>
-          <span>Avg. Ranking Score: ${teamStats.avgRankingScore}</br>
-          Wins: ${teamStats.wins} - Losses: ${teamStats.losses}</br>
-          Avg. Match Score: ${teamStats.avgMatchScore}</br>
-          Avg. Auto Score: ${teamStats.avgAutoScore}</br>
-          Avg. Coopertition Score: ${teamStats.avgCoopertitionScore}</br>
-          Avg. Stage Score: ${teamStats.avgStageScore}</span>`;
+  let statsHtml = `<span id="current_rank">Rank: ${teamStats.rank}</span></br>`;
+  statsHtml += `<span>Wins: ${teamStats.wins} - Losses: ${teamStats.losses}</br>`;
+  if (teamStats.otherStats && teamStats.otherStats.length > 0) {
+    teamStats.otherStats.forEach(stat => {
+      const formattedValue = stat.value !== null ? stat.value.toFixed(stat.precision) : "N/A";
+      statsHtml += `${stat.name}: ${formattedValue}</br>`;
+    });
+  }
+  statsHtml += `</span>`;
+  return statsHtml;
 }
 
 function formatUpcomingMatches(matchList) {

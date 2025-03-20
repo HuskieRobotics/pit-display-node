@@ -32,6 +32,7 @@ const { emitNexus } = require("../socket/socket");
 route.get("/", async (req, res) => {
   let streamProvider = "twitch";
   let streamUrl = "https://twitch.tv/your_channel_name";
+  let eventKey = config.eventKey; // Default from config
   try {
     const settings = await StreamSettings.findById(
       "67a0e0cd31da43b3d5ba6151"
@@ -39,11 +40,14 @@ route.get("/", async (req, res) => {
     if (settings) {
       streamProvider = settings.streamProvider;
       streamUrl = settings.streamUrl;
+      if (settings.eventKey) {
+        eventKey = settings.eventKey;
+      }
     }
   } catch (err) {
     console.error("Error fetching stream settings:", err.message);
   }
-  res.render("event", { streamProvider, streamUrl });
+  res.render("event", { streamProvider, streamUrl, eventKey });
 });
 
 // GET teamStats route remains the same
@@ -93,6 +97,7 @@ route.get("/info", async (req, res) => {
 route.get("/settings", async (req, res) => {
   let streamProvider = "twitch";
   let streamUrl = "https://twitch.tv/your_channel_name";
+  let eventKey = config.eventKey; // Default from config
   try {
     const settings = await StreamSettings.findById(
       "67a0e0cd31da43b3d5ba6151"
@@ -100,28 +105,33 @@ route.get("/settings", async (req, res) => {
     if (settings) {
       streamProvider = settings.streamProvider;
       streamUrl = settings.streamUrl;
+      // If eventKey exists in DB, use it, otherwise keep the default from config
+      if (settings.eventKey) {
+        eventKey = settings.eventKey;
+      }
     }
   } catch (err) {
     console.error("Error fetching stream settings:", err.message);
   }
-  res.render("settings", { streamProvider, streamUrl });
+  res.render("settings", { streamProvider, streamUrl, eventKey });
 });
 
 // POST settings - update the stream settings document in the DB
 route.post("/settings", async (req, res) => {
-  const { streamingService, streamingLink } = req.body;
+  const { streamingService, streamingLink, eventKey } = req.body;
   try {
     await StreamSettings.findByIdAndUpdate(
       "67a0e0cd31da43b3d5ba6151",
       {
         streamProvider: streamingService,
         streamUrl: streamingLink,
+        eventKey: eventKey,
       },
       { new: true, upsert: true }
     );
-    console.log("Updated stream settings:", streamingService, streamingLink);
+    console.log("Updated settings:", streamingService, streamingLink, eventKey);
   } catch (err) {
-    console.error("Error updating stream settings:", err.message);
+    console.error("Error updating settings:", err.message);
   }
   res.redirect("/");
 });

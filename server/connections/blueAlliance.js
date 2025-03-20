@@ -3,13 +3,28 @@ const Match = require("../model/match");
 const TeamStats = require("../model/teamStats");
 const axios = require("axios");
 const config = require("../model/config");
+const StreamSettings = require("../model/StreamSettings");
 
 const baseUrl = "https://www.thebluealliance.com/api/v3";
 const apiKey = process.env.TBA_API_KEY;
 
+// Get the event key from MongoDB or use the default from config
+async function getEventKey() {
+  try {
+    const settings = await StreamSettings.findById("67a0e0cd31da43b3d5ba6151").lean();
+    if (settings && settings.eventKey) {
+      return settings.eventKey;
+    }
+  } catch (error) {
+    console.error("Error fetching event key from DB:", error.message);
+  }
+  return config.eventKey; // Fallback to config
+}
+
 // fetch team stats
 async function fetchTeamStats() {
-  const endpoint = `${baseUrl}/team/frc${config.teamNumber}/event/${config.eventKey}/status`;
+  const eventKey = await getEventKey();
+  const endpoint = `${baseUrl}/team/frc${config.teamNumber}/event/${eventKey}/status`;
 
   try {
     const response = await axios.get(endpoint, {
@@ -23,17 +38,26 @@ async function fetchTeamStats() {
       throw new Error("Invalid data structure in the response.");
     }
 
-    const teamStats = response.data.qual.ranking;
+    const ranking = response.data.qual.ranking;
+    const sortOrders = ranking.sort_orders || [];
+    const sortOrderInfo = response.data.qual.sort_order_info || [];
+    let otherStats = [];
+
+    // Map each sort_order_info entry to its corresponding value in sortOrders
+    for (let i = 0; i < sortOrderInfo.length; i++) {
+      const value = sortOrders[i] !== undefined ? sortOrders[i] : null;
+      otherStats.push({
+        name: sortOrderInfo[i].name,
+        value: value,
+        precision: sortOrderInfo[i].precision,
+      });
+    }
 
     return new TeamStats(
-      teamStats.rank,
-      teamStats.sort_orders[0],
-      teamStats.record.wins,
-      teamStats.record.losses,
-      teamStats.sort_orders[2],
-      teamStats.sort_orders[1],
-      teamStats.sort_orders[3],
-      teamStats.sort_orders[4]
+      ranking.rank,
+      ranking.record.wins,
+      ranking.record.losses,
+      otherStats
     );
   } catch (error) {
     console.error("Error fetching team statistics:", error.message);
@@ -43,7 +67,8 @@ async function fetchTeamStats() {
 
 // fetch upcoming matches
 async function fetchUpcomingMatches() {
-  const endpoint = `${baseUrl}/event/${config.eventKey}/matches/simple`;
+  const eventKey = await getEventKey();
+  const endpoint = `${baseUrl}/event/${eventKey}/matches/simple`;
   const matchList = [];
 
   try {
@@ -100,7 +125,8 @@ async function fetchUpcomingMatches() {
 
 // fetch past matches
 async function fetchPastMatches() {
-  const endpoint = `${baseUrl}/team/frc${config.teamNumber}/event/${config.eventKey}/matches`;
+  const eventKey = await getEventKey();
+  const endpoint = `${baseUrl}/team/frc${config.teamNumber}/event/${eventKey}/matches`;
   let matchList = [];
 
   try {
