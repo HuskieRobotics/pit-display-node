@@ -6,6 +6,9 @@ const { makeTaskObject } = require("../../views/robot");
 const {
   downloadLatestLog,
   setDownloadStatus,
+  startConnectionMonitoring,
+  stopConnectionMonitoring,
+  checkConnection,
 } = require("../connections/roborio-log-downloader");
 const path = require("path");
 // const newTasks = tasks.map((task) => {
@@ -223,6 +226,62 @@ route.get("/download-log-status", (req, res) => {
     // No download has been initiated
     return res.json({
       status: "idle",
+    });
+  }
+});
+
+// GET route to check roboRIO connection status
+route.get("/roborio-status", async (req, res) => {
+  const ipAddress = req.query.ip || "roborio-3061-frc.local";
+
+  try {
+    const isConnected = await checkConnection({ host: ipAddress });
+
+    res.json({
+      status: isConnected ? "connected" : "disconnected",
+      host: ipAddress,
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: "error",
+      message: error.message,
+    });
+  }
+});
+
+// POST route to start connection monitoring
+route.post("/start-monitoring", (req, res) => {
+  const ipAddress = req.body.ip || "roborio-3061-frc.local";
+
+  try {
+    const interval = startConnectionMonitoring({ host: ipAddress });
+
+    res.json({
+      status: "started",
+      message: `Connection monitoring started for ${ipAddress}`,
+      interval: !!interval,
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: "error",
+      message: error.message,
+    });
+  }
+});
+
+// POST route to stop connection monitoring
+route.post("/stop-monitoring", (req, res) => {
+  try {
+    stopConnectionMonitoring();
+
+    res.json({
+      status: "stopped",
+      message: "Connection monitoring stopped",
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: "error",
+      message: error.message,
     });
   }
 });

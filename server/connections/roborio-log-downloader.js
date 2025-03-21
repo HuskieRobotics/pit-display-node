@@ -5,6 +5,7 @@
 
 const { Client } = require("ssh2");
 const path = require("path");
+const fs = require("fs");
 
 // Connection constants
 const ROBORIO_CONFIG = {
@@ -20,6 +21,16 @@ const LOG_PATH = "/home/lvuser/logs"; // temp path for testing
 
 // Reference to the download status object (will be set by the router)
 let downloadStatus = null;
+
+// Keep track of connection state
+const connectionState = {
+  isConnected: false,
+  lastDownloadTime: null,
+  downloadedFiles: new Set(), // Track which files have been downloaded
+  connectionMonitorInterval: null,
+  retryCount: 0,
+  maxRetries: 3, // Maximum consecutive failures before backing off
+};
 
 /**
  * Set the download status object reference
@@ -66,6 +77,41 @@ function parseLogTimestamp(filename) {
   const second = parseInt(ss, 10);
 
   return new Date(year, month, day, hour, minute, second);
+}
+
+/**
+ * Check if roboRIO is connected by attempting an SSH connection
+ * @param {Object} options - Connection options
+ * @returns {Promise<boolean>} - True if connected, false otherwise
+ */
+function checkConnection(options = {}) {
+  return new Promise((resolve) => {
+    const config = {
+      ...ROBORIO_CONFIG,
+      host: options.host || ROBORIO_CONFIG.host,
+      readyTimeout: 2000, // Shorter timeout for connection check
+    };
+
+    const client = new Client();
+
+    // Set a timeout to handle hanging connections
+    const timeout = setTimeout(() => {
+      client.end();
+      resolve(false);
+    }, 2500);
+
+    client
+      .on("ready", () => {
+        clearTimeout(timeout);
+        client.end();
+        resolve(true);
+      })
+      .on("error", () => {
+        clearTimeout(timeout);
+        resolve(false);
+      })
+      .connect(config);
+  });
 }
 
 /**
@@ -164,6 +210,21 @@ function downloadLatestLog(options = {}) {
 
             // Get the latest log file
             const latestLog = logFiles[0];
+
+            // Check if we've already downloaded this file
+            if (connectionState.downloadedFiles.has(latestLog.filename)) {
+              console.log(
+                `File ${latestLog.filename} already downloaded, skipping.`
+              );
+              client.end();
+              updateStatus({
+                inProgress: false,
+                message: "File already downloaded",
+                progress: 100,
+              });
+              return resolve(path.join(savePath, latestLog.filename));
+            }
+
             console.log(
               `Latest log file: ${latestLog.filename} (${formatSize(
                 latestLog.attrs.size
@@ -222,6 +283,10 @@ function downloadLatestLog(options = {}) {
                   });
                   return reject(new Error(`Download failed: ${err.message}`));
                 }
+
+                // Add the file to our downloaded set
+                connectionState.downloadedFiles.add(latestLog.filename);
+                connectionState.lastDownloadTime = new Date();
 
                 console.log("\nDownload complete!");
                 updateStatus({
@@ -293,6 +358,17 @@ function mockDownloadLatestLog(options = {}) {
       filename: "",
     });
 
+    // Check if we've already downloaded this mock file (simulating reconnection)
+    if (connectionState.downloadedFiles.has(mockFilename)) {
+      console.log(`Mock file ${mockFilename} already downloaded, skipping.`);
+      updateStatus({
+        inProgress: false,
+        message: "File already downloaded",
+        progress: 100,
+      });
+      return resolve(localPath);
+    }
+
     // Simulate connection delay
     setTimeout(() => {
       console.log("Mock SSH connection established");
@@ -344,7 +420,11 @@ function mockDownloadLatestLog(options = {}) {
             clearInterval(progressInterval);
 
             // Create an empty file to simulate the download
-            require("fs").writeFileSync(localPath, "Mock log file content");
+            fs.writeFileSync(localPath, "Mock log file content");
+
+            // Add to our downloaded set
+            connectionState.downloadedFiles.add(mockFilename);
+            connectionState.lastDownloadTime = new Date();
 
             console.log("\nMock download complete!");
             updateStatus({
@@ -361,6 +441,87 @@ function mockDownloadLatestLog(options = {}) {
   });
 }
 
+/**
+ * Check if roboRIO is connected and download log if necessary
+ * @param {Object} options - Connection options
+ */
+async function checkAndDownload(options = {}) {
+  try {
+    // Skip if already in progress
+    if (downloadStatus && downloadStatus.inProgress) {
+      console.log("Download already in progress, skipping check");
+      return;
+    }
+
+    const isConnected = await checkConnection(options);
+
+    if (isConnected) {
+      if (!connectionState.isConnected) {
+        // First time connected, download the log
+        console.log(
+          "RoboRIO connected for the first time, downloading latest log"
+        );
+        connectionState.isConnected = true;
+        connectionState.retryCount = 0;
+
+        try {
+          await actualDownloadLatestLog(options);
+        } catch (error) {
+          console.error("Failed to download log:", error.message);
+        }
+      } else {
+        console.log("RoboRIO still connected, no new download needed");
+      }
+    } else {
+      if (connectionState.isConnected) {
+        console.log("RoboRIO disconnected");
+        connectionState.isConnected = false;
+      } else {
+        connectionState.retryCount++;
+        console.log(
+          `RoboRIO still disconnected (retry ${connectionState.retryCount})`
+        );
+      }
+    }
+  } catch (error) {
+    console.error("Error in connection check:", error.message);
+  }
+}
+
+/**
+ * Start periodic connection monitoring
+ * @param {Object} options - Connection options
+ */
+function startConnectionMonitoring(options = {}) {
+  if (connectionState.connectionMonitorInterval) {
+    console.log("Connection monitoring already started");
+    return;
+  }
+
+  console.log("Starting roboRIO connection monitoring");
+
+  // Immediately check once
+  checkAndDownload(options);
+
+  // Then set up interval
+  connectionState.connectionMonitorInterval = setInterval(() => {
+    checkAndDownload(options);
+  }, 2000); // Check every 2 seconds
+
+  return connectionState.connectionMonitorInterval;
+}
+
+/**
+ * Stop periodic connection monitoring
+ */
+function stopConnectionMonitoring() {
+  if (connectionState.connectionMonitorInterval) {
+    console.log("Stopping roboRIO connection monitoring");
+    clearInterval(connectionState.connectionMonitorInterval);
+    connectionState.connectionMonitorInterval = null;
+  }
+}
+
 // Determine which implementation to use
 const isTestMode =
   process.env.NODE_ENV === "development" || process.env.TEST_MODE === "true";
@@ -371,4 +532,7 @@ const actualDownloadLatestLog = isTestMode
 module.exports = {
   downloadLatestLog: actualDownloadLatestLog,
   setDownloadStatus,
+  startConnectionMonitoring,
+  stopConnectionMonitoring,
+  checkConnection,
 };

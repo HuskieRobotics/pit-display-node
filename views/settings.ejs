@@ -38,6 +38,14 @@
             <button type="submit">Download Latest Log</button>
           </form>
           <div id="downloadStatus"></div>
+          
+          <!-- Auto-download controls -->
+          <h4>Auto-Download Settings</h4>
+          <p>Automatically checks for roboRIO connection every 2 seconds and downloads logs when first connected.</p>
+          <div id="connectionStatus">Status: Checking...</div>
+          <br>
+          <button id="startMonitoring" class="btn-success">Start Auto-Download</button>
+          <button id="stopMonitoring" class="btn-danger">Stop Auto-Download</button>
         </div>
       </container>
     </section>
@@ -48,6 +56,107 @@
     <script>
       document.addEventListener('DOMContentLoaded', function() {
         const downloadForm = document.getElementById('downloadForm');
+        const ipAddress = document.getElementById('ipAddress');
+        const startMonitoringBtn = document.getElementById('startMonitoring');
+        const stopMonitoringBtn = document.getElementById('stopMonitoring');
+        const connectionStatusDiv = document.getElementById('connectionStatus');
+        
+        // Check connection status every 5 seconds
+        function checkConnectionStatus() {
+          const xhr = new XMLHttpRequest();
+          xhr.open('GET', `/roborio-status?ip=${encodeURIComponent(ipAddress.value)}`, true);
+          
+          xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+              try {
+                const response = JSON.parse(xhr.responseText);
+                connectionStatusDiv.textContent = `Status: ${response.status === 'connected' ? 'Connected' : 'Disconnected'} to ${response.host}`;
+                connectionStatusDiv.className = response.status === 'connected' ? 'status-connected' : 'status-disconnected';
+              } catch (e) {
+                connectionStatusDiv.textContent = 'Status: Error checking connection';
+                connectionStatusDiv.className = 'status-error';
+              }
+            }
+          };
+          
+          xhr.send();
+        }
+        
+        // Check connection status immediately and then every 5 seconds
+        checkConnectionStatus();
+        setInterval(checkConnectionStatus, 5000);
+        
+        // Start auto-download monitoring
+        startMonitoringBtn.addEventListener('click', function() {
+          const xhr = new XMLHttpRequest();
+          xhr.open('POST', '/start-monitoring', true);
+          xhr.setRequestHeader('Content-Type', 'application/json');
+          
+          xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4) {
+              if (xhr.status === 200) {
+                try {
+                  const response = JSON.parse(xhr.responseText);
+                  toastManager.show({
+                    title: 'Auto-Download',
+                    message: response.message,
+                    duration: 3000
+                  });
+                } catch (e) {
+                  toastManager.show({
+                    title: 'Error',
+                    message: 'Failed to parse server response',
+                    duration: 3000
+                  });
+                }
+              } else {
+                toastManager.show({
+                  title: 'Error',
+                  message: `Server error: ${xhr.status}`,
+                  duration: 3000
+                });
+              }
+            }
+          };
+          
+          xhr.send(JSON.stringify({ ip: ipAddress.value }));
+        });
+        
+        // Stop auto-download monitoring
+        stopMonitoringBtn.addEventListener('click', function() {
+          const xhr = new XMLHttpRequest();
+          xhr.open('POST', '/stop-monitoring', true);
+          xhr.setRequestHeader('Content-Type', 'application/json');
+          
+          xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4) {
+              if (xhr.status === 200) {
+                try {
+                  const response = JSON.parse(xhr.responseText);
+                  toastManager.show({
+                    title: 'Auto-Download',
+                    message: response.message,
+                    duration: 3000
+                  });
+                } catch (e) {
+                  toastManager.show({
+                    title: 'Error',
+                    message: 'Failed to parse server response',
+                    duration: 3000
+                  });
+                }
+              } else {
+                toastManager.show({
+                  title: 'Error',
+                  message: `Server error: ${xhr.status}`,
+                  duration: 3000
+                });
+              }
+            }
+          };
+          
+          xhr.send();
+        });
         
         downloadForm.addEventListener('submit', function(e) {
           e.preventDefault(); // Prevent the default form submission

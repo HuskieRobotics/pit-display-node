@@ -24,6 +24,11 @@ dotenv.config({ path: ".env" });
 // Set test mode for development
 process.env.TEST_MODE = "false";
 
+// Import roboRIO log downloader
+const {
+  startConnectionMonitoring,
+} = require("./server/connections/roborio-log-downloader");
+
 // connect to MongoDB using mongoose
 const mongoose = require("mongoose");
 mongoose
@@ -58,4 +63,7 @@ app.use("/", require("./server/routes/router"));
 // start the server on port 8081
 server.listen(8081, () => {
   console.log("server is listening on http://localhost:8081");
+
+  // Start roboRIO connection monitoring
+  startConnectionMonitoring();
 });
