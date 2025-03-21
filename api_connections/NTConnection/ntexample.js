@@ -1,5 +1,7 @@
 const nt4Client = require("ntcore-ts-client");
-const ntcore = nt4Client.NetworkTables.getInstanceByURI("localhost");
+const ntcore = nt4Client.NetworkTables.getInstanceByURI(
+  "roboRIO-3061-FRC.local"
+);
 const exampleTopic = ntcore.createTopic(
   "/AdvantageKit/Drivetrain/BL/DriveTempCelsius",
   nt4Client.NetworkTablesTypeInfos.kDouble

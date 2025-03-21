@@ -3,6 +3,11 @@ const route = express.Router();
 const config = require("../model/config");
 const tasks = require("../model/checklist");
 const { makeTaskObject } = require("../../views/robot");
+const {
+  downloadLatestLog,
+  setDownloadStatus,
+} = require("../connections/roborio-log-downloader");
+const path = require("path");
 // const newTasks = tasks.map((task) => {
 //   return {
 //     name: task.name,
@@ -43,7 +48,9 @@ route.get("/", async (req, res) => {
   let streamUrl = "https://twitch.tv/your_channel_name";
   let eventKey = config.eventKey; // Default from config
   try {
-    const settings = await StreamSettings.findById("67a0e0cd31da43b3d5ba6151").lean();
+    const settings = await StreamSettings.findById(
+      "67a0e0cd31da43b3d5ba6151"
+    ).lean();
     if (settings) {
       streamProvider = settings.streamProvider;
       streamUrl = settings.streamUrl;
@@ -106,7 +113,9 @@ route.get("/settings", async (req, res) => {
   let streamUrl = "https://twitch.tv/your_channel_name";
   let eventKey = config.eventKey; // Default from config
   try {
-    const settings = await StreamSettings.findById("67a0e0cd31da43b3d5ba6151").lean();
+    const settings = await StreamSettings.findById(
+      "67a0e0cd31da43b3d5ba6151"
+    ).lean();
     if (settings) {
       streamProvider = settings.streamProvider;
       streamUrl = settings.streamUrl;
@@ -139,6 +148,83 @@ route.post("/settings", async (req, res) => {
     console.error("Error updating settings:", err.message);
   }
   res.redirect("/");
+});
+
+// GET route to download the latest log file from the roboRIO
+route.get("/download-log", async (req, res) => {
+  const ipAddress = req.query.ip || "10.0.0.2"; // Use query param or default
+
+  try {
+    console.log(
+      `Attempting to download latest log from roboRIO at ${ipAddress}...`
+    );
+    const filePath = await downloadLatestLog({ host: ipAddress });
+
+    // Send the file as a download
+    res.download(filePath, path.basename(filePath), (err) => {
+      if (err) {
+        console.error("Error sending file:", err);
+      } else {
+        console.log(`File ${path.basename(filePath)} sent to client`);
+      }
+    });
+  } catch (error) {
+    console.error("Error downloading log:", error.message);
+    res.status(500).send(`Error downloading log: ${error.message}`);
+  }
+});
+
+// Global variable to track download progress
+const downloadStatus = {
+  inProgress: false,
+  filename: "",
+  progress: 0,
+  message: "",
+  error: null,
+};
+
+// Connect the download status object with the log downloader
+setDownloadStatus(downloadStatus);
+
+// GET route to check download status
+route.get("/download-log-status", (req, res) => {
+  if (downloadStatus.error) {
+    // Error occurred
+    const error = downloadStatus.error;
+    // Reset status
+    downloadStatus.inProgress = false;
+    downloadStatus.error = null;
+
+    return res.json({
+      status: "error",
+      message: error,
+    });
+  } else if (downloadStatus.inProgress) {
+    // Download in progress
+    return res.json({
+      status: "progress",
+      progress: downloadStatus.progress,
+      message: downloadStatus.message,
+      filename: downloadStatus.filename,
+    });
+  } else if (downloadStatus.filename) {
+    // Download completed
+    const filename = downloadStatus.filename;
+    // Reset status after sending success
+    downloadStatus.filename = "";
+    downloadStatus.progress = 0;
+    downloadStatus.message = "";
+
+    return res.json({
+      status: "success",
+      filename: filename,
+    });
+  } else {
+    // No download has been initiated
+    return res.json({
+      status: "idle",
+    });
+  }
 });
 
 module.exports = route;
