@@ -13,12 +13,28 @@ function openPopup(info) {
     minute: "2-digit",
     timeZone: "America/Chicago",
   });
+  if (
+    info.matches[info.matches.length - 1].redTeams.includes("3061") ||
+    info.matches[info.matches.length - 1].redTeams.includes("500")
+  ) {
+    popUp.classList.remove("blue-popup");
+    popUp.classList.add("red-popup");
+    console.log("red");
+  }
+  if (
+    info.matches[info.matches.length - 1].blueTeams.includes("3061)") ||
+    info.matches[info.matches.length - 1].blueTeams.includes("500")
+  ) {
+    popUp.classList.remove("red-popup");
+    popUp.classList.add("blue-popup");
+    console.log("blue");
+  }
   const time = info.matches[info.matches.length - 1].times.estimatedQueueTime;
   const label = info.matches[info.matches.length - 1].label;
   const status = info.matches[info.matches.length - 1].status;
   const val = status.charAt(0).toLowerCase() + status.slice(1);
   const formattedTime = formatter.format(time);
-  text.innerHTML = label + " is " + val + " at " + formattedTime + "!";
+  text.innerHTML = label + " is " + val + " at " + formattedTime;
   popUp.classList.add("open-popup");
 }
 
