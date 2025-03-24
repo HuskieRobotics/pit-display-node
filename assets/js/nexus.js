@@ -13,12 +13,18 @@ function openPopup(info) {
     minute: "2-digit",
     timeZone: "America/Chicago",
   });
-  if ("3061" in info.matches.redteams || "500" in info.matches.redteams) {
+  if (
+    info.matches.redTeams.includes("3061") ||
+    info.matches.redTeams.includes("500")
+  ) {
     popUp.classList.remove("blue-popup");
     popUp.classList.add("red-popup");
     console.log("red");
   }
-  if ("3061" in info.matches.blueteams || "500" in info.matches.blueteams) {
+  if (
+    info.matches.blueTeams.includes("3061)") ||
+    info.matches.blueTeams.includes("500")
+  ) {
     popUp.classList.remove("red-popup");
     popUp.classList.add("blue-popup");
     console.log("blue");
