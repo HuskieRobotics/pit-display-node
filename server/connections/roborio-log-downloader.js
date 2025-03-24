@@ -415,26 +415,32 @@ function processAndDownloadLog(
   });
 
   // Download the file
+  let lastUpdateTime = 0;
   sftp.fastGet(
     remotePath,
     localPath,
     {
       step: (transferred, chunk, total) => {
-        const percent = Math.round((transferred / total) * 100);
-        process.stdout.write(
-          `\rDownload progress: ${percent}% (${formatSize(
-            transferred
-          )}/${formatSize(total)})`
-        );
+        const now = Date.now();
+        // Only update at most once per second
+        if (now - lastUpdateTime >= 1000 || transferred === total) {
+          lastUpdateTime = now;
+          const percent = Math.round((transferred / total) * 100);
+          process.stdout.write(
+            `\rDownload progress: ${percent}% (${formatSize(
+              transferred
+            )}/${formatSize(total)})`
+          );
 
-        // Update download progress (scale to 25-95%)
-        const scaledProgress = 25 + Math.round(percent * 0.7);
-        updateStatus({
-          message: `Downloading ${logFile.filename}: ${percent}% (${formatSize(
-            transferred
-          )}/${formatSize(total)})`,
-          progress: scaledProgress,
-        });
+          // Update download progress (scale to 25-95%)
+          const scaledProgress = 25 + Math.round(percent * 0.7);
+          updateStatus({
+            message: `Downloading ${
+              logFile.filename
+            }: ${percent}% (${formatSize(transferred)}/${formatSize(total)})`,
+            progress: scaledProgress,
+          });
+        }
       },
     },
     (err) => {
