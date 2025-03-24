@@ -14,16 +14,16 @@ function openPopup(info) {
     timeZone: "America/Chicago",
   });
   if (
-    info.matches.redTeams.includes("3061") ||
-    info.matches.redTeams.includes("500")
+    info.matches[info.matches.length - 1].redTeams.includes("3061") ||
+    info.matches[info.matches.length - 1].redTeams.includes("500")
   ) {
     popUp.classList.remove("blue-popup");
     popUp.classList.add("red-popup");
     console.log("red");
   }
   if (
-    info.matches.blueTeams.includes("3061)") ||
-    info.matches.blueTeams.includes("500")
+    info.matches[info.matches.length - 1].blueTeams.includes("3061)") ||
+    info.matches[info.matches.length - 1].blueTeams.includes("500")
   ) {
     popUp.classList.remove("red-popup");
     popUp.classList.add("blue-popup");
