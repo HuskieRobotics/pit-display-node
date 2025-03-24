@@ -36,9 +36,14 @@ function emitPowerStats(stats) {
   io.emit("powerStats", stats);
 }
 
+function emitNexus(notification) {
+  io.emit("nexus", notification);
+}
+
 module.exports = {
   createSocketServer,
   emitTemperatures,
   emitPDHCurrents,
   emitPowerStats,
+  emitNexus,
 };

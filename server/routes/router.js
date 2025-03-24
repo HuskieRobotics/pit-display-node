@@ -3,17 +3,6 @@ const route = express.Router();
 const config = require("../model/config");
 const tasks = require("../model/checklist");
 const { makeTaskObject } = require("../../views/robot");
-// const newTasks = tasks.map((task) => {
-//   return {
-//     name: task.name,
-//     checklistItems: task.checklistItems.map((item) => {
-//       return {
-//         taskName: item,
-//         checked: false,
-//       };
-//     }),
-//   };
-// });
 
 const newTasks = makeTaskObject(tasks);
 
@@ -36,6 +25,8 @@ const { formatTemperatures } = require("../../views/robot");
 const { formatPDHCurrents } = require("../../views/pdh");
 const { formatPowerStats } = require("../../views/power");
 const StreamSettings = require("../model/StreamSettings");
+// const { emit } = require("process");
+const { emitNexus } = require("../socket/socket");
 
 // GET main page - read stream settings from DB and pass to view.
 route.get("/", async (req, res) => {
@@ -43,7 +34,9 @@ route.get("/", async (req, res) => {
   let streamUrl = "https://twitch.tv/your_channel_name";
   let eventKey = config.eventKey; // Default from config
   try {
-    const settings = await StreamSettings.findById("67a0e0cd31da43b3d5ba6151").lean();
+    const settings = await StreamSettings.findById(
+      "67a0e0cd31da43b3d5ba6151"
+    ).lean();
     if (settings) {
       streamProvider = settings.streamProvider;
       streamUrl = settings.streamUrl;
@@ -106,7 +99,9 @@ route.get("/settings", async (req, res) => {
   let streamUrl = "https://twitch.tv/your_channel_name";
   let eventKey = config.eventKey; // Default from config
   try {
-    const settings = await StreamSettings.findById("67a0e0cd31da43b3d5ba6151").lean();
+    const settings = await StreamSettings.findById(
+      "67a0e0cd31da43b3d5ba6151"
+    ).lean();
     if (settings) {
       streamProvider = settings.streamProvider;
       streamUrl = settings.streamUrl;
@@ -139,6 +134,13 @@ route.post("/settings", async (req, res) => {
     console.error("Error updating settings:", err.message);
   }
   res.redirect("/");
+});
+
+route.post("/nexus", async (req, res) => {
+  const notif = req.body;
+  console.log(notif);
+  emitNexus(notif);
+  res.status(200).end();
 });
 
 module.exports = route;
