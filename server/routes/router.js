@@ -156,12 +156,20 @@ route.post("/settings", async (req, res) => {
 // GET route to download the latest log file from the roboRIO
 route.get("/download-log", async (req, res) => {
   const ipAddress = req.query.ip || "10.0.0.2"; // Use query param or default
+  const requireEventCode = req.query.eventCode !== "false"; // Default to true
 
   try {
     console.log(
-      `Attempting to download latest log from roboRIO at ${ipAddress}...`
+      `Attempting to download latest log from roboRIO at ${ipAddress}${
+        requireEventCode
+          ? " with event code filter"
+          : " without event code filter"
+      }...`
     );
-    const filePath = await downloadLatestLog({ host: ipAddress });
+    const filePath = await downloadLatestLog({
+      host: ipAddress,
+      requireEventCode: requireEventCode,
+    });
 
     // Send the file as a download
     res.download(filePath, path.basename(filePath), (err) => {

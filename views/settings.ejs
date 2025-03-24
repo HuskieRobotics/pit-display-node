@@ -32,9 +32,12 @@
             <label for="ipAddress">RoboRIO IP Address:</label>
             <input type="text" id="ipAddress" name="ip" value="roborio-3061-frc.local" placeholder="Example: roborio-3061-frc.local or 172.22.11.2" />
             <br><br>
-            <p>
-              <small></small>
-            </p>
+            <div class="checkbox-container">
+              <input type="checkbox" id="useEventCode" name="eventCode" checked />
+              <label for="useEventCode">Download log containing event code (<%= eventKey.match(/^\d{4}([a-z0-9]+)$/i) ? eventKey.match(/^\d{4}([a-z0-9]+)$/i)[1].toLowerCase() : eventKey %>) in filename</label>
+            </div>
+            <p><small>Example: akit_24-01-28_09-55-16_<%= eventKey.match(/^\d{4}([a-z0-9]+)$/i) ? eventKey.match(/^\d{4}([a-z0-9]+)$/i)[1].toLowerCase() : eventKey %>_q7.wpilog</small></p>
+            <br>
             <button type="submit">Download Latest Log</button>
           </form>
           <div id="downloadStatus"></div>
@@ -195,7 +198,8 @@
                     });
                     
                     // Trigger the actual download
-                    window.location.href = `/download-log?ip=${encodeURIComponent(ipAddress)}`;
+                    const useEventCode = document.getElementById('useEventCode').checked;
+                    window.location.href = `/download-log?ip=${encodeURIComponent(ipAddress)}&eventCode=${useEventCode}`;
                   } else if (response.status === 'progress') {
                     // Update toast with progress
                     toast.update({
