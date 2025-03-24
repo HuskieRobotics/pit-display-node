@@ -476,187 +476,6 @@ function formatSize(bytes) {
 }
 
 /**
- * Mock implementation for testing purposes
- * Simulates downloading a log file from the roboRIO
- * @param {Object} options - Connection options
- * @returns {Promise<string>} - Path to the "downloaded" file
- */
-function mockDownloadLatestLog(options = {}) {
-  const savePath = options.savePath || DEFAULT_SAVE_PATH;
-  const requireEventCode = options.requireEventCode !== false; // Default to true if not specified
-
-  // Ensure the save directory exists
-  if (!fs.existsSync(savePath)) {
-    fs.mkdirSync(savePath, { recursive: true });
-    console.log(`Created mock save directory at: ${savePath}`);
-  }
-
-  // First get the event code, then proceed with mock download
-  return (requireEventCode ? getEventCode() : Promise.resolve("")).then(
-    (eventCode) => {
-      if (eventCode && requireEventCode) {
-        console.log(
-          `Looking for mock logs with event code ${eventCode} in filename`
-        );
-      }
-
-      return new Promise((resolve, reject) => {
-        // Create a filename in the correct format: akit_YY-MM-DD_HH-MM-SS[_eventcode_extra].wpilog
-        const now = new Date();
-        const yy = String(now.getFullYear()).slice(2);
-        const mm = String(now.getMonth() + 1).padStart(2, "0");
-        const dd = String(now.getDate()).padStart(2, "0");
-        const hh = String(now.getHours()).padStart(2, "0");
-        const min = String(now.getMinutes()).padStart(2, "0");
-        const ss = String(now.getSeconds()).padStart(2, "0");
-
-        // Add event code to filename if filtering by event code
-        const eventSuffix = eventCode ? `_${eventCode}_q1` : "";
-        const mockFilename = `akit_${yy}-${mm}-${dd}_${hh}-${min}-${ss}${eventSuffix}.wpilog`;
-        const localPath = path.join(savePath, mockFilename);
-
-        // Update status to indicate download is starting
-        updateStatus({
-          inProgress: true,
-          progress: 0,
-          message: `Connecting to roboRIO at ${
-            options.host || ROBORIO_CONFIG.host
-          }...`,
-          error: null,
-          filename: "",
-        });
-
-        // Check if we've already downloaded this mock file by looking for it on disk
-        if (fs.existsSync(localPath)) {
-          console.log(
-            `Mock file ${mockFilename} already exists locally, skipping.`
-          );
-          updateStatus({
-            inProgress: false,
-            message: "File already downloaded",
-            progress: 100,
-          });
-          return resolve(localPath);
-        }
-
-        // Simulate connection delay
-        setTimeout(() => {
-          console.log("Mock SSH connection established");
-          updateStatus({
-            message: "SSH connection established. Reading directory...",
-            progress: 5,
-          });
-
-          // Simulate reading directory delay
-          setTimeout(() => {
-            console.log("Mock directory read");
-
-            // If filtering by event code, simulate finding multiple log files
-            if (eventCode) {
-              const mockLogFiles = [
-                `akit_${yy}-${mm}-${dd}_${hh}-${min}-${
-                  Number(ss) - 10
-                }_other_q2.wpilog`,
-                `akit_${yy}-${mm}-${dd}_${hh}-${min}-${ss}_${eventCode}_q1.wpilog`,
-                `akit_${yy}-${mm}-${dd}_${hh}-${Number(min) - 1}-${ss}.wpilog`,
-              ];
-
-              updateStatus({
-                message: `Found ${mockLogFiles.length} logs, looking for event code ${eventCode}...`,
-                progress: 10,
-              });
-
-              console.log(
-                `Mock found log with event code ${eventCode} in filename: ${mockFilename}`
-              );
-              updateStatus({
-                message: `Found log: ${mockFilename} (2.5 MB)`,
-                progress: 20,
-                filename: mockFilename,
-              });
-
-              console.log(`Mock downloading to: ${localPath}`);
-              updateStatus({
-                message: `Downloading ${mockFilename}...`,
-                progress: 25,
-              });
-
-              simulateDownloadProgress(mockFilename, localPath, resolve);
-            } else {
-              // No event code filtering, just download the latest log
-              updateStatus({
-                message: `Found latest log: ${mockFilename} (2.5 MB)`,
-                progress: 10,
-                filename: mockFilename,
-              });
-
-              console.log(`Mock downloading to: ${localPath}`);
-              updateStatus({
-                message: `Downloading ${mockFilename}...`,
-                progress: 15,
-              });
-
-              simulateDownloadProgress(mockFilename, localPath, resolve);
-            }
-          }, 1000);
-        }, 1500);
-      });
-    }
-  );
-}
-
-/**
- * Helper function to simulate download progress
- * @param {string} mockFilename - Name of the mock file
- * @param {string} localPath - Path to save the file
- * @param {Function} resolve - Promise resolve function
- */
-function simulateDownloadProgress(mockFilename, localPath, resolve) {
-  // Simulate download progress
-  let progress = 0;
-  const progressInterval = setInterval(() => {
-    progress += 5;
-    if (progress <= 100) {
-      const transferred = Math.round((progress / 100) * 2.5 * 1024 * 1024);
-      const total = 2.5 * 1024 * 1024;
-
-      process.stdout.write(
-        `\rDownload progress: ${progress}% (${formatSize(
-          transferred
-        )}/${formatSize(total)})`
-      );
-
-      // Update download progress (scale based on whether we're using event code filtering)
-      const startProgress = 15;
-      const scaledProgress = startProgress + Math.round(progress * 0.8);
-      updateStatus({
-        message: `Downloading ${mockFilename}: ${progress}% (${formatSize(
-          transferred
-        )}/${formatSize(total)})`,
-        progress: scaledProgress,
-      });
-    } else {
-      clearInterval(progressInterval);
-
-      // Create an empty file to simulate the download
-      fs.writeFileSync(localPath, `Mock log file content for ${mockFilename}`);
-
-      // No longer need to add to downloadedFiles set
-      connectionState.lastDownloadTime = new Date();
-
-      console.log("\nMock download complete!");
-      updateStatus({
-        inProgress: false,
-        message: "Download complete!",
-        progress: 100,
-      });
-
-      resolve(localPath);
-    }
-  }, 300);
-}
-
-/**
  * Check if roboRIO is connected and download log if necessary
  * @param {Object} options - Connection options
  */
@@ -680,7 +499,7 @@ async function checkAndDownload(options = {}) {
         connectionState.retryCount = 0;
 
         try {
-          await actualDownloadLatestLog(options);
+          await downloadLatestLog(options);
         } catch (error) {
           console.error("Failed to download log:", error.message);
         }
@@ -737,15 +556,8 @@ function stopConnectionMonitoring() {
   }
 }
 
-// Determine which implementation to use
-const isTestMode =
-  process.env.NODE_ENV === "development" || process.env.TEST_MODE === "true";
-const actualDownloadLatestLog = isTestMode
-  ? mockDownloadLatestLog
-  : downloadLatestLog;
-
 module.exports = {
-  downloadLatestLog: actualDownloadLatestLog,
+  downloadLatestLog,
   setDownloadStatus,
   startConnectionMonitoring,
   stopConnectionMonitoring,
