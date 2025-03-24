@@ -22,6 +22,43 @@ socket.on("powerStats", (stats) => {
   voltageDisplay.innerHTML = stats.voltageDisplay;
 });
 
+socket.on("powerStats", (stats) => {
+  const runtimeDisplay = document.querySelector("div.runtime");
+  const voltageDisplay = document.querySelector("div.voltage");
+
+  runtimeDisplay.innerHTML = stats.currentDisplay;
+  voltageDisplay.innerHTML = stats.voltageDisplay;
+});
+
+socket.on("robotRuntime", (data) => {
+  const runtimeDisplay = document.querySelector("div.robot-runtime");
+  runtimeDisplay.innerHTML = data.runtimeDisplay;
+});
+
+async function fetchRobotRuntime() {
+  const runtimeDisplay = document.querySelector("div.robot-runtime");
+  try {
+    const response = await fetch("/robotRuntime");
+    if (response.ok) {
+      const data = await response.json();
+      const runtimeMs = data.runtimeDisplay;
+      runtimeDisplay.innerHTML = `${runtimeMs.toFixed(2)}ms`;
+    } else {
+      console.error(`Error fetching robot runtime: ${response.status}`);
+      runtimeDisplay.innerHTML = "N/A";
+    }
+  } catch (error) {
+    console.error("Failed to fetch robot runtime:", error);
+    runtimeDisplay.innerHTML = "Error";
+  }
+}
+
+// Add this with the other fetch calls
+fetchTemperatures();
+fetchPDHCurrents();
+fetchPowerStats();
+fetchRobotRuntime(); // Add this line
+
 async function fetchTemperatures() {
   const temperatures = document.querySelector("div.temp");
   const response = await fetch("/temperatures");
@@ -64,9 +101,9 @@ const checklist = document.querySelectorAll('input[type="checkbox"][data-key]');
 
 checklist.forEach((checkbox) => {
   // Load persisted state on page load
-  const key = checkbox.getAttribute('data-key');
+  const key = checkbox.getAttribute("data-key");
   const saved = localStorage.getItem(key);
-  if (saved === 'true') {
+  if (saved === "true") {
     checkbox.checked = true;
   }
 
@@ -74,7 +111,7 @@ checklist.forEach((checkbox) => {
     const label = event.target.closest("label");
     const taskText = label.textContent.trim();
     const isChecked = event.target.checked;
-    const key = event.target.getAttribute('data-key');
+    const key = event.target.getAttribute("data-key");
     // Save state to localStorage
     localStorage.setItem(key, isChecked);
     socket.emit("checklist", { taskText, isChecked });

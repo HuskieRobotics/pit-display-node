@@ -106,6 +106,6 @@
     "label": "Code Runtime",
     "path": "/RealOutputs/LoggedRobot/UserCodeMS",
     "type": "double",
-    "dataCategory": "POWER_STATS"
+    "dataCategory": "RUNTIME_STATS"
   }
 ]
