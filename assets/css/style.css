@@ -406,3 +406,11 @@ div.twitchstream iframe {
   margin: 10px;
   border-radius: 10px;
 }
+
+.red-popup {
+  background-color: #e24d4df5;
+}
+
+.blue-popup {
+  background-color: #4a90e2f5;
+}
