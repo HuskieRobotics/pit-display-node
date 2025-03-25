@@ -31,6 +31,7 @@ const {
   getMotorTemperatures,
   getPDHCurrents,
   getPowerStats,
+  getRobotRuntime,
 } = require("../connections/nt4");
 const { formatTemperatures } = require("../../views/robot");
 const { formatPDHCurrents } = require("../../views/pdh");
@@ -43,7 +44,9 @@ route.get("/", async (req, res) => {
   let streamUrl = "https://twitch.tv/your_channel_name";
   let eventKey = config.eventKey; // Default from config
   try {
-    const settings = await StreamSettings.findById("67a0e0cd31da43b3d5ba6151").lean();
+    const settings = await StreamSettings.findById(
+      "67a0e0cd31da43b3d5ba6151"
+    ).lean();
     if (settings) {
       streamProvider = settings.streamProvider;
       streamUrl = settings.streamUrl;
@@ -100,13 +103,29 @@ route.get("/info", async (req, res) => {
   res.render("info");
 });
 
+// route.get("/robotRuntime", async (req, res) => {
+//   try {
+//     const runtime = await getRobotRuntime();
+//     if (runtime === null) {
+//       return res.status(503).json({ error: "NetworkTables not available" });
+//     }
+//     res.json({
+//       runtimeDisplay: runtime,
+//     });
+//   } catch (error) {
+//     console.error("Error fetching robot runtime:", error);
+//     res.status(500).json({ error: "Failed to fetch robot runtime" });
+//   }
+// });
 // GET settings page - read current stream settings from DB and pass to view
 route.get("/settings", async (req, res) => {
   let streamProvider = "twitch";
   let streamUrl = "https://twitch.tv/your_channel_name";
   let eventKey = config.eventKey; // Default from config
   try {
-    const settings = await StreamSettings.findById("67a0e0cd31da43b3d5ba6151").lean();
+    const settings = await StreamSettings.findById(
+      "67a0e0cd31da43b3d5ba6151"
+    ).lean();
     if (settings) {
       streamProvider = settings.streamProvider;
       streamUrl = settings.streamUrl;

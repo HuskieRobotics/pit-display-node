@@ -103,7 +103,21 @@
   },
 
   {
-    "label": "Code Runtime",
+    "label": "Code Runtime Full Cycle",
+    "path": "/RealOutputs/LoggedRobot/FullCycleMS",
+    "type": "double",
+    "dataCategory": "RUNTIME_STATS"
+  },
+
+  {
+    "label": "Code Runtime Periodic",
+    "path": "/RealOutputs/LoggedRobot/LogPeriodicMS",
+    "type": "double",
+    "dataCategory": "RUNTIME_STATS"
+  },
+
+  {
+    "label": "Code Runtime User Code",
     "path": "/RealOutputs/LoggedRobot/UserCodeMS",
     "type": "double",
     "dataCategory": "RUNTIME_STATS"

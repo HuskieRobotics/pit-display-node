@@ -36,9 +36,14 @@ function emitPowerStats(stats) {
   io.emit("powerStats", stats);
 }
 
+function emitRobotRuntime(data) {
+  io.emit("robotRuntime", data);
+}
+
 module.exports = {
   createSocketServer,
   emitTemperatures,
   emitPDHCurrents,
   emitPowerStats,
+  emitRobotRuntime,
 };

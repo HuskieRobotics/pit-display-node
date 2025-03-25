@@ -35,30 +35,6 @@ socket.on("robotRuntime", (data) => {
   runtimeDisplay.innerHTML = data.runtimeDisplay;
 });
 
-async function fetchRobotRuntime() {
-  const runtimeDisplay = document.querySelector("div.robot-runtime");
-  try {
-    const response = await fetch("/robotRuntime");
-    if (response.ok) {
-      const data = await response.json();
-      const runtimeMs = data.runtimeDisplay;
-      runtimeDisplay.innerHTML = `${runtimeMs.toFixed(2)}ms`;
-    } else {
-      console.error(`Error fetching robot runtime: ${response.status}`);
-      runtimeDisplay.innerHTML = "N/A";
-    }
-  } catch (error) {
-    console.error("Failed to fetch robot runtime:", error);
-    runtimeDisplay.innerHTML = "Error";
-  }
-}
-
-// Add this with the other fetch calls
-fetchTemperatures();
-fetchPDHCurrents();
-fetchPowerStats();
-fetchRobotRuntime(); // Add this line
-
 async function fetchTemperatures() {
   const temperatures = document.querySelector("div.temp");
   const response = await fetch("/temperatures");
@@ -91,6 +67,10 @@ async function fetchPowerStats() {
     console.log("error fetching power stats");
   }
 }
+
+fetchTemperatures();
+fetchPDHCurrents();
+fetchPowerStats();
 
 // Select all checkboxes with a data-key attribute for persistence
 const checklist = document.querySelectorAll('input[type="checkbox"][data-key]');

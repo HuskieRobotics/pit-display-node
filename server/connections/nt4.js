@@ -8,6 +8,7 @@ const {
 const { formatTemperatures } = require("../../views/robot");
 const { formatPDHCurrents } = require("../../views/pdh");
 const { formatPowerStats } = require("../../views/power");
+// is this line necessary? --> const { get } = require("http");
 
 let ntCore;
 
@@ -98,4 +99,19 @@ function getPowerStats() {
   return powerStats;
 }
 
-module.exports = { getMotorTemperatures, getPDHCurrents, getPowerStats };
+function getRobotRuntime() {
+  let runtime;
+  for (const topic of ntTopics) {
+    if (topic.dataCategory === "ROBOT_RUNTIME") {
+      runtime = topic.value;
+    }
+  }
+  return runtime;
+}
+
+module.exports = {
+  getMotorTemperatures,
+  getPDHCurrents,
+  getPowerStats,
+  getRobotRuntime,
+};
