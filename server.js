@@ -21,18 +21,27 @@ createSocketServer(server);
 const dotenv = require("dotenv");
 dotenv.config({ path: ".env" });
 
+// Set test mode for development
+process.env.TEST_MODE = "false";
+
+// Import roboRIO log downloader
+const {
+  startConnectionMonitoring,
+} = require("./server/connections/roborio-log-downloader");
+
 // connect to MongoDB using mongoose
 const mongoose = require("mongoose");
-mongoose.connect(process.env.MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
-.then(() => {
-  console.log("Connected to MongoDB");
-})
-.catch((err) => {
-  console.error("MongoDB connection error:", err);
-});
+mongoose
+  .connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => {
+    console.log("Connected to MongoDB");
+  })
+  .catch((err) => {
+    console.error("MongoDB connection error:", err);
+  });
 
 // add middleware to handle JSON in HTTP request bodies (used with POST commands)
 app.use(express.json());
@@ -54,4 +63,7 @@ app.use("/", require("./server/routes/router"));
 // start the server on port 8081
 server.listen(8081, () => {
   console.log("server is listening on http://localhost:8081");
+
+  // Start roboRIO connection monitoring
+  startConnectionMonitoring();
 });

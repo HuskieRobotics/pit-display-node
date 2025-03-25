@@ -371,6 +371,50 @@ div.twitchstream iframe {
   font-size: 15px;
 }
 
+/* Connection status indicators */
+.status-connected {
+  color: #4caf50;
+  font-weight: bold;
+}
+
+.status-disconnected {
+  color: #f44336;
+  font-weight: bold;
+}
+
+.status-error {
+  color: #ff9800;
+  font-weight: bold;
+}
+
+.btn-success {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.btn-danger {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-success:hover {
+  background-color: #3e8e41;
+}
+
+.btn-danger:hover {
+  background-color: #d32f2f;
+}
+
+/* Popup styles */
 .popup {
   width: 400px;
   height: 200px;

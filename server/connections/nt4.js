@@ -12,7 +12,7 @@ const { formatPowerStats } = require("../../views/power");
 let ntCore;
 
 if (process.env.ROBOT_IS_LOCAL === "true") {
-  ntCore = nt4Client.NetworkTables.getInstanceByURI("localhost");
+  ntCore = nt4Client.NetworkTables.getInstanceByURI("roboRIO-3061-FRC.local");
 
   for (const topic of ntTopics) {
     if (topic.type === "double") {
