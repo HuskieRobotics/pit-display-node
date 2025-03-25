@@ -2,266 +2,268 @@
 <%- include('include/_header') %>
 <!-- /include header -->
 
-  <body>
-    <section>
-      <%- include('include/_sidebar') %>
-      <container>
-        <div class="rankbox">
-          <h3>Stream Settings</h3>
-          <form action="/settings" method="POST">
-            <label for="streamingService">Streaming Service:</label>
-            <select name="streamingService" id="streamingService">
-              <option value="twitch" <%= streamProvider === 'twitch' ? 'selected' : '' %>>Twitch</option>
-              <option value="youtube" <%= streamProvider === 'youtube' ? 'selected' : '' %>>YouTube</option>
-            </select>
-            <br><br>
-            <label for="streamingLink">Streaming Link:</label>
-            <input type="text" id="streamingLink" name="streamingLink" value="<%= streamUrl %>" />
-            <br><br>
-            <h3>Event Settings</h3>
-            <label for="eventKey">Event Key:</label>
-            <input type="text" id="eventKey" name="eventKey" value="<%= eventKey %>" placeholder="Example: 2024ksla" />
-            <br><br>
-            <button type="submit">Save Settings</button>
-          </form>
-        </div>
-        
-        <div class="rankbox">
-          <h3>RoboRIO Log Download</h3>
-          <form id="downloadForm" action="/download-log" method="GET">
-            <label for="ipAddress">RoboRIO IP Address:</label>
-            <input type="text" id="ipAddress" name="ip" value="roborio-3061-frc.local" placeholder="Example: roborio-3061-frc.local or 172.22.11.2" />
-            <br><br>
-            <div class="checkbox-container">
-              <input type="checkbox" id="useEventCode" name="eventCode" checked />
-              <label for="useEventCode">Download log containing event code (<%= eventKey.match(/^\d{4}([a-z0-9]+)$/i) ? eventKey.match(/^\d{4}([a-z0-9]+)$/i)[1].toLowerCase() : eventKey %>) in filename</label>
-            </div>
-            <p><small>Example: akit_24-01-28_09-55-16_<%= eventKey.match(/^\d{4}([a-z0-9]+)$/i) ? eventKey.match(/^\d{4}([a-z0-9]+)$/i)[1].toLowerCase() : eventKey %>_q7.wpilog</small></p>
-            <br>
-            <button type="submit">Download Latest Log</button>
-          </form>
-          <div id="downloadStatus"></div>
-          
-          <!-- Auto-download controls -->
-          <h4>Auto-Download Settings</h4>
-          <p>Automatically checks for roboRIO connection every 2 seconds and downloads logs when first connected.</p>
-          <div id="connectionStatus">Status: Checking...</div>
+<body>
+  <section>
+    <%- include('include/_sidebar') %>
+    <container>
+      <div class="rankbox">
+        <h3>Stream Settings</h3>
+        <form action="/settings" method="POST">
+          <label for="streamingService">Streaming Service:</label>
+          <select name="streamingService" id="streamingService">
+            <option value="twitch" <%= streamProvider === 'twitch' ? 'selected' : '' %>>Twitch</option>
+            <option value="youtube" <%= streamProvider === 'youtube' ? 'selected' : '' %>>YouTube</option>
+          </select>
+          <br><br>
+          <label for="streamingLink">Streaming Link:</label>
+          <input type="text" id="streamingLink" name="streamingLink" value="<%= streamUrl %>" />
+          <br><br>
+          <h3>Event Settings</h3>
+          <label for="eventKey">Event Key:</label>
+          <input type="text" id="eventKey" name="eventKey" value="<%= eventKey %>" placeholder="Example: 2024ksla" />
+          <br><br>
+          <button type="submit" id="submit-button-link">Save Settings</button>
+        </form>
+      </div>
+      
+      <div class="rankbox">
+        <h3>RoboRIO Log Download</h3>
+        <form id="downloadForm" action="/download-log" method="GET">
+          <label for="ipAddress">RoboRIO IP Address:</label>
+          <input type="text" id="ipAddress" name="ip" value="roborio-3061-frc.local" placeholder="Example: roborio-3061-frc.local or 172.22.11.2" />
+          <br><br>
+          <div class="checkbox-container">
+            <input type="checkbox" id="useEventCode" name="eventCode" checked />
+            <label for="useEventCode">Download log containing event code (<%= eventKey.match(/^\d{4}([a-z0-9]+)$/i) ? eventKey.match(/^\d{4}([a-z0-9]+)$/i)[1].toLowerCase() : eventKey %>) in filename</label>
+          </div>
+          <p><small>Example: akit_24-01-28_09-55-16_<%= eventKey.match(/^\d{4}([a-z0-9]+)$/i) ? eventKey.match(/^\d{4}([a-z0-9]+)$/i)[1].toLowerCase() : eventKey %>_q7.wpilog</small></p>
           <br>
-          <button id="startMonitoring" class="btn-success">Start Auto-Download</button>
-          <button id="stopMonitoring" class="btn-danger">Stop Auto-Download</button>
-        </div>
-      </container>
-    </section>
-    
-    <!-- Include toast.js -->
-    <script src="/js/toast.js"></script>
-    
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        const downloadForm = document.getElementById('downloadForm');
-        const ipAddress = document.getElementById('ipAddress');
-        const startMonitoringBtn = document.getElementById('startMonitoring');
-        const stopMonitoringBtn = document.getElementById('stopMonitoring');
-        const connectionStatusDiv = document.getElementById('connectionStatus');
+          <button type="submit">Download Latest Log</button>
+        </form>
+        <div id="downloadStatus"></div>
         
-        // Check connection status every 5 seconds
-        function checkConnectionStatus() {
-          const xhr = new XMLHttpRequest();
-          xhr.open('GET', `/roborio-status?ip=${encodeURIComponent(ipAddress.value)}`, true);
-          
-          xhr.onreadystatechange = function() {
-            if (xhr.readyState === 4 && xhr.status === 200) {
+        <!-- Auto-download controls -->
+        <h4>Auto-Download Settings</h4>
+        <p>Automatically checks for roboRIO connection every 2 seconds and downloads logs when first connected.</p>
+        <div id="connectionStatus">Status: Checking...</div>
+        <br>
+        <button id="startMonitoring" class="btn-success">Start Auto-Download</button>
+        <button id="stopMonitoring" class="btn-danger">Stop Auto-Download</button>
+      </div>
+    </container>
+  </section>
+  
+  <!-- Include toast.js -->
+  <script src="/js/toast.js"></script>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const downloadForm = document.getElementById('downloadForm');
+      const ipAddress = document.getElementById('ipAddress');
+      const startMonitoringBtn = document.getElementById('startMonitoring');
+      const stopMonitoringBtn = document.getElementById('stopMonitoring');
+      const connectionStatusDiv = document.getElementById('connectionStatus');
+      
+      // Check connection status every 5 seconds
+      function checkConnectionStatus() {
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', `/roborio-status?ip=${encodeURIComponent(ipAddress.value)}`, true);
+        
+        xhr.onreadystatechange = function() {
+          if (xhr.readyState === 4 && xhr.status === 200) {
+            try {
+              const response = JSON.parse(xhr.responseText);
+              connectionStatusDiv.textContent = `Status: ${response.status === 'connected' ? 'Connected' : 'Disconnected'} to ${response.host}`;
+              connectionStatusDiv.className = response.status === 'connected' ? 'status-connected' : 'status-disconnected';
+            } catch (e) {
+              connectionStatusDiv.textContent = 'Status: Error checking connection';
+              connectionStatusDiv.className = 'status-error';
+            }
+          }
+        };
+        
+        xhr.send();
+      }
+      
+      // Check connection status immediately and then every 5 seconds
+      checkConnectionStatus();
+      setInterval(checkConnectionStatus, 5000);
+      
+      // Start auto-download monitoring
+      startMonitoringBtn.addEventListener('click', function() {
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', '/start-monitoring', true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        
+        xhr.onreadystatechange = function() {
+          if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
               try {
                 const response = JSON.parse(xhr.responseText);
-                connectionStatusDiv.textContent = `Status: ${response.status === 'connected' ? 'Connected' : 'Disconnected'} to ${response.host}`;
-                connectionStatusDiv.className = response.status === 'connected' ? 'status-connected' : 'status-disconnected';
+                toastManager.show({
+                  title: 'Auto-Download',
+                  message: response.message,
+                  duration: 3000
+                });
               } catch (e) {
-                connectionStatusDiv.textContent = 'Status: Error checking connection';
-                connectionStatusDiv.className = 'status-error';
-              }
-            }
-          };
-          
-          xhr.send();
-        }
-        
-        // Check connection status immediately and then every 5 seconds
-        checkConnectionStatus();
-        setInterval(checkConnectionStatus, 5000);
-        
-        // Start auto-download monitoring
-        startMonitoringBtn.addEventListener('click', function() {
-          const xhr = new XMLHttpRequest();
-          xhr.open('POST', '/start-monitoring', true);
-          xhr.setRequestHeader('Content-Type', 'application/json');
-          
-          xhr.onreadystatechange = function() {
-            if (xhr.readyState === 4) {
-              if (xhr.status === 200) {
-                try {
-                  const response = JSON.parse(xhr.responseText);
-                  toastManager.show({
-                    title: 'Auto-Download',
-                    message: response.message,
-                    duration: 3000
-                  });
-                } catch (e) {
-                  toastManager.show({
-                    title: 'Error',
-                    message: 'Failed to parse server response',
-                    duration: 3000
-                  });
-                }
-              } else {
                 toastManager.show({
                   title: 'Error',
-                  message: `Server error: ${xhr.status}`,
+                  message: 'Failed to parse server response',
                   duration: 3000
                 });
               }
+            } else {
+              toastManager.show({
+                title: 'Error',
+                message: `Server error: ${xhr.status}`,
+                duration: 3000
+              });
             }
-          };
-          
-          xhr.send(JSON.stringify({ ip: ipAddress.value }));
-        });
+          }
+        };
         
-        // Stop auto-download monitoring
-        stopMonitoringBtn.addEventListener('click', function() {
-          const xhr = new XMLHttpRequest();
-          xhr.open('POST', '/stop-monitoring', true);
-          xhr.setRequestHeader('Content-Type', 'application/json');
-          
-          xhr.onreadystatechange = function() {
-            if (xhr.readyState === 4) {
-              if (xhr.status === 200) {
-                try {
-                  const response = JSON.parse(xhr.responseText);
-                  toastManager.show({
-                    title: 'Auto-Download',
-                    message: response.message,
-                    duration: 3000
-                  });
-                } catch (e) {
-                  toastManager.show({
-                    title: 'Error',
-                    message: 'Failed to parse server response',
-                    duration: 3000
-                  });
-                }
-              } else {
+        xhr.send(JSON.stringify({ ip: ipAddress.value }));
+      });
+      
+      // Stop auto-download monitoring
+      stopMonitoringBtn.addEventListener('click', function() {
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', '/stop-monitoring', true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        
+        xhr.onreadystatechange = function() {
+          if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+              try {
+                const response = JSON.parse(xhr.responseText);
+                toastManager.show({
+                  title: 'Auto-Download',
+                  message: response.message,
+                  duration: 3000
+                });
+              } catch (e) {
                 toastManager.show({
                   title: 'Error',
-                  message: `Server error: ${xhr.status}`,
+                  message: 'Failed to parse server response',
                   duration: 3000
                 });
               }
+            } else {
+              toastManager.show({
+                title: 'Error',
+                message: `Server error: ${xhr.status}`,
+                duration: 3000
+              });
             }
-          };
-          
-          xhr.send();
+          }
+        };
+        
+        xhr.send();
+      });
+      
+      downloadForm.addEventListener('submit', function(e) {
+        e.preventDefault(); // Prevent the default form submission
+        
+        const ipAddressValue = ipAddress.value;
+        const statusDiv = document.getElementById('downloadStatus');
+        
+        // Show initial toast notification
+        const toast = toastManager.show({
+          title: 'Downloading Log',
+          message: 'Connecting to roboRIO...',
+          duration: 0, // Persistent until download completes
+          showProgress: true
         });
         
-        downloadForm.addEventListener('submit', function(e) {
-          e.preventDefault(); // Prevent the default form submission
-          
-          const ipAddress = document.getElementById('ipAddress').value;
-          const statusDiv = document.getElementById('downloadStatus');
-          
-          // Show initial toast notification
-          const toast = toastManager.show({
-            title: 'Downloading Log',
-            message: 'Connecting to roboRIO...',
-            duration: 0, // Persistent until download completes
-            showProgress: true
-          });
-          
-          // Create a new XMLHttpRequest to handle the download
-          const xhr = new XMLHttpRequest();
-          
-          // Set up a connection to the server
-          xhr.open('GET', `/download-log-status?ip=${encodeURIComponent(ipAddress)}`, true);
-          
-          // Set up event handlers
-          xhr.onreadystatechange = function() {
-            if (xhr.readyState === 4) {
-              if (xhr.status === 200) {
-                try {
-                  const response = JSON.parse(xhr.responseText);
+        // Create a new XMLHttpRequest to handle the download
+        const xhr = new XMLHttpRequest();
+        
+        // Set up a connection to the server
+        xhr.open('GET', `/download-log-status?ip=${encodeURIComponent(ipAddressValue)}`, true);
+        
+        // Set up event handlers
+        xhr.onreadystatechange = function() {
+          if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+              try {
+                const response = JSON.parse(xhr.responseText);
+                
+                if (response.status === 'success') {
+                  // Update toast with success message
+                  toast.update({
+                    title: 'Download Complete',
+                    message: `Successfully downloaded ${response.filename}`,
+                    progress: 100,
+                    duration: 5000 // Auto-close after 5 seconds
+                  });
                   
-                  if (response.status === 'success') {
-                    // Update toast with success message
-                    toast.update({
-                      title: 'Download Complete',
-                      message: `Successfully downloaded ${response.filename}`,
-                      progress: 100,
-                      duration: 5000 // Auto-close after 5 seconds
-                    });
-                    
-                    // Trigger the actual download
-                    const useEventCode = document.getElementById('useEventCode').checked;
-                    window.location.href = `/download-log?ip=${encodeURIComponent(ipAddress)}&eventCode=${useEventCode}`;
-                  } else if (response.status === 'progress') {
-                    // Update toast with progress
-                    toast.update({
-                      message: response.message,
-                      progress: response.progress
-                    });
-                    
-                    // Poll for updates
-                    setTimeout(function() {
-                      xhr.open('GET', `/download-log-status?ip=${encodeURIComponent(ipAddress)}`, true);
-                      xhr.send();
-                    }, 500);
-                  } else if (response.status === 'error') {
-                    // Error occurred
-                    toast.update({
-                      title: 'Error',
-                      message: response.message || 'An unknown error occurred',
-                      duration: 5000
-                    });
-                  } else if (response.status === 'idle') {
-                    // Start the download process
-                    const downloadXhr = new XMLHttpRequest();
-                    downloadXhr.open('GET', `/download-log?ip=${encodeURIComponent(ipAddress)}`, true);
-                    downloadXhr.send();
-                    
-                    // Poll for status updates
-                    setTimeout(function() {
-                      xhr.open('GET', `/download-log-status?ip=${encodeURIComponent(ipAddress)}`, true);
-                      xhr.send();
-                    }, 1000);
-                  }
-                } catch (error) {
+                  // Trigger the actual download
+                  const useEventCode = document.getElementById('useEventCode').checked;
+                  window.location.href = `/download-log?ip=${encodeURIComponent(ipAddressValue)}&eventCode=${useEventCode}`;
+                } else if (response.status === 'progress') {
+                  // Update toast with progress
+                  toast.update({
+                    message: response.message,
+                    progress: response.progress
+                  });
+                  
+                  // Poll for updates
+                  setTimeout(function() {
+                    xhr.open('GET', `/download-log-status?ip=${encodeURIComponent(ipAddressValue)}`, true);
+                    xhr.send();
+                  }, 500);
+                } else if (response.status === 'error') {
+                  // Error occurred
                   toast.update({
                     title: 'Error',
-                    message: 'Failed to parse server response',
+                    message: response.message || 'An unknown error occurred',
                     duration: 5000
                   });
+                } else if (response.status === 'idle') {
+                  // Start the download process
+                  const downloadXhr = new XMLHttpRequest();
+                  downloadXhr.open('GET', `/download-log?ip=${encodeURIComponent(ipAddressValue)}`, true);
+                  downloadXhr.send();
+                  
+                  // Poll for status updates
+                  setTimeout(function() {
+                    xhr.open('GET', `/download-log-status?ip=${encodeURIComponent(ipAddressValue)}`, true);
+                    xhr.send();
+                  }, 1000);
                 }
-              } else {
-                // HTTP error
+              } catch (error) {
                 toast.update({
                   title: 'Error',
-                  message: `Server error: ${xhr.status}`,
+                  message: 'Failed to parse server response',
                   duration: 5000
                 });
               }
+            } else {
+              // HTTP error
+              toast.update({
+                title: 'Error',
+                message: `Server error: ${xhr.status}`,
+                duration: 5000
+              });
             }
-          };
-          
-          // Handle network errors
-          xhr.onerror = function() {
-            toast.update({
-              title: 'Connection Error',
-              message: 'Failed to connect to the server',
-              duration: 5000
-            });
-          };
-          
-          // Send the request
-          xhr.send();
-        });
+          }
+        };
+        
+        // Handle network errors
+        xhr.onerror = function() {
+          toast.update({
+            title: 'Connection Error',
+            message: 'Failed to connect to the server',
+            duration: 5000
+          });
+        };
+        
+        // Send the request
+        xhr.send();
       });
-    </script>
-  </body>
+    });
+  </script>
+  
+  <script src="/js/settings.js"></script>
+</body>
 </html>

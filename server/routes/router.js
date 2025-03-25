@@ -11,6 +11,7 @@ const {
   checkConnection,
 } = require("../connections/roborio-log-downloader");
 const path = require("path");
+
 // const newTasks = tasks.map((task) => {
 //   return {
 //     name: task.name,
@@ -22,7 +23,6 @@ const path = require("path");
 //     }),
 //   };
 // });
-
 const newTasks = makeTaskObject(tasks);
 
 const {
@@ -44,6 +44,8 @@ const { formatTemperatures } = require("../../views/robot");
 const { formatPDHCurrents } = require("../../views/pdh");
 const { formatPowerStats } = require("../../views/power");
 const StreamSettings = require("../model/StreamSettings");
+// const { emit } = require("process");
+const { emitNexus } = require("../socket/socket");
 
 // GET main page - read stream settings from DB and pass to view.
 route.get("/", async (req, res) => {
@@ -244,7 +246,6 @@ route.get("/roborio-status", async (req, res) => {
 
   try {
     const isConnected = await checkConnection({ host: ipAddress });
-
     res.json({
       status: isConnected ? "connected" : "disconnected",
       host: ipAddress,
@@ -260,10 +261,8 @@ route.get("/roborio-status", async (req, res) => {
 // POST route to start connection monitoring
 route.post("/start-monitoring", (req, res) => {
   const ipAddress = req.body.ip || "roborio-3061-frc.local";
-
   try {
     const interval = startConnectionMonitoring({ host: ipAddress });
-
     res.json({
       status: "started",
       message: `Connection monitoring started for ${ipAddress}`,
@@ -281,7 +280,6 @@ route.post("/start-monitoring", (req, res) => {
 route.post("/stop-monitoring", (req, res) => {
   try {
     stopConnectionMonitoring();
-
     res.json({
       status: "stopped",
       message: "Connection monitoring stopped",
@@ -292,6 +290,14 @@ route.post("/stop-monitoring", (req, res) => {
       message: error.message,
     });
   }
+});
+
+// POST route for nexus notifications
+route.post("/nexus", async (req, res) => {
+  const notif = req.body;
+  console.log(notif);
+  emitNexus(notif);
+  res.status(200).end();
 });
 
 module.exports = route;

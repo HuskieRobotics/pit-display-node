@@ -1,106 +1,142 @@
-<!DOCTYPE html>
 <!-- include header -->
 <%- include('include/_header') %>
 <!-- /include header -->
 
-<body>
-  <section>
-    <!-- Sidebar navigation (from main branch) -->
-    <%- include('include/_sidebar') %>
+  <body>
+    <section>
+      <navigation>
+        <!-- Add your navigation links or buttons here -->
+        <a href="https://pit.team3061.org/">
+          <button class="button">
+            <img
+              src="/img/calendar.png"
+              alt="Match Info"
+              style="width: 50px; height: 50px"
+            />
+          </button>
+        </a>
 
-    <!-- Checklist (with dynamic tasks from checklist branch) -->
-    <div class="checklist">
-      <p>Checklist</p>
-      <% tasks.forEach(function(task, taskIndex) { %>
-        <details>
-          <summary><%= task.name %></summary>
-          <% for (var i = 0; i < task.checklistItems.length; i++) { %>
-            <label>
-              <input 
-                type="checkbox" 
-                data-key="checklist-<%= taskIndex %>-<%= i %>" 
-                name="check<%= taskIndex %>_<%= i %>" 
-                value="check<%= taskIndex %>_<%= i %>" 
-              /> 
-              <%= task.checklistItems[i].taskName %>
-            </label>
-            <br />
-          <% } %>
-        </details>
-      <% }); %>
-    </div>
+        <a href="http://localhost:8081/robot">
+          <button class="button">
+            <img
+              src="/img/statistics.png"
+              alt="Robot Stats"
+              style="width: 50px; height: 50px"
+            />
+          </button>
+        </a>
 
-    <div class="data">
-      <div class="temp">
-        <div class="temp1">
-          <p>FL Drive : 0°C</p>
-          <p>FL Steer : 0°C</p>
-          <p>FR Drive : 0°C</p>
-          <p>FR Steer : 0°C</p>
-          <p>BL Drive : 0°C</p>
-          <p>BL Steer : 0°C</p>
-          <p>BR Drive : 0°C</p>
-          <p>BR Steer : 0°C</p>
-        </div>
-        <div class="temp2">
-          <p>Intake Roller : 0°C</p>
-          <p>Intake Kicker : 0°C</p>
-          <p>Climber : 0°C</p>
-        </div>
-        <div class="temp3">
-          <p>Shooter Top : 0°C</p>
-          <p>Shooter Bottom : 0°C</p>
-          <p>Shooter Angle : 0°C</p>
-          <p>Deflector : 0°C</p>
-        </div>
-      </div>
-      <div class="bar"></div>
-      <div class="runtime"></div>
-      <div class="voltage"></div>
-      <div class="can"></div>
-    </div>
+        <a href="https://pit.team3061.org/info">
+          <button class="button">
+            <img
+              src="/img/info.png"
+              alt="App Info"
+              style="width: 50px; height: 50px"
+            />
+          </button>
+        </a>
+      </navigation>
 
-    <div class="test">
-      <div class="SwerveCheck">
-        <button class="SwerveCheckButton">Swerve Check</button>
-        <p class="checkpar">check 1 ✅</p>
-        <p class="checkpar">check 2 ✅</p>
-        <p class="checkpar">check 3 ❌</p>
+      <!-- <div class="checklist"></div> -->
+      <div class="checklist">
+          <% tasks.forEach(function(task) { %>
+            <details>
+              <summary><%= task.name %></summary>
+            
+            <% for (var i = 0; i < task.checklistItems.length; i++) { %>
+              <label>
+                <input type="checkbox" name="check<%= i %>" value="check<%= i %>" /> <%= task.checklistItems[i].taskName %>
+              </label>
+              <br />
+            <% } %>
+            </details>
+          <% }); %>
+        </div>
       </div>
-      <div class="ArmCheck">
-        <button class="ArmCheckButton">Arm Check</button>
-        <p class="checkpar">check 1 ✅</p>
-        <p class="checkpar">check 2 ❌</p>
-        <p class="checkpar">check 3 ✅</p>
+      <div class="data">
+        <div class="temp">
+          <div class="temp1">
+            <p>FL Drive : 0°C</p>
+            <p>FL Steer : 0°C</p>
+            <p>FR Drive : 0°C</p>
+            <p>FR Steer : 0°C</p>
+            <p>BL Drive : 0°C</p>
+            <p>BL Steer : 0°C</p>
+            <p>BR Drive : 0°C</p>
+            <p>BR Steer : 0°C</p>
+          </div>
+
+          <div class="temp2">
+            <p>Intake Roller : 0°C</p>
+            <p>Intake Kicker : 0°C</p>
+            <p>Climber : 0°C</p>
+          </div>
+
+          <div class="temp3">
+            <p>Shooter Top : 0°C</p>
+            <p>Shooter Bottom : 0°C</p>
+            <p>Shooter Angle : 0°C</p>
+            <p>Deflector : 0°C</p>
+          </div>
+        </div>
+        <div class="bar"></div>
+        <div class="runtime"></div>
+        <div class="voltage"></div>
+        <div class="can"></div>
       </div>
-      <div class="TurretCheck">
-        <button class="TurretCheckButton">Turret Check</button>
-        <p class="checkpar">check 1 ✅</p>
-        <p class="checkpar">check 2 ✅</p>
-        <p class="checkpar">check 3 ✅</p>
+
+      <div class="test">
+        <div class="SwerveCheck">
+          <button class="SwerveCheckButton">Swerve Check</button>
+          <p class="checkpar">check 1 ✅</p>
+          <p class="checkpar">check 2 ✅</p>
+          <p class="checkpar">check 3 ❌</p>
+        </div>
+
+        <div class="ArmCheck">
+          <button class="ArmCheckButton">Arm Check</button>
+          <p class="checkpar">check 1 ✅</p>
+          <p class="checkpar">check 2 ❌</p>
+          <p class="checkpar">check 3 ✅</p>
+        </div>
+
+        <div class="TurretCheck">
+          <button class="TurretCheckButton">Turret Check</button>
+          <p class="checkpar">check 1 ✅</p>
+          <p class="checkpar">check 2 ✅</p>
+          <p class="checkpar">check 3 ✅</p>
+        </div>
+
+        <div class="JawCheck">
+          <button class="JawCheckButton">Jaw Check</button>
+          <p class="checkpar">check 1 ❌</p>
+          <p class="checkpar">check 2 ✅</p>
+          <p class="checkpar">check 3 ❌</p>
+        </div>
+
+        <div class="IntakeCheck">
+          <button class="IntakeCheckButton">Intake Check</button>
+          <p class="checkpar">check 1 ⌛</p>
+          <p class="checkpar">check 2 ⌛</p>
+          <p class="checkpar">check 3 ⌛</p>
+        </div>
+
+        <div class="ManhattenCheck">
+          <button class="ManhattenCheckButton">Manhatten Check</button>
+          <p class="checkpar">check 1 ✅</p>
+          <p class="checkpar">check 2 ✅</p>
+          <p class="checkpar">check 3 ✅</p>
+        </div>
       </div>
-      <div class="JawCheck">
-        <button class="JawCheckButton">Jaw Check</button>
-        <p class="checkpar">check 1 ❌</p>
-        <p class="checkpar">check 2 ✅</p>
-        <p class="checkpar">check 3 ❌</p>
+      
+      <div class="popup" id = "popup">
+        <p id = "popUpText">Hi!</p>
+        <button type="button" onclick="closePopup()">Close</button>
       </div>
-      <div class="IntakeCheck">
-        <button class="IntakeCheckButton">Intake Check</button>
-        <p class="checkpar">check 1 ⌛</p>
-        <p class="checkpar">check 2 ⌛</p>
-        <p class="checkpar">check 3 ⌛</p>
-      </div>
-      <div class="ManhattenCheck">
-        <button class="ManhattenCheckButton">Manhatten Check</button>
-        <p class="checkpar">check 1 ✅</p>
-        <p class="checkpar">check 2 ✅</p>
-        <p class="checkpar">check 3 ✅</p>
-      </div>
-    </div>
-    
-  </section>
-  <script src="/socket.io/socket.io.js"></script>
-  <script src="/js/robot.js"></script>
-</body>
+
+    </section>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/robot.js"></script>
+    <script src = "/js/nexus.js"></script>
+  </body>
 </html>
