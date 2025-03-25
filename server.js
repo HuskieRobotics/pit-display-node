@@ -21,6 +21,10 @@ createSocketServer(server);
 const dotenv = require("dotenv");
 dotenv.config({ path: ".env" });
 
+// Cookie parser middleware for handling cookies
+const cookieParser = require("cookie-parser");
+app.use(cookieParser());
+
 // Set test mode for development
 process.env.TEST_MODE = "false";
 

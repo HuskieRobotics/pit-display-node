@@ -47,6 +47,30 @@ const StreamSettings = require("../model/StreamSettings");
 // const { emit } = require("process");
 const { emitNexus } = require("../socket/socket");
 
+// Middleware to set server mode based on cookie
+route.use((req, res, next) => {
+  // Check if server mode cookie exists, otherwise default to development
+  const isProduction = req.cookies && req.cookies.serverMode === "production";
+
+  // Set the baseUrl based on the server mode
+  res.locals.isProduction = isProduction;
+  res.locals.baseUrl = isProduction
+    ? "https://pit.team3061.org"
+    : "http://localhost:8081";
+
+  next();
+});
+
+// Toggle server mode
+route.post("/toggle-server-mode", (req, res) => {
+  const { mode } = req.body;
+
+  // Set cookie with the selected mode
+  res.cookie("serverMode", mode, { maxAge: 30 * 24 * 60 * 60 * 1000 }); // 30 days
+
+  res.sendStatus(200);
+});
+
 // GET main page - read stream settings from DB and pass to view.
 route.get("/", async (req, res) => {
   let streamProvider = "twitch";

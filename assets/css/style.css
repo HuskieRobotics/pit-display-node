@@ -459,3 +459,67 @@ div.twitchstream iframe {
 .blue-popup {
   background-color: #4a90e2f5;
 }
+
+/* Server toggle switch */
+.server-toggle-container {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  display: flex;
+  align-items: center;
+  z-index: 1000;
+}
+
+.server-toggle-container input[type="checkbox"] {
+  height: 0;
+  width: 0;
+  visibility: hidden;
+  position: absolute;
+}
+
+.server-toggle-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  width: 100px;
+  height: 30px;
+  background: #34384b;
+  border-radius: 100px;
+  position: relative;
+  transition: background-color 0.2s;
+  padding: 5px 10px;
+}
+
+.server-toggle-label:after {
+  content: "";
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 20px;
+  height: 20px;
+  background: #fff;
+  border-radius: 90px;
+  transition: 0.3s;
+}
+
+.toggle-text {
+  color: white;
+  font-size: 12px;
+  font-family: "Source Code Pro", monospace;
+  padding-left: 25px;
+}
+
+input:checked + .server-toggle-label {
+  background: #4a90e2;
+}
+
+input:checked + .server-toggle-label:after {
+  left: calc(100% - 5px);
+  transform: translateX(-100%);
+}
+
+input:checked + .server-toggle-label .toggle-text {
+  padding-left: 0;
+  padding-right: 25px;
+}
