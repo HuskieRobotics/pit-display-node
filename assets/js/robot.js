@@ -92,10 +92,6 @@ async function fetchPowerStats() {
   }
 }
 
-fetchTemperatures();
-fetchPDHCurrents();
-fetchPowerStats();
-
 // Select all checkboxes with a data-key attribute for persistence
 const checklist = document.querySelectorAll('input[type="checkbox"][data-key]');
 
