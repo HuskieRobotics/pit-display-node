@@ -61,12 +61,12 @@
       <!-- Removed original PAGE RUNTIME graph placeholder -->
       <!--Robot Code Runtime Chart (does not disturb checklist etc.) -->
       <div class="runtime-graph">
-        <h2>Robot Code Runtime Information</h2>
-        <canvas id="runtimeChart" width="600" height="400"></canvas>
+        <h2>Robot Code Runtime</h2>
+        <canvas id="runtimeChart" width="300" height="200"></canvas>
       </div>
       <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation"></script>
       <script>
-        // NEW: Fetch runtime info from server and render using Chart.js
         async function renderRuntimeChart() {
           const response = await fetch('/robot/api/runtimeInfo');
           const data = await response.json();
@@ -82,14 +82,65 @@
               }]
             },
             options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                annotation: {
+                  annotations: {
+                    line1: {
+                      type: 'line',
+                      yMin: 20,
+                      yMax: 20,
+                      borderColor: 'rgb(255, 99, 132)',
+                      borderWidth: 2,
+                      label: {
+                        content: '20ms',
+                        enabled: true,
+                        position: 'end'
+                      }
+                    }
+                  }
+                },
+                legend: {
+                  display: false
+                }
+              },
               scales: {
-                y: { beginAtZero: true }
+                y: { 
+                  beginAtZero: true,
+                  ticks: {
+                    font: {
+                      size: 10
+                    }
+                  }
+                },
+                x: {
+                  ticks: {
+                    font: {
+                      size: 10
+                    }
+                  }
+                }
               }
             }
           });
         }
         renderRuntimeChart();
       </script>
+      <style>
+        .runtime-graph {
+          width: 320px;
+          height: 220px;
+          margin: 10px;
+          padding: 10px;
+          background: #f5f5f5;
+          border-radius: 5px;
+        }
+        .runtime-graph h2 {
+          font-size: 14px;
+          margin: 0 0 10px 0;
+        }
+      </style>
     </div>
 
     <div class="test">
