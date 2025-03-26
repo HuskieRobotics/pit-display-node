@@ -109,9 +109,31 @@ function getRobotRuntime() {
   return runtime;
 }
 
+function getRuntimePeriodic() {
+  let runtime;
+  for (const topic of ntTopics) {
+    if (topic.dataCategory === "PERIODIC_RUNTIME") {
+      runtime = topic.value;
+    }
+  }
+  return runtime;
+}
+
+function getUserCode() {
+  let userCode;
+  for (const topic of ntTopics) {
+    if (topic.dataCategory === "USER_CODE") {
+      userCode = topic.value;
+    }
+  }
+  return userCode;
+}
+
 module.exports = {
   getMotorTemperatures,
   getPDHCurrents,
   getPowerStats,
   getRobotRuntime,
+  getRuntimePeriodic,
+  getUserCode,
 };

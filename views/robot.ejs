@@ -1,106 +1,164 @@
 <!DOCTYPE html>
-<!-- include header -->
-<%- include('include/_header') %>
-<!-- /include header -->
+<html>
+  <head>
+    <title>Robot Status</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/robot.js" defer></script>
+    <script>
+      let runtimeChart;
+      const runtimeDataPoints = [];
+      const MAX_DATA_POINTS = 50;
 
-<body>
-  <section>
-    <!-- Sidebar navigation (from main branch) -->
-    <%- include('include/_sidebar') %>
+      function initializeRuntimeGraph() {
+        const canvas = document.getElementById("runtimeGraph");
+        if (!canvas) return;
 
-    <!-- Checklist (with dynamic tasks from checklist branch) -->
-    <div class="checklist">
-      <p>Checklist</p>
-      <% tasks.forEach(function(task, taskIndex) { %>
+        const ctx = canvas.getContext("2d");
+        runtimeChart = new Chart(ctx, {
+          type: "line",
+          data: {
+            labels: [],
+            datasets: [
+              {
+                label: "Robot Runtime (ms)",
+                data: [],
+                borderColor: "rgb(75, 192, 192)",
+                tension: 0.1,
+                fill: false,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            scales: {
+              y: {
+                beginAtZero: true,
+              },
+            },
+          },
+        });
+      }
+
+      function updateRuntimeGraph(newValue) {
+        if (!runtimeChart) return;
+
+        const timestamp = new Date().toLocaleTimeString();
+        runtimeDataPoints.push({ time: timestamp, value: newValue });
+
+        if (runtimeDataPoints.length > MAX_DATA_POINTS) {
+          runtimeDataPoints.shift();
+        }
+
+        runtimeChart.data.labels = runtimeDataPoints.map((point) => point.time);
+        runtimeChart.data.datasets[0].data = runtimeDataPoints.map(
+          (point) => point.value
+        );
+        runtimeChart.update();
+      }
+
+      window.addEventListener("load", initializeRuntimeGraph);
+    </script>
+  </head>
+  <body>
+    <section>
+      <!-- Sidebar navigation (from main branch) -->
+      <%- include('include/_sidebar') %>
+
+      <!-- Checklist (with dynamic tasks from checklist branch) -->
+      <div class="checklist">
+        <p>Checklist</p>
+        <% tasks.forEach(function(task, taskIndex) { %>
         <details>
           <summary><%= task.name %></summary>
           <% for (var i = 0; i < task.checklistItems.length; i++) { %>
-            <label>
-              <input 
-                type="checkbox" 
-                data-key="checklist-<%= taskIndex %>-<%= i %>" 
-                name="check<%= taskIndex %>_<%= i %>" 
-                value="check<%= taskIndex %>_<%= i %>" 
-              /> 
-              <%= task.checklistItems[i].taskName %>
-            </label>
-            <br />
+          <label>
+            <input
+              type="checkbox"
+              data-key="checklist-<%= taskIndex %>-<%= i %>"
+              name="check<%= taskIndex %>_<%= i %>"
+              value="check<%= taskIndex %>_<%= i %>"
+            />
+            <%= task.checklistItems[i].taskName %>
+          </label>
+          <br />
           <% } %>
         </details>
-      <% }); %>
-    </div>
+        <% }); %>
+      </div>
 
-    <div class="data">
-      <div class="temp">
-        <div class="temp1">
-          <p>FL Drive : 0°C</p>
-          <p>FL Steer : 0°C</p>
-          <p>FR Drive : 0°C</p>
-          <p>FR Steer : 0°C</p>
-          <p>BL Drive : 0°C</p>
-          <p>BL Steer : 0°C</p>
-          <p>BR Drive : 0°C</p>
-          <p>BR Steer : 0°C</p>
+      <div class="data">
+        <div class="temp">
+          <div class="temp1">
+            <p>FL Drive : 0°C</p>
+            <p>FL Steer : 0°C</p>
+            <p>FR Drive : 0°C</p>
+            <p>FR Steer : 0°C</p>
+            <p>BL Drive : 0°C</p>
+            <p>BL Steer : 0°C</p>
+            <p>BR Drive : 0°C</p>
+            <p>BR Steer : 0°C</p>
+          </div>
+          <div class="temp2">
+            <p>Intake Roller : 0°C</p>
+            <p>Intake Kicker : 0°C</p>
+            <p>Climber : 0°C</p>
+          </div>
+          <div class="temp3">
+            <p>Shooter Top : 0°C</p>
+            <p>Shooter Bottom : 0°C</p>
+            <p>Shooter Angle : 0°C</p>
+            <p>Deflector : 0°C</p>
+          </div>
         </div>
-        <div class="temp2">
-          <p>Intake Roller : 0°C</p>
-          <p>Intake Kicker : 0°C</p>
-          <p>Climber : 0°C</p>
-        </div>
-        <div class="temp3">
-          <p>Shooter Top : 0°C</p>
-          <p>Shooter Bottom : 0°C</p>
-          <p>Shooter Angle : 0°C</p>
-          <p>Deflector : 0°C</p>
-        </div>
+        <div class="bar"></div>
+        <div class="runtime"></div>
+        <div class="voltage"></div>
+        <div class="can"></div>
       </div>
-      <div class="bar"></div>
-      <div class="runtime"></div>
-      <div class="voltage"></div>
-      <div class="can"></div>
-    </div>
 
-    <div class="test">
-      <div class="SwerveCheck">
-        <button class="SwerveCheckButton">Swerve Check</button>
-        <p class="checkpar">check 1 ✅</p>
-        <p class="checkpar">check 2 ✅</p>
-        <p class="checkpar">check 3 ❌</p>
+      <div class="test">
+        <div class="SwerveCheck">
+          <button class="SwerveCheckButton">Swerve Check</button>
+          <p class="checkpar">check 1 ✅</p>
+          <p class="checkpar">check 2 ✅</p>
+          <p class="checkpar">check 3 ❌</p>
+        </div>
+        <div class="ArmCheck">
+          <button class="ArmCheckButton">Arm Check</button>
+          <p class="checkpar">check 1 ✅</p>
+          <p class="checkpar">check 2 ❌</p>
+          <p class="checkpar">check 3 ✅</p>
+        </div>
+        <div class="TurretCheck">
+          <button class="TurretCheckButton">Turret Check</button>
+          <p class="checkpar">check 1 ✅</p>
+          <p class="checkpar">check 2 ✅</p>
+          <p class="checkpar">check 3 ✅</p>
+        </div>
+        <div class="JawCheck">
+          <button class="JawCheckButton">Jaw Check</button>
+          <p class="checkpar">check 1 ❌</p>
+          <p class="checkpar">check 2 ✅</p>
+          <p class="checkpar">check 3 ❌</p>
+        </div>
+        <div class="IntakeCheck">
+          <button class="IntakeCheckButton">Intake Check</button>
+          <p class="checkpar">check 1 ⌛</p>
+          <p class="checkpar">check 2 ⌛</p>
+          <p class="checkpar">check 3 ⌛</p>
+        </div>
+        <div class="ManhattenCheck">
+          <button class="ManhattenCheckButton">Manhatten Check</button>
+          <p class="checkpar">check 1 ✅</p>
+          <p class="checkpar">check 2 ✅</p>
+          <p class="checkpar">check 3 ✅</p>
+        </div>
       </div>
-      <div class="ArmCheck">
-        <button class="ArmCheckButton">Arm Check</button>
-        <p class="checkpar">check 1 ✅</p>
-        <p class="checkpar">check 2 ❌</p>
-        <p class="checkpar">check 3 ✅</p>
+
+      <div class="graph-container">
+        <canvas id="runtimeGraph"></canvas>
       </div>
-      <div class="TurretCheck">
-        <button class="TurretCheckButton">Turret Check</button>
-        <p class="checkpar">check 1 ✅</p>
-        <p class="checkpar">check 2 ✅</p>
-        <p class="checkpar">check 3 ✅</p>
-      </div>
-      <div class="JawCheck">
-        <button class="JawCheckButton">Jaw Check</button>
-        <p class="checkpar">check 1 ❌</p>
-        <p class="checkpar">check 2 ✅</p>
-        <p class="checkpar">check 3 ❌</p>
-      </div>
-      <div class="IntakeCheck">
-        <button class="IntakeCheckButton">Intake Check</button>
-        <p class="checkpar">check 1 ⌛</p>
-        <p class="checkpar">check 2 ⌛</p>
-        <p class="checkpar">check 3 ⌛</p>
-      </div>
-      <div class="ManhattenCheck">
-        <button class="ManhattenCheckButton">Manhatten Check</button>
-        <p class="checkpar">check 1 ✅</p>
-        <p class="checkpar">check 2 ✅</p>
-        <p class="checkpar">check 3 ✅</p>
-      </div>
-    </div>
-    
-  </section>
-  <script src="/socket.io/socket.io.js"></script>
-  <script src="/js/robot.js"></script>
-</body>
+    </section>
+  </body>
 </html>

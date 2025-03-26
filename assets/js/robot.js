@@ -30,10 +30,53 @@ socket.on("powerStats", (stats) => {
   voltageDisplay.innerHTML = stats.voltageDisplay;
 });
 
+// add these three event handlers
 socket.on("robotRuntime", (data) => {
   const runtimeDisplay = document.querySelector("div.robot-runtime");
+  console.log("Runtime data:", data);
+  runtimeDisplay.innerHTML = data.runtimeDisplay;
+  updateRuntimeGraph(parseFloat(data.runtimeDisplay));
+});
+
+socket.on("periodicRuntime", (data) => {
+  const runtimeDisplay = document.querySelector("div.periodic-runtime");
   runtimeDisplay.innerHTML = data.runtimeDisplay;
 });
+
+socket.on("userCode", (data) => {
+  const userCodeDisplay = document.querySelector("div.user-code");
+  userCodeDisplay.innerHTML = data;
+});
+
+async function fetchRobotRuntime() {
+  const runtimeDisplay = document.querySelector("div.robot-runtime");
+  const response = await fetch("/robotRuntime");
+  if (response.ok) {
+    runtimeDisplay.innerHTML = await response.text();
+  } else {
+    console.log("error fetching robot runtime");
+  }
+}
+
+async function fetchPeriodicRuntime() {
+  const runtimeDisplay = document.querySelector("div.periodic-runtime");
+  const response = await fetch("/periodicRuntime");
+  if (response.ok) {
+    runtimeDisplay.innerHTML = await response.text();
+  } else {
+    console.log("error fetching periodic runtime");
+  }
+}
+
+async function fetchUserCode() {
+  const userCodeDisplay = document.querySelector("div.user-code");
+  const response = await fetch("/userCode");
+  if (response.ok) {
+    userCodeDisplay.innerHTML = await response.text();
+  } else {
+    console.log("error fetching user code");
+  }
+}
 
 async function fetchTemperatures() {
   const temperatures = document.querySelector("div.temp");
@@ -71,6 +114,9 @@ async function fetchPowerStats() {
 fetchTemperatures();
 fetchPDHCurrents();
 fetchPowerStats();
+fetchRobotRuntime();
+fetchPeriodicRuntime();
+fetchUserCode();
 
 // Select all checkboxes with a data-key attribute for persistence
 const checklist = document.querySelectorAll('input[type="checkbox"][data-key]');
@@ -93,3 +139,5 @@ checklist.forEach((checkbox) => {
     socket.emit("checklist", { taskText, isChecked });
   });
 });
+
+// Remove all graph-related code (runtimeChart, initializeRuntimeGraph, etc.)
