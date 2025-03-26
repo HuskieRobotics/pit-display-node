@@ -19,7 +19,6 @@ function openPopup(info) {
   ) {
     popUp.classList.remove("blue-popup");
     popUp.classList.add("red-popup");
-    console.log("red");
   }
   if (
     info.matches[info.matches.length - 1].blueTeams.includes("3061)") ||
@@ -27,7 +26,6 @@ function openPopup(info) {
   ) {
     popUp.classList.remove("red-popup");
     popUp.classList.add("blue-popup");
-    console.log("blue");
   }
   const time = info.matches[info.matches.length - 1].times.estimatedQueueTime;
   const label = info.matches[info.matches.length - 1].label;
