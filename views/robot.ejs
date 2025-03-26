@@ -5,60 +5,6 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script src="/js/robot.js" defer></script>
-    <script>
-      let runtimeChart;
-      const runtimeDataPoints = [];
-      const MAX_DATA_POINTS = 50;
-
-      function initializeRuntimeGraph() {
-        const canvas = document.getElementById("runtimeGraph");
-        if (!canvas) return;
-
-        const ctx = canvas.getContext("2d");
-        runtimeChart = new Chart(ctx, {
-          type: "line",
-          data: {
-            labels: [],
-            datasets: [
-              {
-                label: "Robot Runtime (ms)",
-                data: [],
-                borderColor: "rgb(75, 192, 192)",
-                tension: 0.1,
-                fill: false,
-              },
-            ],
-          },
-          options: {
-            responsive: true,
-            scales: {
-              y: {
-                beginAtZero: true,
-              },
-            },
-          },
-        });
-      }
-
-      function updateRuntimeGraph(newValue) {
-        if (!runtimeChart) return;
-
-        const timestamp = new Date().toLocaleTimeString();
-        runtimeDataPoints.push({ time: timestamp, value: newValue });
-
-        if (runtimeDataPoints.length > MAX_DATA_POINTS) {
-          runtimeDataPoints.shift();
-        }
-
-        runtimeChart.data.labels = runtimeDataPoints.map((point) => point.time);
-        runtimeChart.data.datasets[0].data = runtimeDataPoints.map(
-          (point) => point.value
-        );
-        runtimeChart.update();
-      }
-
-      window.addEventListener("load", initializeRuntimeGraph);
-    </script>
   </head>
   <body>
     <section>
