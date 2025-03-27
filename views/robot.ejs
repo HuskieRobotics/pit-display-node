@@ -54,16 +54,18 @@
           <p>Deflector : 0°C</p>
         </div>
       </div>
+      
       <div class="bar"></div>
-      <div class="runtime"></div>
-      <div class="voltage"></div>
-      <div class="can"></div>
-      <!-- Removed original PAGE RUNTIME graph placeholder -->
-      <!--Robot Code Runtime Chart (does not disturb checklist etc.) -->
+      
+      <!--Robot Code Runtime Chart - Adjusted position -->
       <div class="runtime-graph">
         <h2>Robot Code Runtime</h2>
         <canvas id="runtimeChart" width="300" height="200"></canvas>
       </div>
+      
+      <div class="runtime"></div>
+      <div class="voltage"></div>
+      <div class="can"></div>
       <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation"></script>
       <script>
@@ -131,14 +133,16 @@
         .runtime-graph {
           width: 320px;
           height: 220px;
-          margin: 10px;
+          margin: 10px 0 5px 5px;  /* top right bottom left */
           padding: 10px;
           background: #f5f5f5;
           border-radius: 5px;
+          display: block;
         }
         .runtime-graph h2 {
           font-size: 14px;
-          margin: 0 0 10px 0;
+          margin: 0 0 5px 0;
+          text-align: center;
         }
       </style>
     </div>
