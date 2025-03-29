@@ -1,6 +1,5 @@
 const express = require("express");
 const route = express.Router();
-const config = require("../model/config");
 const tasks = require("../model/checklist");
 const { makeTaskObject } = require("../../views/robot");
 const {
@@ -11,6 +10,7 @@ const {
   checkConnection,
 } = require("../connections/roborio-log-downloader");
 const path = require("path");
+const cachedSettings = require("../config/cachedStreamSettings");
 
 // const newTasks = tasks.map((task) => {
 //   return {
@@ -47,26 +47,17 @@ const StreamSettings = require("../model/StreamSettings");
 // const { emit } = require("process");
 const { emitNexus } = require("../socket/socket");
 
-// GET main page - read stream settings from DB and pass to view.
+// GET main page - read stream settings from cache/DB via module
 route.get("/", async (req, res) => {
-  let streamProvider = "twitch";
-  let streamUrl = "https://twitch.tv/your_channel_name";
-  let eventKey = config.eventKey; // Default from config
-  try {
-    const settings = await StreamSettings.findById(
-      "67a0e0cd31da43b3d5ba6151"
-    ).lean();
-    if (settings) {
-      streamProvider = settings.streamProvider;
-      streamUrl = settings.streamUrl;
-      if (settings.eventKey) {
-        eventKey = settings.eventKey;
-      }
-    }
-  } catch (err) {
-    console.error("Error fetching stream settings:", err.message);
-  }
-  res.render("event", { streamProvider, streamUrl, eventKey });
+  // Get settings using the caching module
+  const settings = cachedSettings.getSettings();
+
+  // Pass the retrieved settings (or defaults if cache empty) to the view
+  res.render("event", {
+    streamProvider: settings.streamProvider,
+    streamUrl: settings.streamUrl,
+    eventKey: settings.eventKey,
+  });
 });
 
 // GET teamStats route remains the same
@@ -112,35 +103,25 @@ route.get("/info", async (req, res) => {
   res.render("info");
 });
 
-// GET settings page - read current stream settings from DB and pass to view
+// GET settings page - read current stream settings from cache/DB via module
 route.get("/settings", async (req, res) => {
-  let streamProvider = "twitch";
-  let streamUrl = "https://twitch.tv/your_channel_name";
-  let eventKey = config.eventKey; // Default from config
-  try {
-    const settings = await StreamSettings.findById(
-      "67a0e0cd31da43b3d5ba6151"
-    ).lean();
-    if (settings) {
-      streamProvider = settings.streamProvider;
-      streamUrl = settings.streamUrl;
-      // If eventKey exists in DB, use it, otherwise keep the default from config
-      if (settings.eventKey) {
-        eventKey = settings.eventKey;
-      }
-    }
-  } catch (err) {
-    console.error("Error fetching stream settings:", err.message);
-  }
-  res.render("settings", { streamProvider, streamUrl, eventKey });
+  // Get settings using the caching module
+  const settings = cachedSettings.getSettings();
+
+  // Pass the retrieved settings (or defaults if cache empty) to the view
+  res.render("settings", {
+    streamProvider: settings.streamProvider,
+    streamUrl: settings.streamUrl,
+    eventKey: settings.eventKey,
+  });
 });
 
-// POST settings - update the stream settings document in the DB
+// POST settings - update the stream settings document in the DB and trigger cache update
 route.post("/settings", async (req, res) => {
   const { streamingService, streamingLink, eventKey } = req.body;
   try {
     await StreamSettings.findByIdAndUpdate(
-      "67a0e0cd31da43b3d5ba6151",
+      "67a0e0cd31da43b3d5ba6151", // Use the ID directly or from cachedSettings if exposed
       {
         streamProvider: streamingService,
         streamUrl: streamingLink,
@@ -148,11 +129,20 @@ route.post("/settings", async (req, res) => {
       },
       { new: true, upsert: true }
     );
-    console.log("Updated settings:", streamingService, streamingLink, eventKey);
+    console.log(
+      "Updated settings in DB:",
+      streamingService,
+      streamingLink,
+      eventKey
+    );
+
+    // Trigger cache update after successful DB write
+    await cachedSettings.fetchAndUpdateCache();
+    console.log("Triggered cache update after settings change.");
   } catch (err) {
     console.error("Error updating settings:", err.message);
   }
-  res.redirect("/");
+  res.redirect("/"); // Redirect back to the main page
 });
 
 // GET route to download the latest log file from the roboRIO

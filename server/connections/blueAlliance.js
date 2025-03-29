@@ -2,28 +2,15 @@ const Alliance = require("../model/alliance");
 const Match = require("../model/match");
 const TeamStats = require("../model/teamStats");
 const axios = require("axios");
+const { getEventKey } = require("../config/cachedStreamSettings");
 const config = require("../model/config");
-const StreamSettings = require("../model/StreamSettings");
 
 const baseUrl = "https://www.thebluealliance.com/api/v3";
 const apiKey = process.env.TBA_API_KEY;
 
-// Get the event key from MongoDB or use the default from config
-async function getEventKey() {
-  try {
-    const settings = await StreamSettings.findById("67a0e0cd31da43b3d5ba6151").lean();
-    if (settings && settings.eventKey) {
-      return settings.eventKey;
-    }
-  } catch (error) {
-    console.error("Error fetching event key from DB:", error.message);
-  }
-  return config.eventKey; // Fallback to config
-}
-
 // fetch team stats
 async function fetchTeamStats() {
-  const eventKey = await getEventKey();
+  const eventKey = getEventKey();
   const endpoint = `${baseUrl}/team/frc${config.teamNumber}/event/${eventKey}/status`;
 
   try {
@@ -41,7 +28,7 @@ async function fetchTeamStats() {
     const ranking = response.data.qual.ranking;
     const sortOrders = ranking.sort_orders || [];
     const sortOrderInfo = response.data.qual.sort_order_info || [];
-    let otherStats = [];
+    const otherStats = [];
 
     // Map each sort_order_info entry to its corresponding value in sortOrders
     for (let i = 0; i < sortOrderInfo.length; i++) {
@@ -67,7 +54,7 @@ async function fetchTeamStats() {
 
 // fetch upcoming matches
 async function fetchUpcomingMatches() {
-  const eventKey = await getEventKey();
+  const eventKey = getEventKey();
   const endpoint = `${baseUrl}/event/${eventKey}/matches/simple`;
   const matchList = [];
 
@@ -80,7 +67,6 @@ async function fetchUpcomingMatches() {
     });
 
     const matches = response.data || [];
-    const now = Date.now();
     const allUpcomingMatches = matches
       .filter((match) => match.actual_time === null)
       .sort((a, b) => a.time - b.time);
@@ -125,7 +111,7 @@ async function fetchUpcomingMatches() {
 
 // fetch past matches
 async function fetchPastMatches() {
-  const eventKey = await getEventKey();
+  const eventKey = getEventKey();
   const endpoint = `${baseUrl}/team/frc${config.teamNumber}/event/${eventKey}/matches`;
   let matchList = [];
 

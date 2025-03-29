@@ -6,8 +6,7 @@
 const { Client } = require("ssh2");
 const path = require("path");
 const fs = require("fs");
-const StreamSettings = require("../model/StreamSettings");
-const config = require("../model/config");
+const { getEventCode } = require("../config/cachedStreamSettings"); // <-- Import cached version
 
 // Connection constants
 const ROBORIO_CONFIG = {
@@ -23,33 +22,6 @@ const LOG_PATH = "/home/lvuser/logs"; // temp path for testing
 
 // Default save path for downloaded logs
 const DEFAULT_SAVE_PATH = path.resolve("./logs");
-
-/**
- * Get the event code from settings database or config
- * @returns {Promise<string>} - The event code (e.g., "mndu2" from "2024mndu2")
- */
-async function getEventCode() {
-  try {
-    const settings = await StreamSettings.findById(
-      "67a0e0cd31da43b3d5ba6151"
-    ).lean();
-    if (settings && settings.eventKey) {
-      // Extract the event code part (after the year)
-      const match = settings.eventKey.match(/^\d{4}([a-z0-9]+)$/i);
-      if (match && match[1]) {
-        return match[1].toLowerCase();
-      }
-      return settings.eventKey.toLowerCase(); // Fallback to whole key if format doesn't match
-    }
-  } catch (error) {
-    console.error("Error fetching event code from DB:", error.message);
-  }
-  // Extract from config as fallback
-  const match = config.eventKey.match(/^\d{4}([a-z0-9]+)$/i);
-  return match && match[1]
-    ? match[1].toLowerCase()
-    : config.eventKey.toLowerCase();
-}
 
 // Reference to the download status object (will be set by the router)
 let downloadStatus = null;
@@ -201,163 +173,167 @@ function downloadLatestLog(options = {}) {
     console.log(`Created save directory at: ${savePath}`);
   }
 
-  // First get the event code, then connect to the roboRIO
-  return (requireEventCode ? getEventCode() : Promise.resolve("")).then(
-    (eventCode) => {
-      if (eventCode && requireEventCode) {
-        console.log(`Looking for logs containing event code: ${eventCode}`);
-      }
+  // Get event code synchronously using the cached version
+  const eventCode = requireEventCode ? getEventCode() : "";
 
-      return new Promise((resolve, reject) => {
-        console.log(`Connecting to roboRIO at ${config.host}...`);
+  return new Promise((resolve, reject) => {
+    if (requireEventCode && eventCode) {
+      console.log(`Looking for logs containing event code: ${eventCode}`);
+    } else if (requireEventCode) {
+      console.log(
+        "Event code is required but could not be determined. Skipping event code filter."
+      );
+    } else {
+      console.log("Event code filter is disabled.");
+    }
 
-        // Update status to indicate download is starting
+    console.log(`Connecting to roboRIO at ${config.host}...`);
+
+    // Update status to indicate download is starting
+    updateStatus({
+      inProgress: true,
+      progress: 0,
+      message: `Connecting to roboRIO at ${config.host}...`,
+      error: null,
+      filename: "",
+    });
+
+    const client = new Client();
+
+    client
+      .on("ready", () => {
+        console.log("SSH connection established");
         updateStatus({
-          inProgress: true,
-          progress: 0,
-          message: `Connecting to roboRIO at ${config.host}...`,
-          error: null,
-          filename: "",
+          message: "SSH connection established. Reading directory...",
+          progress: 5,
         });
 
-        const client = new Client();
-
-        client
-          .on("ready", () => {
-            console.log("SSH connection established");
-            updateStatus({
-              message: "SSH connection established. Reading directory...",
-              progress: 5,
-            });
-
-            client.sftp((err, sftp) => {
-              if (err) {
-                client.end();
-                updateStatus({
-                  inProgress: false,
-                  error: `SFTP error: ${err.message}`,
-                });
-                return reject(new Error(`SFTP error: ${err.message}`));
-              }
-
-              console.log(`Reading directory: ${logPath}`);
-
-              // Read the directory to find log files
-              sftp.readdir(logPath, (err, list) => {
-                if (err) {
-                  client.end();
-                  updateStatus({
-                    inProgress: false,
-                    error: `Failed to read directory: ${err.message}`,
-                  });
-                  return reject(
-                    new Error(`Failed to read directory: ${err.message}`)
-                  );
-                }
-
-                // Filter for .wpilog files with the specific format and sort by timestamp
-                const logFiles = list
-                  .filter((file) => {
-                    // Check if it's a .wpilog file with our expected format (with or without event code suffix)
-                    return (
-                      !file.filename.startsWith(".") &&
-                      file.filename.match(
-                        /^akit_\d{2}-\d{2}-\d{2}_\d{2}-\d{2}-\d{2}(?:_[^.]+)?\.wpilog$/
-                      )
-                    );
-                  })
-                  .map((file) => {
-                    // Add timestamp and event code to each file for sorting and filtering
-                    const parsed = parseLogFilename(file.filename);
-                    return {
-                      ...file,
-                      timestamp: parsed.date || new Date(0), // Use epoch if parsing fails
-                      eventCode: parsed.eventCode,
-                    };
-                  })
-                  .sort((a, b) => b.timestamp - a.timestamp); // Sort newest first
-
-                if (logFiles.length === 0) {
-                  client.end();
-                  updateStatus({
-                    inProgress: false,
-                    error: "No matching log files found",
-                  });
-                  return reject(new Error("No matching log files found"));
-                }
-
-                // If we're not filtering by event code, just take the latest log
-                if (!eventCode) {
-                  processAndDownloadLog(
-                    client,
-                    sftp,
-                    logFiles[0],
-                    logPath,
-                    savePath,
-                    resolve,
-                    reject
-                  );
-                  return;
-                }
-
-                console.log(
-                  `Found ${logFiles.length} log files, looking for event code ${eventCode} in filenames...`
-                );
-                updateStatus({
-                  message: `Found ${logFiles.length} logs, looking for event code ${eventCode}...`,
-                  progress: 10,
-                });
-
-                // Filter logs by event code in filename
-                const matchingLogs = logFiles.filter((file) => {
-                  // Check if filename contains the event code
-                  return file.filename
-                    .toLowerCase()
-                    .includes(eventCode.toLowerCase());
-                });
-
-                if (matchingLogs.length === 0) {
-                  client.end();
-                  updateStatus({
-                    inProgress: false,
-                    error: `No logs with event code ${eventCode} in filename found`,
-                  });
-                  return reject(
-                    new Error(
-                      `No logs with event code ${eventCode} in filename found`
-                    )
-                  );
-                }
-
-                // Use the most recent log that contains the event code
-                const bestMatch = matchingLogs[0]; // Already sorted by timestamp
-                console.log(
-                  `Found log with event code ${eventCode}: ${bestMatch.filename}`
-                );
-                processAndDownloadLog(
-                  client,
-                  sftp,
-                  bestMatch,
-                  logPath,
-                  savePath,
-                  resolve,
-                  reject
-                );
-              });
-            });
-          })
-          .on("error", (err) => {
-            console.error("Connection error:", err.message);
+        client.sftp((err, sftp) => {
+          if (err) {
+            client.end();
             updateStatus({
               inProgress: false,
-              error: `Connection failed: ${err.message}`,
+              error: `SFTP error: ${err.message}`,
             });
-            reject(new Error(`Connection failed: ${err.message}`));
-          })
-          .connect(config);
-      });
-    }
-  );
+            return reject(new Error(`SFTP error: ${err.message}`));
+          }
+
+          console.log(`Reading directory: ${logPath}`);
+
+          // Read the directory to find log files
+          sftp.readdir(logPath, (err, list) => {
+            if (err) {
+              client.end();
+              updateStatus({
+                inProgress: false,
+                error: `Failed to read directory: ${err.message}`,
+              });
+              return reject(
+                new Error(`Failed to read directory: ${err.message}`)
+              );
+            }
+
+            // Filter for .wpilog files with the specific format and sort by timestamp
+            const logFiles = list
+              .filter((file) => {
+                // Check if it's a .wpilog file with our expected format (with or without event code suffix)
+                return (
+                  !file.filename.startsWith(".") &&
+                  file.filename.match(
+                    /^akit_\d{2}-\d{2}-\d{2}_\d{2}-\d{2}-\d{2}(?:_[^.]+)?\.wpilog$/
+                  )
+                );
+              })
+              .map((file) => {
+                // Add timestamp and event code to each file for sorting and filtering
+                const parsed = parseLogFilename(file.filename);
+                return {
+                  ...file,
+                  timestamp: parsed.date || new Date(0), // Use epoch if parsing fails
+                  eventCode: parsed.eventCode,
+                };
+              })
+              .sort((a, b) => b.timestamp - a.timestamp); // Sort newest first
+
+            if (logFiles.length === 0) {
+              client.end();
+              updateStatus({
+                inProgress: false,
+                error: "No matching log files found",
+              });
+              return reject(new Error("No matching log files found"));
+            }
+
+            // If we're not filtering by event code, just take the latest log
+            if (!eventCode) {
+              processAndDownloadLog(
+                client,
+                sftp,
+                logFiles[0],
+                logPath,
+                savePath,
+                resolve,
+                reject
+              );
+              return;
+            }
+
+            console.log(
+              `Found ${logFiles.length} log files, looking for event code ${eventCode} in filenames...`
+            );
+            updateStatus({
+              message: `Found ${logFiles.length} logs, looking for event code ${eventCode}...`,
+              progress: 10,
+            });
+
+            // Filter logs by event code in filename
+            const matchingLogs = logFiles.filter((file) => {
+              // Check if filename contains the event code
+              return file.filename
+                .toLowerCase()
+                .includes(eventCode.toLowerCase());
+            });
+
+            if (matchingLogs.length === 0) {
+              client.end();
+              updateStatus({
+                inProgress: false,
+                error: `No logs with event code ${eventCode} in filename found`,
+              });
+              return reject(
+                new Error(
+                  `No logs with event code ${eventCode} in filename found`
+                )
+              );
+            }
+
+            // Use the most recent log that contains the event code
+            const bestMatch = matchingLogs[0]; // Already sorted by timestamp
+            console.log(
+              `Found log with event code ${eventCode}: ${bestMatch.filename}`
+            );
+            processAndDownloadLog(
+              client,
+              sftp,
+              bestMatch,
+              logPath,
+              savePath,
+              resolve,
+              reject
+            );
+          });
+        });
+      })
+      .on("error", (err) => {
+        console.error("Connection error:", err.message);
+        updateStatus({
+          inProgress: false,
+          error: `Connection failed: ${err.message}`,
+        });
+        reject(new Error(`Connection failed: ${err.message}`));
+      })
+      .connect(config);
+  });
 }
 
 /**
