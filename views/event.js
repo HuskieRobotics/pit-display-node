@@ -8,8 +8,9 @@ function formatTeamStats(teamStats) {
   let statsHtml = `<span id="current_rank">Rank: ${teamStats.rank}</span></br>`;
   statsHtml += `<span>Wins: ${teamStats.wins} - Losses: ${teamStats.losses}</br>`;
   if (teamStats.otherStats && teamStats.otherStats.length > 0) {
-    teamStats.otherStats.forEach(stat => {
-      const formattedValue = stat.value !== null ? stat.value.toFixed(stat.precision) : "N/A";
+    teamStats.otherStats.forEach((stat) => {
+      const formattedValue =
+        stat.value !== null ? stat.value.toFixed(stat.precision) : "N/A";
       statsHtml += `${stat.name}: ${formattedValue}</br>`;
     });
   }
@@ -46,7 +47,7 @@ function formatUpcomingMatches(matchList) {
 }
 
 function formatPastMatches(matchList) {
-  if (matchList.length === 0) {
+  if (!matchList?.length) {
     return `<p>No past matches available for Team ${config.teamNumber} at the specified event.</p>`;
   }
 
