@@ -11,7 +11,9 @@ const apiKey = process.env.TBA_API_KEY;
 // Get the event key from MongoDB or use the default from config
 async function getEventKey() {
   try {
-    const settings = await StreamSettings.findById("67a0e0cd31da43b3d5ba6151").lean();
+    const settings = await StreamSettings.findById(
+      "67a0e0cd31da43b3d5ba6151"
+    ).lean();
     if (settings && settings.eventKey) {
       return settings.eventKey;
     }
@@ -25,9 +27,10 @@ async function getEventKey() {
 async function fetchTeamStats() {
   const eventKey = await getEventKey();
   const endpoint = `${baseUrl}/team/frc${config.teamNumber}/event/${eventKey}/status`;
+  let response;
 
   try {
-    const response = await axios.get(endpoint, {
+    response = await axios.get(endpoint, {
       headers: {
         accept: "application/json",
         "X-TBA-Auth-Key": apiKey,
@@ -41,7 +44,7 @@ async function fetchTeamStats() {
     const ranking = response.data.qual.ranking;
     const sortOrders = ranking.sort_orders || [];
     const sortOrderInfo = response.data.qual.sort_order_info || [];
-    let otherStats = [];
+    const otherStats = [];
 
     // Map each sort_order_info entry to its corresponding value in sortOrders
     for (let i = 0; i < sortOrderInfo.length; i++) {
@@ -60,7 +63,12 @@ async function fetchTeamStats() {
       otherStats
     );
   } catch (error) {
-    console.error("Error fetching team statistics:", error.message);
+    console.error(
+      "Error fetching team statistics:",
+      error.message,
+      "; response:",
+      response
+    );
     return null;
   }
 }
@@ -70,9 +78,10 @@ async function fetchUpcomingMatches() {
   const eventKey = await getEventKey();
   const endpoint = `${baseUrl}/event/${eventKey}/matches/simple`;
   const matchList = [];
+  let response;
 
   try {
-    const response = await axios.get(endpoint, {
+    response = await axios.get(endpoint, {
       headers: {
         accept: "application/json",
         "X-TBA-Auth-Key": apiKey,
@@ -116,7 +125,12 @@ async function fetchUpcomingMatches() {
       matchList.push(matchObj);
     });
   } catch (error) {
-    console.error("Error fetching upcoming matches:", error.message);
+    console.error(
+      "Error fetching upcoming matches:",
+      error.message,
+      "; response:",
+      response
+    );
     return null;
   }
 
@@ -128,9 +142,10 @@ async function fetchPastMatches() {
   const eventKey = await getEventKey();
   const endpoint = `${baseUrl}/team/frc${config.teamNumber}/event/${eventKey}/matches`;
   let matchList = [];
+  let response;
 
   try {
-    const response = await axios.get(endpoint, {
+    response = await axios.get(endpoint, {
       headers: {
         accept: "application/json",
         "X-TBA-Auth-Key": apiKey,
@@ -166,7 +181,12 @@ async function fetchPastMatches() {
         );
       });
   } catch (error) {
-    console.error("Error fetching past matches:", error.message);
+    console.error(
+      "Error fetching past matches:",
+      error.message,
+      "; response:",
+      response.data
+    );
     return null;
   }
 
