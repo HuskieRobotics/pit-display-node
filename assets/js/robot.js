@@ -14,6 +14,8 @@ socket.on("pdhCurrents", (entry) => {
   pdhDisplay.innerHTML = entry;
 });
 
+// new web socket connection for robot runtime data
+
 // Setup chart for robot runtime graph (assumes using Chart.js or similar)
 const ctx = document.getElementById("runtimeGraph").getContext("2d");
 const runtimeChart = new Chart(ctx, {
@@ -104,7 +106,7 @@ async function fetchPDHCurrents() {
     console.log("error fetching PDH currents");
   }
 }
-
+// change the data
 fetchTemperatures();
 fetchPDHCurrents();
 
