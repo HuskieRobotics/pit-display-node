@@ -16,63 +16,55 @@ socket.on("pdhCurrents", (entry) => {
 
 // new web socket connection for robot runtime data
 
-// Setup chart for robot runtime graph (assumes using Chart.js or similar)
-const ctx = document.getElementById("runtimeGraph").getContext("2d");
-const runtimeChart = new Chart(ctx, {
-  type: "line",
-  data: {
-    labels: [], // timestamps
-    datasets: [
-      {
-        label: "Robot Code Runtime",
-        data: [],
-        borderColor: "rgba(75, 192, 192, 1)",
-        fill: false,
-      },
-    ],
-  },
-  options: {
-    scales: {
-      x: { display: true },
-      y: {
-        beginAtZero: true,
-        // The suggested max can be set if needed
-      },
-    },
-    plugins: {
-      annotation: {
-        annotations: {
-          line1: {
-            type: "line",
-            yMin: 20,
-            yMax: 20,
-            borderColor: "red",
-            borderWidth: 2,
-            label: {
-              content: "20 ms",
-              enabled: true,
-              position: "center",
-            },
-          },
-        },
-      },
-    },
-    responsive: false,
-  },
-});
-
-// Listen for robot runtime data similar to other measurements
-// socket.on("robotRuntime", (data) => {
-//   // Assume data contains { timestamp, runtime }
-//   runtimeChart.data.labels.push(data.timestamp);
-//   runtimeChart.data.datasets[0].data.push(data.runtime);
-//   // Maintain a fixed length of data points
-//   if (runtimeChart.data.labels.length > 20) {
-//     runtimeChart.data.labels.shift();
-//     runtimeChart.data.datasets[0].data.shift();
-//   }
-//   runtimeChart.update();
+// Remove Chart.js setup and runtime graph logic
+// const ctx = document.getElementById("runtimeGraph").getContext("2d");
+// const runtimeChart = new Chart(ctx, {
+//   type: "line",
+//   data: {
+//     labels: [], // timestamps
+//     datasets: [
+//       {
+//         label: "Robot Code Runtime",
+//         data: [],
+//         borderColor: "rgba(75, 192, 192, 1)",
+//         fill: false,
+//       },
+//     ],
+//   },
+//   options: {
+//     scales: {
+//       x: { display: true },
+//       y: {
+//         beginAtZero: true,
+//       },
+//     },
+//     plugins: {
+//       annotation: {
+//         annotations: {
+//           line1: {
+//             type: "line",
+//             yMin: 20,
+//             yMax: 20,
+//             borderColor: "red",
+//             borderWidth: 2,
+//             label: {
+//               content: "20 ms",
+//               enabled: true,
+//               position: "center",
+//             },
+//           },
+//         },
+//       },
+//     },
+//     responsive: false,
+//   },
 // });
+
+// Add WebSocket listener for robotRuntime event
+socket.on("robotRuntime", (data) => {
+  const runtimeDisplay = document.querySelector("div.runtime");
+  runtimeDisplay.innerHTML = `Timestamp: ${data.timestamp}, Runtime: ${data.runtime} ms`;
+});
 
 async function fetchRuntime() {
   const runtimeDisplay = document.querySelector("div.runtime");
@@ -131,5 +123,3 @@ checklist.forEach((checkbox) => {
     socket.emit("checklist", { taskText, isChecked });
   });
 });
-
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0"></script>;
