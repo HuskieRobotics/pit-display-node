@@ -66,9 +66,9 @@
       <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation"></script>
       <script>
-        async function renderRuntimeChart() {
-          const response = await fetch('/robot/api/runtimeInfo');
-          const data = await response.json();
+      // The socket variable is already declared earlier, no need to redeclare it here
+
+        socket.on('runtimeInfo', (data) => {
           const ctx = document.getElementById('runtimeChart').getContext('2d');
           new Chart(ctx, {
             type: 'line',
@@ -123,12 +123,11 @@
               }
             }
           });
-        }
-        renderRuntimeChart();
+        });
       </script>
       <style>
         .runtime-graph {
-          width: 320px;
+          width: 320px; 
           height: 220px;
           margin: 10px 0 5px 5px;  /* top right bottom left */
           padding: 10px;
@@ -142,7 +141,8 @@
           text-align: center;
         }
       </style>
-    </div>
+    </div> 
+    
 
     <div class="test">
       <div class="SwerveCheck">
@@ -185,6 +185,9 @@
     
   </section>
   <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io(); // Ensure this is declared only once
+  </script>
   <script src="/js/robot.js"></script>
 </body>
 </html>
