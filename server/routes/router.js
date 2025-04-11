@@ -1,4 +1,5 @@
 const express = require("express");
+const axios = require("axios/dist/node/axios.cjs");
 const route = express.Router();
 const config = require("../model/config");
 const tasks = require("../model/checklist");
@@ -299,5 +300,22 @@ route.post("/nexus", async (req, res) => {
   emitNexus(notif);
   res.status(200).end();
 });
+
+// await axios.get("https://pit.team3061.org/", {});
+// async function notifsLocal() {
+//   const response = await axios.get("https://pit.team3061.org", {
+//     headers: {
+//       accept: req.body,
+//     },
+//   });
+// }
+axios
+  .get("https://pit.team3061.org")
+  .then((response) => {
+    console.log(response.data);
+  })
+  .catch((error) => {
+    console.error(error);
+  });
 
 module.exports = route;
