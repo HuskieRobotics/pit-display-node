@@ -63,21 +63,25 @@ socket.on("pdhCurrents", (entry) => {
 // Add WebSocket listener for robotRuntime event
 socket.on("robotRuntime", (data) => {
   const runtimeDisplay = document.querySelector("div.runtime");
-  runtimeDisplay.innerHTML = `Timestamp: ${data.timestamp}, Runtime: ${data.runtime} ms`;
+  runtimeDisplay.innerHTML = `Runtime: Timestamp: ${data.timestamp}, Runtime: ${data.runtime} ms`;
 });
 
 async function fetchRuntime() {
   const runtimeDisplay = document.querySelector("div.runtime");
   const response = await fetch("/runtime");
   if (response.ok) {
-    runtimeDisplay.innerHTML = await response.text();
+    runtimeDisplay.innerHTML = `Runtime: ${await response.text()}`;
   } else {
     console.error("Error fetching runtime data");
   }
 }
 
 // Call the function to fetch runtime info on page load
+// add a check to see if runtime data was fetched
+
 fetchRuntime();
+const data = fetchRuntime();
+console.log("Fetched runtime data:", data); // Debugging statement
 
 async function fetchTemperatures() {
   const temperatures = document.querySelector("div.temp");
