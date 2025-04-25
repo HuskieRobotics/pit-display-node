@@ -2,7 +2,12 @@
  * contains client-side JavaScript functions
  * (primarily event handlers to fetch data from the Node server)
  */
-const socket = window.io();
+
+// Ensure `socket` is declared only once and avoid redeclaration
+if (!window.socket) {
+  window.socket = window.io(); // Attach `socket` to the global `window` object
+}
+const socket = window.socket;
 
 socket.on("temperatures", (entry) => {
   const temperatures = document.querySelector("div.temp");
@@ -15,6 +20,7 @@ socket.on("pdhCurrents", (entry) => {
 });
 
 // new web socket connection for robot runtime data
+// web dev code vid
 
 // Remove Chart.js setup and runtime graph logic
 // const ctx = document.getElementById("runtimeGraph").getContext("2d");
@@ -31,6 +37,7 @@ socket.on("pdhCurrents", (entry) => {
 //       },
 //     ],
 //   },
+
 //   options: {
 //     scales: {
 //       x: { display: true },
