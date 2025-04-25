@@ -27,10 +27,9 @@ async function getEventKey() {
 async function fetchTeamStats() {
   const eventKey = await getEventKey();
   const endpoint = `${baseUrl}/team/frc${config.teamNumber}/event/${eventKey}/status`;
-  let response;
 
   try {
-    response = await axios.get(endpoint, {
+    const response = await axios.get(endpoint, {
       headers: {
         accept: "application/json",
         "X-TBA-Auth-Key": apiKey,
@@ -63,12 +62,7 @@ async function fetchTeamStats() {
       otherStats
     );
   } catch (error) {
-    console.error(
-      "Error fetching team statistics:",
-      error.message,
-      "; response:",
-      response
-    );
+    console.error("Error fetching team statistics:", error.message);
     return null;
   }
 }
@@ -78,10 +72,9 @@ async function fetchUpcomingMatches() {
   const eventKey = await getEventKey();
   const endpoint = `${baseUrl}/event/${eventKey}/matches/simple`;
   const matchList = [];
-  let response;
 
   try {
-    response = await axios.get(endpoint, {
+    const response = await axios.get(endpoint, {
       headers: {
         accept: "application/json",
         "X-TBA-Auth-Key": apiKey,
@@ -89,7 +82,6 @@ async function fetchUpcomingMatches() {
     });
 
     const matches = response.data || [];
-    const now = Date.now();
     const allUpcomingMatches = matches
       .filter((match) => match.actual_time === null)
       .sort((a, b) => a.time - b.time);
@@ -97,8 +89,10 @@ async function fetchUpcomingMatches() {
       teamParticipatedInMatch(match, config.teamNumber)
     );
     const upcomingMatches = allUpcomingMatches.slice(0, 4);
-    if (upcomingMatches.includes(teamsNextMatch) === false) {
-      upcomingMatches.pop();
+    if (teamsNextMatch && !upcomingMatches.includes(teamsNextMatch)) {
+      if (upcomingMatches.length >= 4) {
+        upcomingMatches.pop();
+      }
       upcomingMatches.push(teamsNextMatch);
     }
 
@@ -125,12 +119,7 @@ async function fetchUpcomingMatches() {
       matchList.push(matchObj);
     });
   } catch (error) {
-    console.error(
-      "Error fetching upcoming matches:",
-      error.message,
-      "; response:",
-      response
-    );
+    console.error("Error fetching upcoming matches:", error.message);
     return null;
   }
 
@@ -142,10 +131,9 @@ async function fetchPastMatches() {
   const eventKey = await getEventKey();
   const endpoint = `${baseUrl}/team/frc${config.teamNumber}/event/${eventKey}/matches`;
   let matchList = [];
-  let response;
 
   try {
-    response = await axios.get(endpoint, {
+    const response = await axios.get(endpoint, {
       headers: {
         accept: "application/json",
         "X-TBA-Auth-Key": apiKey,
@@ -181,12 +169,7 @@ async function fetchPastMatches() {
         );
       });
   } catch (error) {
-    console.error(
-      "Error fetching past matches:",
-      error.message,
-      "; response:",
-      response.data
-    );
+    console.error("Error fetching past matches:", error.message);
     return null;
   }
 
