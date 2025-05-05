@@ -97,7 +97,7 @@ Click on the icons on the top-left of the screen to switch between the match inf
 
 ### .env File:
 
-Regarding TOKEN_NEXUS, this will allow the notifications from Nexus to work. Using the link, https://frc.nexus/en/api, scroll down to the Push section and entire the URL of the public server with a reference point to /nexus in Webhook URL: https://pit.team3061.org/nexus. Then, select a specific event, choosing the certain competition you want to receive notifications from. Following this, choose Match status for a specific team after being asked what data you would like to receive. Type in the team number: 3061. After that, press add. The Webhook token should then show up beneath. Copy that and replace whatever is currently in the TOKEN_NEXUS field and keep it in "". This will then allow for the certain notifications to show up.
+Regarding TOKEN_NEXUS, this will allow the notifications from Nexus to work. Using the link, https://frc.nexus/en/api, scroll down to the Push section and entire the URL of the public server with a reference point to /nexus in Webhook URL: https://pit.team3061.org/nexus. Then, select a specific event, choosing the certain competition you want to receive notifications from. Following this, choose Live event status after being asked what data you would like to receive. After that, press add. The Webhook token should then show up beneath. Copy that and replace whatever is currently in the TOKEN_NEXUS field and keep it in "". This will then allow for the certain notifications to show up.
 
 ## Credits
 
