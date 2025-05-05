@@ -4,9 +4,9 @@
  */
 
 // Ensure `socket` is declared only once and avoid redeclaration
-if (!window.socket) {
-  window.socket = window.io(); // Attach `socket` to the global `window` object
-}
+
+window.socket = window.io(); // Attach `socket` to the global `window` object
+
 const socket = window.socket;
 
 socket.on("temperatures", (entry) => {
