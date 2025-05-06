@@ -16,6 +16,9 @@ Upcoming matches: A schedule of all upcoming matches so the team has a good sens
 Checklist: Useful when preparing for a match.
 Temperature data: Uses network tables to get the temperatures of each motor and other parts of the robot to catch failures early.
 
+**Third Page (Settings page)**
+There are inputs for streaming link that corresponds to the streaming service (Twitch/YouTube). Additionally, there is an input for the event key, which fetches data about the match and competition from the Blue Alliance API. This resolves the prior issue about having to change the event key in config.json and committing this change during every single competition. 
+ 
 This project is based on Ranger Robotics’ Flutter app: [Link](https://github.com/3015RangerRobotics/2023Public)
 
 ## Motivation
@@ -97,8 +100,7 @@ Click on the icons on the top-left of the screen to switch between the match inf
 
 ### .env File:
 
-Regarding TOKEN_NEXUS, this will allow the notifications from Nexus to work. Using the link, https://frc.nexus/en/api, scroll down to the Push section and entire the URL of the public server with a reference point to /nexus in Webhook URL: https://pit.team3061.org/nexus. Then, select a specific event, choosing the certain competition you want to receive notifications from. Following this, choose Match status for a specific team after being asked what data you would like to receive. Type in the team number: 3061. After that, press add. The Webhook token should then show up beneath. Copy that and replace whatever is currently in the TOKEN_NEXUS field and keep it in "". This will then allow for the certain notifications to show up.
-
+Regarding TOKEN_NEXUS, this will allow the notifications from Nexus to work. Using the link, https://frc.nexus/en/api, scroll down to the Push section and entire the URL of the public server with a reference point to /nexus in Webhook URL: https://pit.team3061.org/nexus. Then, select a specific event, choosing the certain competition you want to receive notifications from. Following this, choose Live event status after being asked what data you would like to receive. After that, press add. The Webhook token should then show up beneath. Copy that and replace whatever is currently in the TOKEN_NEXUS field and keep it in "". This will then allow for the certain notifications to show up.
 ## Credits
 
 The Robotics Pit Display was created by Arav Juneja, Georgia Riley, and Yutong Ji @ Naperville North High School for Huskie Robotics 2024.
