@@ -17,7 +17,7 @@ Checklist: Useful when preparing for a match.
 Temperature data: Uses network tables to get the temperatures of each motor and other parts of the robot to catch failures early.
 
 **Third Page (Settings page)**
-There are inputs for streaming link that corresponds to the streaming service (Twitch/YouTube). Additionally, there is an input for the event key, which fetches data about the match and competition from the Blue Alliance API. This resolves the prior issue about having to change the event key in config.json and committing this change during every single competition. 
+There are inputs for streaming link that corresponds to the streaming service (Twitch/YouTube). Additionally, there is an input for the event key, which fetches data about the match and competition from the Blue Alliance API. This resolves the prior issue about having to change the event key in config.json and committing this change during every single competition. To configure the RoboRio logs downloading, use the IP Address of the RoboRio. This is usually 10.30.61.2 in the pit network. roborio-3061-frc.local can also work. It will automaticly download the latest log that contains the name of the configured event.
  
 This project is based on Ranger Robotics’ Flutter app: [Link](https://github.com/3015RangerRobotics/2023Public)
 
