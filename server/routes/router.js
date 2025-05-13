@@ -1,29 +1,12 @@
 const express = require("express");
 const route = express.Router();
 const config = require("../model/config");
-const tasks = require("../model/checklist");
-const { makeTaskObject } = require("../../views/robot");
 const {
   downloadLatestLog,
   setDownloadStatus,
-  startConnectionMonitoring,
-  stopConnectionMonitoring,
   checkConnection,
 } = require("../connections/roborio-log-downloader");
 const path = require("path");
-
-// const newTasks = tasks.map((task) => {
-//   return {
-//     name: task.name,
-//     checklistItems: task.checklistItems.map((item) => {
-//       return {
-//         taskName: item,
-//         checked: false,
-//       };
-//     }),
-//   };
-// });
-const newTasks = makeTaskObject(tasks);
 
 const {
   fetchTeamStats,
@@ -86,7 +69,6 @@ route.get("/robot", async (req, res) => {
   try {
     const temperatures = await getMotorTemperatures();
     res.render("robot", {
-      tasks: newTasks,
       temperatures: formatTemperatures(temperatures),
     });
   } catch (error) {
@@ -248,9 +230,9 @@ route.get("/roborio-status", async (req, res) => {
     const isConnected = await checkConnection({ host: ipAddress });
     res.json({
       status: isConnected ? "connected" : "disconnected",
-      host: ipAddress,
     });
   } catch (error) {
+    console.error("Error checking roboRIO connection:", error.message);
     res.status(500).json({
       status: "error",
       message: error.message,
@@ -258,46 +240,21 @@ route.get("/roborio-status", async (req, res) => {
   }
 });
 
-// POST route to start connection monitoring
-route.post("/start-monitoring", (req, res) => {
-  const ipAddress = req.body.ip || "roborio-3061-frc.local";
-  try {
-    const interval = startConnectionMonitoring({ host: ipAddress });
-    res.json({
-      status: "started",
-      message: `Connection monitoring started for ${ipAddress}`,
-      interval: !!interval,
-    });
-  } catch (error) {
-    res.status(500).json({
-      status: "error",
-      message: error.message,
-    });
-  }
-});
+// Route for webhook notifications from Nexus
+route.post("/notification", (req, res) => {
+  const notification = req.body;
+  console.log("Received notification from Nexus:", notification);
 
-// POST route to stop connection monitoring
-route.post("/stop-monitoring", (req, res) => {
-  try {
-    stopConnectionMonitoring();
-    res.json({
-      status: "stopped",
-      message: "Connection monitoring stopped",
-    });
-  } catch (error) {
-    res.status(500).json({
-      status: "error",
-      message: error.message,
-    });
+  // Check if the notification is a nexus notification
+  if (notification && notification.type) {
+    // Emit the notification to connected clients
+    emitNexus(notification);
+    return res.status(200).json({ success: true });
   }
-});
 
-// POST route for nexus notifications
-route.post("/nexus", async (req, res) => {
-  const notif = req.body;
-  console.log(notif);
-  emitNexus(notif);
-  res.status(200).end();
+  return res
+    .status(400)
+    .json({ success: false, error: "Invalid notification" });
 });
 
 module.exports = route;
