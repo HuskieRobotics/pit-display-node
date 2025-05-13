@@ -518,9 +518,7 @@ async function checkAndDownload(options = {}) {
         connectionState.isConnected = false;
       } else {
         connectionState.retryCount++;
-        console.log(
-          `RoboRIO still disconnected (retry ${connectionState.retryCount})`
-        );
+        console.log("RoboRIO still disconnected");
       }
     }
   } catch (error) {
