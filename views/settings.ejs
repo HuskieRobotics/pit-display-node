@@ -36,7 +36,9 @@
             <input type="checkbox" id="useEventCode" name="eventCode" checked />
             <label for="useEventCode">Download log containing event code (<%= eventKey.match(/^\d{4}([a-z0-9]+)$/i) ? eventKey.match(/^\d{4}([a-z0-9]+)$/i)[1].toLowerCase() : eventKey %>) in filename</label>
           </div>
-          <p><small>Example: akit_24-01-28_09-55-16_<%= eventKey.match(/^\d{4}([a-z0-9]+)$/i) ? eventKey.match(/^\d{4}([a-z0-9]+)$/i)[1].toLowerCase() : eventKey %>_q7.wpilog</small></p>
+          <p><small>Supports two log formats:</small></p>
+          <p><small>1. WPILog: akit_24-01-28_09-55-16_<%= eventKey.match(/^\d{4}([a-z0-9]+)$/i) ? eventKey.match(/^\d{4}([a-z0-9]+)$/i)[1].toLowerCase() : eventKey %>_q7.wpilog</small></p>
+          <p><small>2. Hoot: <%= eventKey.match(/^\d{4}([a-z0-9]+)$/i) ? eventKey.match(/^\d{4}([a-z0-9]+)$/i)[1].toUpperCase() : eventKey.toUpperCase() %>_E9_rio_2025-04-19_09-59-36.hoot</small></p>
           <br>
           <button type="submit">Download Latest Log</button>
         </form>
