@@ -230,12 +230,14 @@ route.get("/roborio-status", async (req, res) => {
     const isConnected = await checkConnection({ host: ipAddress });
     res.json({
       status: isConnected ? "connected" : "disconnected",
+      host: ipAddress,
     });
   } catch (error) {
     console.error("Error checking roboRIO connection:", error.message);
     res.status(500).json({
       status: "error",
       message: error.message,
+      host: ipAddress,
     });
   }
 });
