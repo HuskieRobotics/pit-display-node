@@ -104,3 +104,4 @@ Regarding TOKEN_NEXUS, this will allow the notifications from Nexus to work. Usi
 ## Credits
 
 The Robotics Pit Display was created by Arav Juneja, Georgia Riley, and Yutong Ji @ Naperville North High School for Huskie Robotics 2024.
+Jai Gupta, Diya Gupta, and Mihika Gokhale worked on the project in 2025.
