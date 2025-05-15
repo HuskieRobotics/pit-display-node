@@ -94,40 +94,72 @@ function updateStatus(status) {
 
 /**
  * Parse the timestamp from a log filename
- * Format: akit_YY-MM-DD_HH-MM-SS.wpilog or akit_YY-MM-DD_HH-MM-SS_event_extra.wpilog
+ * Supports two formats:
+ * 1. wpilog: akit_YY-MM-DD_HH-MM-SS.wpilog or akit_YY-MM-DD_HH-MM-SS_event_extra.wpilog
+ * 2. hoot: EVENT_MATCH_rio_YYYY-MM-DD_HH-MM-SS.hoot (e.g., CURIE_E9_rio_2025-04-19_09-59-36.hoot)
+ *
  * @param {string} filename - Log filename
- * @returns {Object} - Object with date and event code if present
+ * @returns {Object} - Object with date, event code, and log type if present
  */
 function parseLogFilename(filename) {
-  // Match basic pattern akit_YY-MM-DD_HH-MM-SS with optional _event_extra suffix
-  const match = filename.match(
+  // Check for wpilog format
+  const wpimatch = filename.match(
     /akit_(\d{2})-(\d{2})-(\d{2})_(\d{2})-(\d{2})-(\d{2})(?:_([^.]+))?\.wpilog$/
   );
 
-  if (!match) return { date: null, eventCode: null };
+  if (wpimatch) {
+    // Extract date components - ignore the full match at index 0
+    const [, yy, mm, dd, hh, min, ss] = wpimatch;
 
-  // Extract date components - ignore the full match at index 0
-  const [, yy, mm, dd, hh, min, ss] = match;
+    // Get event code suffix if present (everything after the timestamp before .wpilog)
+    const eventSuffix = wpimatch[7] || "";
 
-  // Get event code suffix if present (everything after the timestamp before .wpilog)
-  const eventSuffix = match[7] || "";
+    // Extract event code - typically the first part of the suffix
+    const eventCode = eventSuffix.split("_")[0] || null;
 
-  // Extract event code - typically the first part of the suffix
-  const eventCode = eventSuffix.split("_")[0] || null;
+    // Create a date object (note: months are 0-indexed in JavaScript Date)
+    // Assuming 20xx for the year
+    const year = 2000 + parseInt(yy, 10);
+    const month = parseInt(mm, 10) - 1; // Convert to 0-indexed month
+    const day = parseInt(dd, 10);
+    const hour = parseInt(hh, 10);
+    const minute = parseInt(min, 10);
+    const second = parseInt(ss, 10);
 
-  // Create a date object (note: months are 0-indexed in JavaScript Date)
-  // Assuming 20xx for the year
-  const year = 2000 + parseInt(yy, 10);
-  const month = parseInt(mm, 10) - 1; // Convert to 0-indexed month
-  const day = parseInt(dd, 10);
-  const hour = parseInt(hh, 10);
-  const minute = parseInt(min, 10);
-  const second = parseInt(ss, 10);
+    return {
+      date: new Date(year, month, day, hour, minute, second),
+      eventCode: eventCode,
+      logType: "wpilog",
+    };
+  }
 
-  return {
-    date: new Date(year, month, day, hour, minute, second),
-    eventCode: eventCode,
-  };
+  // Check for hoot format: CURIE_E9_rio_2025-04-19_09-59-36.hoot
+  const hootmatch = filename.match(
+    /([^_]+)_.*?_rio_(\d{4})-(\d{2})-(\d{2})_(\d{2})-(\d{2})-(\d{2})\.hoot$/i
+  );
+
+  if (hootmatch) {
+    // Extract components
+    const [, eventName, year, month, day, hour, min, sec] = hootmatch;
+
+    // Create a date object
+    const date = new Date(
+      parseInt(year, 10),
+      parseInt(month, 10) - 1, // Convert to 0-indexed month
+      parseInt(day, 10),
+      parseInt(hour, 10),
+      parseInt(min, 10),
+      parseInt(sec, 10)
+    );
+
+    return {
+      date: date,
+      eventCode: eventName.toLowerCase(), // Convert event name to lowercase for comparison
+      logType: "hoot",
+    };
+  }
+
+  return { date: null, eventCode: null, logType: null };
 }
 
 /**
@@ -177,7 +209,7 @@ function checkIfFileExists(filename, savePath) {
 }
 
 /**
- * Downloads the latest .wpilog file from the roboRIO that contains the event code
+ * Downloads the latest log file (.wpilog or .hoot) from the roboRIO that contains the event code
  * @param {Object} options - Connection options
  * @param {string} options.host - roboRIO IP address (default: roborio-3061-frc.local)
  * @param {string} options.logPath - Path to logs on roboRIO (default: /U/logs)
@@ -255,15 +287,14 @@ function downloadLatestLog(options = {}) {
                   );
                 }
 
-                // Filter for .wpilog files with the specific format and sort by timestamp
+                // Filter for both .wpilog and .hoot files with the specific formats and sort by timestamp
                 const logFiles = list
                   .filter((file) => {
-                    // Check if it's a .wpilog file with our expected format (with or without event code suffix)
+                    // Check if it's a log file (.wpilog or .hoot)
                     return (
                       !file.filename.startsWith(".") &&
-                      file.filename.match(
-                        /^akit_\d{2}-\d{2}-\d{2}_\d{2}-\d{2}-\d{2}(?:_[^.]+)?\.wpilog$/
-                      )
+                      (file.filename.endsWith(".wpilog") ||
+                        file.filename.endsWith(".hoot"))
                     );
                   })
                   .map((file) => {
@@ -273,8 +304,10 @@ function downloadLatestLog(options = {}) {
                       ...file,
                       timestamp: parsed.date || new Date(0), // Use epoch if parsing fails
                       eventCode: parsed.eventCode,
+                      logType: parsed.logType,
                     };
                   })
+                  .filter((file) => file.timestamp && file.logType) // Only include files that were successfully parsed
                   .sort((a, b) => b.timestamp - a.timestamp); // Sort newest first
 
                 if (logFiles.length === 0) {
@@ -285,6 +318,14 @@ function downloadLatestLog(options = {}) {
                   });
                   return reject(new Error("No matching log files found"));
                 }
+
+                console.log(
+                  `Found ${logFiles.length} log files (${
+                    logFiles.filter((f) => f.logType === "wpilog").length
+                  } wpilog, ${
+                    logFiles.filter((f) => f.logType === "hoot").length
+                  } hoot)`
+                );
 
                 // If we're not filtering by event code, just take the latest log
                 if (!eventCode) {
@@ -310,10 +351,18 @@ function downloadLatestLog(options = {}) {
 
                 // Filter logs by event code in filename
                 const matchingLogs = logFiles.filter((file) => {
-                  // Check if filename contains the event code
-                  return file.filename
-                    .toLowerCase()
-                    .includes(eventCode.toLowerCase());
+                  if (!file.eventCode) return false;
+
+                  // Check if filename's event code contains the event code we're looking for
+                  // or if the event code we're looking for contains the filename's event code
+                  return (
+                    file.eventCode
+                      .toLowerCase()
+                      .includes(eventCode.toLowerCase()) ||
+                    eventCode
+                      .toLowerCase()
+                      .includes(file.eventCode.toLowerCase())
+                  );
                 });
 
                 if (matchingLogs.length === 0) {
@@ -332,7 +381,7 @@ function downloadLatestLog(options = {}) {
                 // Use the most recent log that contains the event code
                 const bestMatch = matchingLogs[0]; // Already sorted by timestamp
                 console.log(
-                  `Found log with event code ${eventCode}: ${bestMatch.filename}`
+                  `Found log with event code ${eventCode}: ${bestMatch.filename} (type: ${bestMatch.logType})`
                 );
                 processAndDownloadLog(
                   client,
