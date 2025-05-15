@@ -18,8 +18,7 @@ const ROBORIO_CONFIG = {
   readyTimeout: 3000, // 3 seconds timeout
 };
 
-// const LOG_PATH = "/U/logs"; // Default log path on roboRIO
-const LOG_PATH = "/home/lvuser/logs"; // temp path for testing
+const LOG_PATH = "/media/sda1";
 
 // Default save path for downloaded logs
 const DEFAULT_SAVE_PATH = path.resolve("./logs");
