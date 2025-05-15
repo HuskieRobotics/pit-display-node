@@ -107,20 +107,6 @@ div.twitchstream iframe {
   text-decoration: underline;
 }
 
-.test {
-  background-color: #24252a;
-  padding: 20px;
-  margin: 10px;
-  text-align: left;
-  color: #ffffff;
-  border-radius: 10px;
-  font-family: "Source Code Pro", monospace;
-  border: 2px solid white; /* Adjust thickness as needed */
-  width: calc(35vw / 2);
-  height: 85vh;
-  float: left;
-}
-
 .data {
   padding: 0px;
   margin: 10px;
@@ -207,55 +193,9 @@ div.twitchstream iframe {
   float: left;
 }
 
-.SwerveCheck,
-.ArmCheck,
-.TurretCheck,
-.JawCheck,
-.IntakeCheck,
-.ManhattenCheck {
-  background-color: #24252a;
-  text-align: center;
-  color: #5f5757;
-  border-radius: 10px;
-  font-family: "Source Code Pro", monospace;
-  border: 2px solid white; /* Adjust thickness as needed */
-  width: calc(30vw / 2);
-  height: 10vh;
-  float: center;
-  padding: 20px;
-}
-
-.SwerveCheckButton,
-.ArmCheckButton,
-.TurretCheckButton,
-.JawCheckButton,
-.IntakeCheckButton,
-.ManhattenCheckButton {
-  background-color: #24252a;
-  text-align: center;
-  color: #ffffff;
-  border-radius: 10px;
-  font-family: "Source Code Pro", monospace;
-  border: 2px solid white; /* Adjust thickness as needed */
-  width: calc(15vw / 2);
-  height: 2vh;
-  float: center;
-}
-
-.SwerveCheckButton:hover,
-.ArmCheckButton:hover,
-.TurretCheckButton:hover,
-.JawCheckButton:hover,
-.IntakeCheckButton:hover,
-.ManhattenCheckButton:hover {
+.button:hover {
   background-color: rgb(198, 104, 16); /* Change the color when hovered over */
   cursor: pointer; /* Change cursor to select when hovered over */
-}
-
-.checkpar {
-  color: #ffffff;
-  font-family: "Source Code Pro", monospace;
-  font-size: 12px;
 }
 
 /* PDH Styles */

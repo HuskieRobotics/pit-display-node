@@ -60,25 +60,3 @@ async function fetchPowerStats() {
 fetchTemperatures();
 fetchPDHCurrents();
 fetchPowerStats();
-
-// Select all checkboxes with a data-key attribute for persistence
-const checklist = document.querySelectorAll('input[type="checkbox"][data-key]');
-
-checklist.forEach((checkbox) => {
-  // Load persisted state on page load
-  const key = checkbox.getAttribute("data-key");
-  const saved = localStorage.getItem(key);
-  if (saved === "true") {
-    checkbox.checked = true;
-  }
-
-  checkbox.addEventListener("click", (event) => {
-    const label = event.target.closest("label");
-    const taskText = label.textContent.trim();
-    const isChecked = event.target.checked;
-    const key = event.target.getAttribute("data-key");
-    // Save state to localStorage
-    localStorage.setItem(key, isChecked);
-    socket.emit("checklist", { taskText, isChecked });
-  });
-});
