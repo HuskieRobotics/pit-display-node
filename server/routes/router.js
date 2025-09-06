@@ -90,7 +90,6 @@ route.get("/powerStats", async (req, res) => {
 });
 
 route.get("/info", async (req, res) => {
-  console.log("info");
   res.render("info");
 });
 
@@ -245,7 +244,6 @@ route.get("/roborio-status", async (req, res) => {
 // Route for webhook notifications from Nexus
 route.post("/notification", (req, res) => {
   const notification = req.body;
-  console.log("Received notification from Nexus:", notification);
 
   // Check if the notification is a nexus notification
   if (notification && notification.type) {

@@ -557,8 +557,6 @@ async function checkAndDownload(options = {}) {
         } catch (error) {
           console.error("Failed to download log:", error.message);
         }
-      } else {
-        console.log("RoboRIO still connected, no new download needed");
       }
     } else {
       if (connectionState.isConnected) {

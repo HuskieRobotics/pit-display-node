@@ -42,11 +42,9 @@ if (process.env.ROBOT_IS_LOCAL === "true") {
         emitPowerStats(formatPowerStats(getPowerStats()));
       }, true);
     } else {
-      console.log("Unsupported NT type");
+      console.error("Unsupported NT type");
     }
   }
-} else {
-  console.log("Robot is not local");
 }
 
 function getMotorTemperatures() {

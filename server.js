@@ -65,5 +65,7 @@ server.listen(8081, () => {
   console.log("server is listening on http://localhost:8081");
 
   // Start roboRIO connection monitoring
-  startConnectionMonitoring();
+  if (process.env.ROBOT_IS_LOCAL === "true") {
+    startConnectionMonitoring();
+  }
 });
