@@ -30,7 +30,7 @@ async function fetchTemperatures() {
   if (response.ok) {
     temperatures.innerHTML = await response.text();
   } else {
-    console.log("error fetching team stats");
+    console.error("error fetching team stats");
   }
 }
 
@@ -40,7 +40,7 @@ async function fetchPDHCurrents() {
   if (response.ok) {
     pdhDisplay.innerHTML = await response.text();
   } else {
-    console.log("error fetching PDH currents");
+    console.error("error fetching PDH currents");
   }
 }
 
@@ -53,7 +53,7 @@ async function fetchPowerStats() {
     runtimeDisplay.innerHTML = stats.currentDisplay;
     voltageDisplay.innerHTML = stats.voltageDisplay;
   } else {
-    console.log("error fetching power stats");
+    console.error("error fetching power stats");
   }
 }
 

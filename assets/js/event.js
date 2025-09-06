@@ -6,7 +6,7 @@ async function fetchTeamStats() {
   if (response.ok) {
     teamStats.innerHTML = await response.text();
   } else {
-    console.log("error fetching team stats");
+    console.error("error fetching team stats");
   }
 }
 
@@ -17,7 +17,7 @@ async function fetchAndDisplayUpcomingMatches() {
   if (response.ok) {
     upcomingMatchesList.innerHTML = await response.text();
   } else {
-    console.log("error fetching upcoming matches");
+    console.error("error fetching upcoming matches");
   }
 }
 
@@ -28,7 +28,7 @@ async function fetchAndDisplayPastMatches() {
   if (response.ok) {
     pastMatchesList.innerHTML = await response.text();
   } else {
-    console.log("error fetching past matches");
+    console.error("error fetching past matches");
   }
 }
 
